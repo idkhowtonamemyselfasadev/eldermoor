@@ -27,7 +27,8 @@
      "time": 0
     }
    }
-  }
+  },
+  "tier": 1
  },
  "thistle": {
   "name": "enemy.thistle",
@@ -71,7 +72,8 @@
      "next": "lurk"
     }
    }
-  }
+  },
+  "tier": 1
  },
  "crag": {
   "name": "enemy.crag",
@@ -111,7 +113,8 @@
      "next": "patrol"
     }
    }
-  }
+  },
+  "tier": 2
  },
  "wisp": {
   "name": "enemy.wisp",
@@ -142,7 +145,8 @@
      "next": "drift"
     }
    }
-  }
+  },
+  "tier": 2
  },
  "spitter": {
   "name": "enemy.spitter",
@@ -185,7 +189,8 @@
      "next": "wait"
     }
    }
-  }
+  },
+  "tier": 2
  },
  "burrow": {
   "name": "enemy.burrow",
@@ -224,7 +229,8 @@
      "next": "under"
     }
    }
-  }
+  },
+  "tier": 2
  },
  "sentinel": {
   "name": "enemy.sentinel",
@@ -264,7 +270,8 @@
      "next": "watch"
     }
    }
-  }
+  },
+  "tier": 3
  },
  "grub": {
   "name": "enemy.grub",
@@ -296,7 +303,8 @@
      "next": "crawl"
     }
    }
-  }
+  },
+  "tier": 1
  },
  "shale": {
   "name": "enemy.shale",
@@ -334,7 +342,8 @@
      "next": "sleep"
     }
    }
-  }
+  },
+  "tier": 3
  },
  "brinelet": {
   "name": "enemy.brinelet",
@@ -356,7 +365,8 @@
      "time": 0
     }
    }
-  }
+  },
+  "tier": 2
  },
  "thornpup": {
   "name": "enemy.thornpup",
@@ -394,7 +404,8 @@
      "next": "prowl"
     }
    }
-  }
+  },
+  "tier": 2
  },
  "dustmite": {
   "name": "enemy.dustmite",
@@ -416,7 +427,8 @@
      "next": "skitter"
     }
    }
-  }
+  },
+  "tier": 1
  },
  "emberfly": {
   "name": "enemy.emberfly",
@@ -449,7 +461,8 @@
      "next": "drift"
     }
    }
-  }
+  },
+  "tier": 2
  },
  "glimmer": {
   "name": "enemy.glimmer",
@@ -490,7 +503,8 @@
      "next": "watch"
     }
    }
-  }
+  },
+  "tier": 3
  },
  "reedsnap": {
   "name": "enemy.reedsnap",
@@ -526,7 +540,8 @@
      "next": "hide"
     }
    }
-  }
+  },
+  "tier": 2
  },
  "stonehand": {
   "name": "enemy.stonehand",
@@ -557,7 +572,8 @@
      "next": "stand"
     }
    }
-  }
+  },
+  "tier": 3
  },
  "mistling": {
   "name": "enemy.mistling",
@@ -591,7 +607,8 @@
      "next": "fade"
     }
    }
-  }
+  },
+  "tier": 4
  },
  "cinderworm": {
   "name": "enemy.cinderworm",
@@ -630,7 +647,8 @@
      "next": "burrow"
     }
    }
-  }
+  },
+  "tier": 3
  },
  "glasscrab": {
   "name": "enemy.glasscrab",
@@ -669,6 +687,7 @@
      "next": "sidle"
     }
    }
-  }
+  },
+  "tier": 3
  }
 }

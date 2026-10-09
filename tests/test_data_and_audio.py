@@ -141,3 +141,34 @@ def test_simulated_run_reaches_the_temple():
     assert report["done"]["sword"], "the bot could not even find the sword"
     assert report["done"]["reached_temple"], "the bot never reached the temple"
     assert report["player_hours_slice"] > 0
+
+
+# ----- milestone 8: the balance pass -------------------------------------
+def test_every_creature_is_fair_for_its_tier():
+    import sim_playthrough
+    assert sim_playthrough.balance_report(verbose=False) == []
+
+
+def test_every_creature_has_a_tier(content):
+    for definition in content.enemies.ordered():
+        assert 1 <= definition.tier <= 4, definition.id
+
+
+def test_the_length_projection_adds_up():
+    import sim_playthrough
+    projection = sim_playthrough.project(0.5, 3.0)
+    assert projection["main_hours"] > 0
+    assert projection["total_hours"] > projection["main_hours"]
+    labels = [label for label, _minutes in projection["lines"]]
+    assert "overworld" in labels and "dungeons" in labels and "master quest" in labels
+    counted = sum(minutes for _label, minutes in projection["lines"])
+    assert abs(counted / 60 - projection["total_hours"]) < 0.5
+
+
+def test_the_projection_counts_the_real_content():
+    import sim_playthrough
+    counts = sim_playthrough.content_counts()
+    assert counts["rooms"] > 600
+    assert counts["dungeon_rooms"] > 300
+    assert counts["bosses"] >= 24
+    assert counts["quests"] == 30

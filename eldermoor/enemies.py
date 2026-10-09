@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Any
 
 import pygame
 
+from eldermoor import juice
 from eldermoor.ai import Brain
 from eldermoor.config import DATA, TILE
 from eldermoor.entities import DeathPuff, Entity
@@ -39,6 +40,8 @@ class EnemyDef:
         self.ghost = bool(raw.get("ghost", False))    # only visible by lantern light
         self.ai: dict[str, Any] = raw.get("ai", {"start": "idle", "states": {}})
         self.bestiary = str(raw.get("bestiary", f"bestiary.{enemy_id}"))
+        #: roughly when in the game this is met, 1 (the meadow) to 4 (the mist)
+        self.tier = int(raw.get("tier", 1))
 
 
 class EnemyRegistry:
@@ -136,17 +139,22 @@ class Enemy(Entity):
 
     def take_damage(self, world: World, amount: int, source: Entity | None = None) -> bool:
         """Sword and projectile damage, respecting armour."""
+        cx, cy = self.center
         if source is not None and not self.vulnerable_from(source):
             world.audio.play("block")
+            juice.sparks(world, cx, cy, count=4, colour="sky", speed=1.6)
             self.stun_timer = 6
             return False
         world.audio.play("enemy_hit")
+        juice.sparks(world, cx, cy, count=6, colour="white")
+        juice.hit_stop(world)
         return super().take_damage(world, amount, source)
 
     def die(self, world: World) -> None:
         """Puff, drop, and tell the room an enemy died."""
         super().die(world)
         world.audio.play("enemy_die")
+        juice.sparks(world, *self.center, count=10, colour="gold", speed=2.8)
         world.drop_from(self.x, self.y, self.definition.drop)
         world.state.set_flag(f"seen:{self.definition.id}", 1)
         world.state.record_kill(self.definition.id)

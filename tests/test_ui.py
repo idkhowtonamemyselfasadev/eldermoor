@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pygame
-from conftest import step, tap
+from conftest import make_game, step, tap
 
 from eldermoor.config import CANVAS_H, CANVAS_W, DIALOGUE_COLS
 from eldermoor.menu import PAGES, FileSelect, PauseMenu
@@ -189,3 +189,108 @@ def test_file_select_picks_a_slot(game, assets, content, silent_audio):
     inp.release_all()
     inp.press("a")
     assert screen.update(inp) == 2
+
+
+# ----- milestone 8: juice, hints and the palette -------------------------
+def test_the_palette_is_colour_blind_safe():
+    import check_palette
+    assert check_palette.check(verbose=False) == []
+
+
+def test_a_sword_hit_throws_sparks_and_holds_the_frame(game):
+    from eldermoor.juice import Spark
+    w = game.world
+    enemy = w.spawn_from_spec({"kind": "enemy", "type": "thistle", "at": [9, 6]})
+    enemy.take_damage(w, 1, w.hero)
+    assert [e for e in w.entities if isinstance(e, Spark)]
+    assert w.freeze > 0, "the room holds still for a moment"
+
+
+def test_the_frozen_frame_passes(game):
+    from eldermoor.juice import hit_stop
+    w = game.world
+    hit_stop(w, 3)
+    before = w.hero.x
+    game.input.press("right")
+    for _ in range(3):
+        step(game)
+    assert w.hero.x == before, "nothing moves while the frame is held"
+    step(game, 2)
+    game.input.release_all()
+    assert w.hero.x > before, "and then it carries on"
+
+
+def test_an_item_gets_a_fanfare(game):
+    w = game.world
+    w.give_item("lantern")
+    assert w.fanfare is not None
+    canvas = pygame.Surface((CANVAS_W, CANVAS_H))
+    game.draw(canvas)
+    for _ in range(80):
+        step(game)
+        if w.fanfare is None:
+            break
+    assert w.fanfare is None, "it has its moment and then gets out of the way"
+
+
+def test_shake_can_be_turned_off(game):
+    game.world.screen_shake = False
+    game.world.shake(30)
+    assert game.world.shake_offset == (0, 0)
+    game.world.screen_shake = True
+    game.world.shake(30)
+    assert game.world.shake_timer > 0
+
+
+def test_the_companion_waits_and_then_speaks(assets, content, silent_audio):
+    from eldermoor.companion import Companion
+    game = make_game(assets, content, silent_audio)
+    companion = Companion(content.hints)
+    said = ""
+    for _ in range(content.hints.idle_frames + 2):
+        said = companion.update(game.world) or said
+    assert said, "standing still long enough earns a hint"
+    assert game.world.dialogue is not None
+
+
+def test_the_companion_says_each_hint_once_per_room(assets, content, silent_audio):
+    from eldermoor.companion import Companion
+    game = make_game(assets, content, silent_audio)
+    companion = Companion(content.hints)
+    for _ in range(content.hints.idle_frames + 2):
+        companion.update(game.world)
+    game.world.dialogue = None
+    again = ""
+    for _ in range(content.hints.idle_frames + 2):
+        again = companion.update(game.world) or again
+    assert not again, "she does not repeat herself"
+
+
+def test_the_companion_can_be_turned_off(assets, content, silent_audio):
+    from eldermoor.companion import Companion
+    game = make_game(assets, content, silent_audio)
+    companion = Companion(content.hints)
+    companion.enabled = False
+    for _ in range(content.hints.idle_frames + 2):
+        assert not companion.update(game.world)
+    assert game.world.dialogue is None
+
+
+def test_the_hints_follow_the_story(content):
+    from eldermoor.state import GameState
+    state = GameState()
+    assert content.hints.for_state(state) == "hint.sword"
+    state.give("sword")
+    state.give("lantern")
+    assert content.hints.for_state(state) == "hint.lantern"
+    state.set_flag("flames8", 1)
+    assert content.hints.for_state(state) == "hint.lantern_door"
+    state.set_flag("cleared", 1)
+    assert content.hints.for_state(state) == "hint.mists"
+
+
+def test_every_hint_has_text(content):
+    for hint in content.hints.hints:
+        assert content.text.get(hint.text) != hint.text, hint.text
+    for key in content.hints.rooms.values():
+        assert content.text.get(key) != key, key

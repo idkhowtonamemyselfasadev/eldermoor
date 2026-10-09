@@ -56,6 +56,7 @@ def give_item(world: World, item: str) -> None:
                 state.assign(index, item)
                 break
     world.audio.play("item_get")
+    world.celebrate(item)
     world.say(f"get.{item}")
 
 def take_reward(world: World, what: str, spec: dict[str, Any]) -> None:

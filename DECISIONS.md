@@ -232,3 +232,30 @@ Decisions made without asking, with the reason. Newest at the bottom.
 57. **Player two gets copies, not an empty bag.** They start with player
     one's three slots so the first thing a second player does is play, and
     their slots diverge from the moment anyone changes them.
+
+58. **Hit-stop is three frames, not six.** Six reads as a stutter on a
+    60 Hz game with no animation blending; three is felt rather than seen.
+59. **Thirty-two colours cannot all be distinct to a dichromat.** Requiring
+    it would mean a palette of greys. So the check is strict about the
+    colours that carry meaning - text, cursors, hearts, the two barrier
+    colours - and prints the rest as advice. The strictness is where
+    confusion would cost the player something.
+60. **Brightness is the channel that survives.** Where two colours collapse
+    in hue under a simulation, the check accepts them if their brightness
+    still separates them, which is also why the meaningful pairs are checked
+    on brightness rather than hue in the first place.
+61. **Creatures carry a tier, and the balance check reads it.** "Is this
+    fair?" has no answer without "fair to whom?". A tier says what the
+    player is expected to be carrying by the time they meet a creature, and
+    once that was written down the check found the first temple's bosses
+    were a wall rather than a lesson.
+62. **The length estimate measures one thing and counts the rest.** The bot
+    can honestly measure how long it takes to cross a room and fight what is
+    in it; it cannot honestly simulate a player hunting seashells. So it
+    measures the room - separately for an overworld screen and a dungeon
+    room, over the part of the run that was going somewhere rather than the
+    tail where it loops and dies - and everything else is content counted
+    out of data/ times a cost printed on its own line.
+63. **The companion waits to be wanted.** A hint that fires on entering a
+    room is a pop-up with extra steps. Fourteen seconds of standing still is
+    a player who has stopped to think, and she says one thing, once.

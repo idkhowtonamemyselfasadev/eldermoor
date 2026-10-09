@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any
 
 import pygame
 
+from eldermoor import juice
 from eldermoor.config import (
     CLOAK_SPEED_FACTOR,
     HERO_IDLE_FRAME_TIME,
@@ -307,6 +308,7 @@ class Hero(Entity):
         self.roll_dir = (dx / length, dy / length)
         self.roll_timer = ROLL_FRAMES
         self.facing = facing_from(dx, dy, self.facing)
+        juice.dust(world, self.x + 4, self.y + self.height - 2)
         self.roll_cooldown = max(ROLL_FRAMES + 2,
                                  ROLL_FRAMES + ROLL_COOLDOWN - world.ring_bonus.roll)
         world.audio.play("roll")
@@ -336,6 +338,8 @@ class Hero(Entity):
             if self.blocks_from(sx, sy):
                 if self.block_cooldown == 0:
                     world.audio.play("block")
+                    juice.sparks(world, *self.center, count=5, colour="sky", speed=1.8)
+                    juice.hit_stop(world, 2)
                     self.apply_knockback(sx, sy, 1.5)
                     self.block_cooldown = 16
                 return False

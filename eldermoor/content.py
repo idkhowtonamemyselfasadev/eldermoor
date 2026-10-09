@@ -4,6 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from eldermoor.collections_data import Collection
+from eldermoor.companion import Hints
 from eldermoor.config import DATA
 from eldermoor.drops import DropTables
 from eldermoor.dungeon import Dungeons
@@ -37,6 +38,7 @@ class Content:
         self.trade = Trade.load(root)
         self.minigames = MiniGames.load(root)
         self.rush = Rush.load(root)
+        self.hints = Hints.load(root)
 
     def reload_text(self, language: str) -> None:
         """Swap the string table (settings menu language switch)."""

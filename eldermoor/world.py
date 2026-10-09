@@ -10,6 +10,7 @@ import pygame
 from eldermoor import (
     actions,
     clock,
+    juice,
     players,
     postgame,
     render,
@@ -67,6 +68,11 @@ class World:
         self.pending_shop: dict[str, Any] | None = None
         self.pending_warp_menu = False
         self.pending_minigame = ""
+        #: frames the room holds still after a solid hit
+        self.freeze = 0
+        self.fanfare: juice.Fanfare | None = None
+        #: honoured from the settings page
+        self.screen_shake = True
         self.regen_timer = 0
         self.pending_ending = ""
         self.shake_timer = 0
@@ -303,8 +309,17 @@ class World:
                                       rect.centery // TILE) is Collision.WATER
 
     def shake(self, frames: int = 12) -> None:
-        """Shake the screen for a few frames."""
+        """Shake the screen for a few frames, unless the setting says not to."""
+        if not self.screen_shake:
+            return
         self.shake_timer = max(self.shake_timer, frames)
+
+    def celebrate(self, item: str) -> None:
+        """Hold the room still and lift an item over Wren's head."""
+        definition = self.items.get(item)
+        if definition is None:
+            return
+        self.fanfare = juice.Fanfare(definition.icon, self.textdb.get(definition.name))
 
     def trigger(self, event: str, value: Any = None) -> int:
         """Fire the room's triggers for an event."""
@@ -446,6 +461,13 @@ class World:
         self.audio.tick()
         if self.shake_timer > 0:
             self.shake_timer -= 1
+        if self.fanfare is not None:
+            if self.fanfare.update():
+                self.fanfare = None
+            return
+        if self.freeze > 0:
+            self.freeze -= 1
+            return
         if self.dialogue is not None:
             self._update_dialogue()
             return

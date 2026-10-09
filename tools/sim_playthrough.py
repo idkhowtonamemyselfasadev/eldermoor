@@ -17,6 +17,7 @@ import os
 import sys
 from collections import deque
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -36,6 +37,22 @@ ESTIMATE = {
     "explore": 3.2,        # a player wanders, backtracks, re-reads and dies
     "combat": 1.6,         # the bot does not retreat or heal
     "reading": 1.15,       # dialogue at a human text speed
+}
+
+#: What the bot does not do, in player-minutes each. The bot measures one
+#: thing honestly - how long it takes to cross a room and fight what is in
+#: it - and the length of the game is that number times the rooms, plus
+#: these. Every line is printed so the total can be argued with.
+PROJECTION = {
+    "overworld_revisits": 1.8,    # every screen is crossed about twice
+    "boss_minutes": 6.0,          # learning a boss's pattern, per boss
+    "piece_minutes": 3.0,         # finding one heart piece
+    "shell_minutes": 3.0,         # finding one seashell
+    "quest_minutes": 8.0,         # one side quest, end to end
+    "minigame_minutes": 12.0,     # getting good enough at one game to win it
+    "trade_minutes": 20.0,        # the whole trading chain
+    "rush_minutes": 30.0,         # one run at the Standing Ring
+    "master_share": 1.0,          # the Master Quest is the whole game again
 }
 BACK = {"north": "south", "south": "north", "east": "west", "west": "east"}
 
@@ -471,6 +488,115 @@ CRITICAL_PATH: list[tuple[str, str]] = [
 ]
 
 
+#: what a player is expected to be carrying by the time they meet a creature
+#: of each tier: hearts, and sword level
+EXPECTED = {1: (3, 1), 2: (6, 1), 3: (10, 2), 4: (14, 2)}
+#: no creature may kill the player of its own tier in fewer touches than this
+MIN_TOUCHES_TO_DIE = 4
+#: and must not need more sword swings than this at sword level one
+MAX_SWINGS_EARLY = 8
+#: a boss may take longer, but not forever
+MAX_SWINGS_BOSS = 40
+
+
+def balance_report(verbose: bool = True) -> list[str]:
+    """Check every creature against the player it is written for.
+
+    Two numbers decide whether a fight is fair: how many swings it takes to
+    put a creature down, and how many touches it takes to put the player
+    down. Both come out of the data - the creature's tier says what the
+    player is expected to be carrying by then - so this is a check rather
+    than an opinion.
+    """
+    from eldermoor.content import Content
+    content = Content()
+    problems: list[str] = []
+    rows: list[tuple[str, int, int, str]] = []
+    for definition in content.enemies.ordered():
+        hearts, sword = EXPECTED.get(definition.tier, EXPECTED[4])
+        swings = -(-definition.hp // max(1, sword))
+        touches = hearts * 2 // max(1, definition.damage)
+        kind = "boss" if definition.raw.get("boss") else "common"
+        rows.append((definition.id, swings, touches, kind))
+        limit = MAX_SWINGS_BOSS if kind == "boss" else MAX_SWINGS_EARLY
+        if kind == "common" and swings > limit:
+            problems.append(f"{definition.id} takes {swings} swings at sword level one, "
+                            f"want at most {limit}")
+        if swings > MAX_SWINGS_BOSS:
+            problems.append(f"{definition.id} takes {swings} swings, want at most "
+                            f"{MAX_SWINGS_BOSS}")
+        if touches < MIN_TOUCHES_TO_DIE:
+            problems.append(f"{definition.id} kills a tier-{definition.tier} player in "
+                            f"{touches} touches, want at least {MIN_TOUCHES_TO_DIE}")
+    if verbose:
+        print("balance, against the player each creature is written for:")
+        for name, swings, touches, kind in rows:
+            print(f"    {name:12s} {kind:6s} {swings:3d} swings   {touches:2d} touches")
+        for problem in problems:
+            print(f"FAIL {problem}")
+        print(f"{len(problems)} balance problems")
+    return problems
+
+
+def content_counts() -> dict[str, int]:
+    """How much of everything there is, read out of data/."""
+    from eldermoor.content import Content
+    from eldermoor.state import HEART_PIECES_TOTAL, QUESTS_TOTAL, SEASHELLS_TOTAL
+    from eldermoor.tilemap import Room, list_rooms
+    content = Content()
+    dungeon_rooms = {r for d in content.dungeons for r in d.all_rooms()}
+    rooms = list(list_rooms())
+    bosses = [d for d in content.enemies.ordered() if d.raw.get("boss")]
+    indoors = [r for r in rooms if r.startswith("house") or r in ("glade", "rush_arena")]
+    tilesets: dict[str, Room] = {}
+    return {
+        "rooms": len(rooms),
+        "dungeon_rooms": len(dungeon_rooms),
+        "indoor_rooms": len(indoors),
+        "overworld_rooms": len(rooms) - len(dungeon_rooms) - len(indoors),
+        "bosses": len(bosses),
+        "pieces": HEART_PIECES_TOTAL,
+        "shells": SEASHELLS_TOTAL,
+        "quests": QUESTS_TOTAL,
+        "minigames": len(content.minigames),
+        "tilesets": len(tilesets),
+    }
+
+
+def project(per_outside: float, per_dungeon: float) -> dict[str, Any]:
+    """Project the whole game's length from the measured cost of a room.
+
+    The bot measures two things honestly: how long one overworld screen takes
+    it and how long one dungeon room takes it, which are different numbers
+    because one of them is full of things that bite. Everything else is
+    content counted out of ``data/`` times a stated cost, so the total can be
+    checked line by line rather than taken on faith.
+    """
+    counts = content_counts()
+    lines: list[tuple[str, float]] = [
+        ("overworld", counts["overworld_rooms"] * per_outside
+         * PROJECTION["overworld_revisits"]),
+        ("dungeons", counts["dungeon_rooms"] * per_dungeon),
+        ("indoors", counts["indoor_rooms"] * per_outside),
+        ("bosses", counts["bosses"] * PROJECTION["boss_minutes"]),
+        ("heart pieces", counts["pieces"] * PROJECTION["piece_minutes"]),
+        ("seashells", counts["shells"] * PROJECTION["shell_minutes"]),
+        ("side quests", counts["quests"] * PROJECTION["quest_minutes"]),
+        ("minigames", counts["minigames"] * PROJECTION["minigame_minutes"]),
+        ("trading chain", PROJECTION["trade_minutes"]),
+        ("boss rush", PROJECTION["rush_minutes"]),
+    ]
+    main = sum(minutes for _label, minutes in lines)
+    master = main * PROJECTION["master_share"]
+    lines.append(("master quest", master))
+    return {
+        "lines": [(label, round(minutes, 1)) for label, minutes in lines],
+        "counts": counts,
+        "main_hours": round(main / 60.0, 1),
+        "total_hours": round((main + master) / 60.0, 1),
+    }
+
+
 def run(max_frames: int, quiet: bool) -> dict[str, float]:
     """Run the bot and return a report."""
     pygame.init()
@@ -487,9 +613,25 @@ def run(max_frames: int, quiet: bool) -> dict[str, float]:
     graph = bot.room_graph()
     marks: dict[str, int] = {}
     pending = {room for room, _ in CRITICAL_PATH}
+    seen_rooms: set[str] = set()
+    # Frames and rooms, split by whether the bot was in a dungeon, snapshotted
+    # every time it finds somewhere new. The last snapshot is the part of the
+    # run that was going somewhere: past it the bot is looping and dying,
+    # which says something about the bot and nothing about the game.
+    spent = {"in": 0, "out": 0}
+    rooms = {"in": set(), "out": set()}
+    snapshot = (dict(spent), {k: set(v) for k, v in rooms.items()})
+    last = bot.frames
     while bot.goals and bot.frames < max_frames:
         bot.step(graph)
         room = game.world.room.id
+        where = "in" if game.world.room.dungeon else "out"
+        spent[where] += max(0, bot.frames - last)
+        rooms[where].add(room)
+        last = bot.frames
+        if room not in seen_rooms:
+            seen_rooms.add(room)
+            snapshot = (dict(spent), {k: set(v) for k, v in rooms.items()})
         if room in pending:
             marks[room] = bot.frames
             pending.discard(room)
@@ -510,13 +652,35 @@ def run(max_frames: int, quiet: bool) -> dict[str, float]:
         "big_key": progress.big_key,
         "flame": progress.flame,
     }
+    # Measure the cost of a room over the part of the run that was going
+    # somewhere. Past the last new room the bot is looping and dying, which
+    # says something about the bot and nothing about the game's length.
+    paid, counted = snapshot
+    useful = max(1, sum(paid.values())) / FPS
+    per_room = (useful * factor / 60.0) / max(1, sum(len(v) for v in counted.values()))
+
+    def cost(where: str) -> float:
+        """Measured player-minutes for one room of a kind."""
+        if not counted[where]:
+            return per_room
+        return (paid[where] / FPS) * factor / 60.0 / len(counted[where])
+
+    per_outside_room, per_dungeon_room = cost("out"), cost("in")
+    projection = project(per_outside_room, per_dungeon_room)
     report = {
         "frames": bot.frames,
+        "player_minutes_per_room": round(per_room, 2),
+        "player_minutes_overworld_room": round(per_outside_room, 2),
+        "player_minutes_dungeon_room": round(per_dungeon_room, 2),
+        "projected_hours": projection["total_hours"],
+        "projected_hours_main": projection["main_hours"],
+        "projection": projection,
         "bot_minutes": round(seconds / 60, 2),
         "milestones_done": sum(1 for v in done.values() if v),
         "milestones": len(done),
         "rooms_seen": len(state.rooms_visited),
         "player_hours_slice": round(seconds * factor / 3600, 2),
+        "productive_minutes": round(useful / 60, 2),
         "completion": state.completion(),
         "deaths": state.deaths,
         "done": done,
@@ -524,11 +688,19 @@ def run(max_frames: int, quiet: bool) -> dict[str, float]:
     if not quiet:
         print(f"  bot ran {report['frames']} frames ({report['bot_minutes']} bot-min), "
               f"{report['deaths']} deaths")
-        print(f"  {report['rooms_seen']} rooms seen, completion {report['completion']}%")
+        print(f"  {report['rooms_seen']} rooms seen, completion {report['completion']}%, "
+              f"{report['productive_minutes']} bot-min of it going somewhere")
         for name, got in done.items():
             print(f"    [{'x' if got else ' '}] {name}")
         print(f"  measured slice: {report['player_hours_slice']} player-hours "
               f"(bot time x{round(factor, 2)})")
+        print(f"  measured cost of one room: {report['player_minutes_per_room']} "
+              f"player-minutes ({report['player_minutes_overworld_room']} outdoors, "
+              f"{report['player_minutes_dungeon_room']} in a dungeon)")
+        for label, minutes in projection["lines"]:
+            print(f"    {label:22s} {minutes / 60:6.2f} h")
+        print(f"  projected main line: {projection['main_hours']} h")
+        print(f"  projected to 100%:   {projection['total_hours']} h")
         for room, frame in sorted(marks.items(), key=lambda kv: kv[1]):
             print(f"    {room:12s} first seen at {frame / FPS / 60:6.2f} bot-min")
     pygame.quit()
@@ -540,7 +712,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="measure Eldermoor's length")
     parser.add_argument("--quiet", action="store_true")
     parser.add_argument("--max-frames", type=int, default=400000)
+    parser.add_argument("--balance", action="store_true",
+                        help="check every creature against a three-heart lamplighter")
     args = parser.parse_args(argv if argv is not None else sys.argv[1:])
+    if args.balance:
+        return 1 if balance_report(not args.quiet) else 0
     if not args.quiet:
         print("simulating the critical path ...")
     report = run(args.max_frames, args.quiet)

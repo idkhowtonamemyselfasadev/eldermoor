@@ -296,3 +296,57 @@ screens and the whole 35-room Ember Temple, from its door to the Flame.
 - Save version 3 gained `slots2`; a milestone-6 file migrates into it with
   empty second slots.
 - 207 tests.
+
+
+## 0.8.0 — Milestone 8: polish, balance and getting out of the way
+
+### Juice
+- Sparks fly out of every landed blow, a different colour when armour turns
+  one aside, and the whole room holds still for three frames on a hit, which
+  is what makes a sword connect rather than pass through (`eldermoor/juice.py`).
+- Dust under a roll, sparks off a shield block, a gold burst when something
+  dies.
+- **Item-get fanfare**: a found item rises over Wren's head in a ring of
+  light with its name underneath while the room waits, and then the usual
+  line appears.
+- *Screen shake* in the settings is now actually honoured.
+
+### The companion in the lantern
+- Stand still for fourteen seconds and the companion offers the one hint
+  that fits where the story has got to - the sword, then the village, then
+  each temple in turn, then the Mist Door - once per room, in the ordinary
+  dialogue box. No pop-ups, no tutorial screens; `data/hints.json` is the
+  whole tutorial and *Hint companion* in the settings turns her off.
+
+### Accessibility
+- `tools/check_palette.py` simulates protanopia, deuteranopia and
+  tritanopia. The colours the interface is drawn in must stay apart under
+  all three - by brightness where hue collapses - and the palette must span
+  a decent brightness range. It found three meaning-carrying pairs too close
+  together (a full heart against moss, the red and blue barriers, a chosen
+  menu row against an unchosen one) and lime against gold under protanopia;
+  red, sea, mist and gold moved, and the sweep over the remaining colours
+  now prints advice rather than failing, because thirty-two colours cannot
+  all be distinct to a dichromat and two shades of green looking alike is a
+  picture, not a puzzle.
+
+### The balance pass
+- `tools/sim_playthrough.py --balance` checks every creature against the
+  player it is written for: each has a **tier** in its data saying roughly
+  when it is met, and the check asks how many swings it takes to kill and
+  how many touches it takes to die. It found the first temple's mini-boss
+  and boss both killing a three-heart lamplighter in three touches, which
+  is what the bot's death count had been saying all along; both now hit for
+  half a heart, and the bot's deaths in temple one went from 22 to 4.
+- The sim measures the cost of a room over the part of its run that was
+  going somewhere, and separately for an overworld screen and a dungeon
+  room, then projects the whole game from the content counted out of
+  `data/`. Every line of the projection is printed:
+
+      overworld 2.1 h, dungeons 34.5 h, bosses 2.8 h, heart pieces 2.0 h,
+      seashells 2.0 h, side quests 4.0 h, minigames 0.6 h, trading 0.3 h,
+      boss rush 0.5 h, master quest 51.2 h
+
+  which comes to **51 hours for the main line and 102 hours to 100 %**,
+  against PROMPT.md's 90-hour target.
+- 221 tests.

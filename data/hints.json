@@ -1,0 +1,26 @@
+{
+ "_comment": "The companion in the lantern. The first hint whose conditions all hold is the one she gives; 'unless_flag' retires a hint once its goal is done. Order matters: later rows are later in the story.",
+ "hints": [
+  {"text": "hint.sword", "unless_item": "sword"},
+  {"text": "hint.village", "needs_item": "sword", "unless_flag": "temple1_seen"},
+  {"text": "hint.temple1", "needs_item": "sword", "unless_item": "lantern"},
+  {"text": "hint.lantern", "needs_item": "lantern", "unless_flag": "flame:temple1"},
+  {"text": "hint.bracelet", "needs_flag": "flame:temple1", "unless_item": "bracelet"},
+  {"text": "hint.bombs", "needs_item": "bracelet", "unless_item": "bombs"},
+  {"text": "hint.hookshot", "needs_item": "bombs", "unless_item": "hookshot"},
+  {"text": "hint.bow", "needs_item": "hookshot", "unless_item": "bow"},
+  {"text": "hint.fins", "needs_item": "bow", "unless_item": "fins"},
+  {"text": "hint.boots", "needs_item": "fins", "unless_item": "fire_boots"},
+  {"text": "hint.cloak", "needs_item": "fire_boots", "unless_item": "mirror_cloak"},
+  {"text": "hint.gauntlet", "needs_item": "mirror_cloak", "unless_item": "gauntlet"},
+  {"text": "hint.flames", "needs_item": "gauntlet", "unless_flag": "flames8"},
+  {"text": "hint.lantern_door", "needs_flag": "flames8", "unless_flag": "cleared"},
+  {"text": "hint.mists", "needs_flag": "cleared"}
+ ],
+ "rooms": {
+  "glade": "hint.glade",
+  "house_wren": "hint.home",
+  "rush_arena": "hint.rush"
+ },
+ "idle_seconds": 14
+}

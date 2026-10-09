@@ -325,3 +325,33 @@ holds the joining and leaving.
 Shared: hearts, keys, embers, items, flags, the save. Separate: the three
 item slots, which is what PROMPT.md asks for and what makes a second player
 useful rather than decorative.
+
+
+--------------------------------------------------------------------------
+## 7. Milestone 8 — the pass over everything
+
+Three kinds of work, and two of them produced findings rather than features.
+
+**Juice** is `eldermoor/juice.py`: sparks, dust, three frames of hit-stop and
+the item-get fanfare. All of it hangs off existing call sites - take_damage,
+the shield block, the roll, give_item - so there is no new system to keep in
+step with the old ones.
+
+**The palette check** (`tools/check_palette.py`) simulates the three
+dichromacies. It is strict about the colours the interface is drawn in and
+advisory about the rest, because a 32-colour palette cannot be fully
+distinct to a dichromat and pretending otherwise would mean shipping greys.
+It found four real problems; red, sea, mist and gold moved to fix them.
+
+**The balance pass** is `--balance` on the sim. Every creature carries a
+tier; the check asks how many swings it takes to kill and how many touches
+it takes to die, against the hearts and sword a player of that tier has.
+It found the first temple's mini-boss and boss killing a three-heart
+lamplighter in three touches - the thing the bot's death count had been
+saying for two milestones - and halving their damage took the bot's deaths
+in temple one from 22 to 4.
+
+**The length estimate** is now a projection with its workings shown: the bot
+measures an overworld screen and a dungeon room over the productive part of
+its run, and the rest is content counted out of `data/` at stated costs.
+51 hours for the main line, 102 to 100 %.

@@ -33,6 +33,8 @@ def draw_world(world: World, target: pygame.Surface, oy: int = PLAY_Y) -> None:
         draw_darkness(world, target, oy + sy)
     if world.boss is not None and world.boss.alive:
         world.boss.draw_bar(target, world.assets, world.textdb.get(world.boss.name_key))
+    if world.fanfare is not None:
+        world.fanfare.draw(target, world.assets, world.hero, oy + sy)
     if world.dialogue is not None:
         world.dialogue.draw(target, world.assets)
 

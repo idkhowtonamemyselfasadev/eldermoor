@@ -16,7 +16,7 @@
    20
   ],
   "hp": 12,
-  "damage": 2,
+  "damage": 1,
   "speed": 0.7,
   "drop": "enemy_tough",
   "weak_states": [
@@ -60,7 +60,8 @@
     "speed_mul": 1.4,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 1
  },
  "ashmaw": {
   "name": "boss.ashmaw",
@@ -77,7 +78,7 @@
    28
   ],
   "hp": 18,
-  "damage": 2,
+  "damage": 1,
   "speed": 0.4,
   "drop": "none",
   "reward": "heart_container",
@@ -132,7 +133,8 @@
     "speed_mul": 1.25,
     "start": "spit"
    }
-  ]
+  ],
+  "tier": 1
  },
  "thornjaw": {
   "name": "boss.thornjaw",
@@ -195,7 +197,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 2
  },
  "hollowking": {
   "name": "boss.hollowking",
@@ -267,7 +270,8 @@
     "speed_mul": 1.2,
     "start": "spit"
    }
-  ]
+  ],
+  "tier": 2
  },
  "brinejaw": {
   "name": "boss.brinejaw",
@@ -329,7 +333,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 2
  },
  "tideclaw": {
   "name": "boss.tideclaw",
@@ -401,7 +406,8 @@
     "speed_mul": 1.2,
     "start": "spit"
    }
-  ]
+  ],
+  "tier": 2
  },
  "sandjaw": {
   "name": "boss.sandjaw",
@@ -463,7 +469,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 3
  },
  "glassmaw": {
   "name": "boss.glassmaw",
@@ -535,7 +542,8 @@
     "speed_mul": 1.2,
     "start": "spit"
    }
-  ]
+  ],
+  "tier": 3
  },
  "weedjaw": {
   "name": "boss.weedjaw",
@@ -597,7 +605,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 3
  },
  "drownking": {
   "name": "boss.drownking",
@@ -669,7 +678,8 @@
     "speed_mul": 1.25,
     "start": "spit"
    }
-  ]
+  ],
+  "tier": 3
  },
  "slagjaw": {
   "name": "boss.slagjaw",
@@ -731,7 +741,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 3
  },
  "kilnmaw": {
   "name": "boss.kilnmaw",
@@ -803,7 +814,8 @@
     "speed_mul": 1.25,
     "start": "spit"
    }
-  ]
+  ],
+  "tier": 3
  },
  "frostjaw": {
   "name": "boss.frostjaw",
@@ -865,7 +877,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 3
  },
  "glassking": {
   "name": "boss.glassking",
@@ -938,7 +951,8 @@
     "start": "spit"
    }
   ],
-  "cloak_blind": true
+  "cloak_blind": true,
+  "tier": 3
  },
  "stonejaw": {
   "name": "boss.stonejaw",
@@ -1000,7 +1014,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 4
  },
  "titanmaw": {
   "name": "boss.titanmaw",
@@ -1072,7 +1087,8 @@
     "speed_mul": 1.25,
     "start": "spit"
    }
-  ]
+  ],
+  "tier": 4
  },
  "thequiet": {
   "name": "boss.thequiet",
@@ -1145,7 +1161,8 @@
     "speed_mul": 1.3,
     "start": "charge"
    }
-  ]
+  ],
+  "tier": 4
  },
  "huskjaw": {
   "name": "enemy.huskjaw",
@@ -1207,7 +1224,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 2
  },
  "clamjaw": {
   "name": "enemy.clamjaw",
@@ -1286,7 +1304,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 2
  },
  "slagpup": {
   "name": "enemy.slagpup",
@@ -1365,7 +1384,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 3
  },
  "frostpup": {
   "name": "enemy.frostpup",
@@ -1444,7 +1464,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 3
  },
  "glasspup": {
   "name": "enemy.glasspup",
@@ -1506,7 +1527,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 3
  },
  "mistpup": {
   "name": "enemy.mistpup",
@@ -1585,7 +1607,8 @@
     "speed_mul": 1.35,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 4
  },
  "veilmaw": {
   "name": "enemy.veilmaw",
@@ -1681,7 +1704,8 @@
     "start": "ready"
    }
   ],
-  "cloak_blind": true
+  "cloak_blind": true,
+  "tier": 4
  },
  "duskmaw": {
   "name": "enemy.duskmaw",
@@ -1776,7 +1800,8 @@
     "speed_mul": 1.45,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 4
  },
  "merewarden": {
   "name": "enemy.merewarden",
@@ -1871,7 +1896,8 @@
     "speed_mul": 1.45,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 4
  },
  "palewarden": {
   "name": "enemy.palewarden",
@@ -1968,7 +1994,8 @@
     "start": "ready"
    }
   ],
-  "ghost": true
+  "ghost": true,
+  "tier": 4
  },
  "mistjaw": {
   "name": "enemy.mistjaw",
@@ -2049,6 +2076,7 @@
     "speed_mul": 1.4,
     "start": "ready"
    }
-  ]
+  ],
+  "tier": 4
  }
 }

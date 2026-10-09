@@ -8,6 +8,7 @@ import pygame
 from eldermoor import save as savefile
 from eldermoor.assets import Assets
 from eldermoor.audio import Audio
+from eldermoor.companion import Companion
 from eldermoor.config import CANVAS_H, CANVAS_W, DT
 from eldermoor.content import Content
 from eldermoor.debug import DebugOverlay
@@ -41,12 +42,15 @@ class Game:
         self.world = World(self.assets, self.state, self.input, self.audio, self.content,
                            start_room or self.state.room)
         self.world.text_speed = self.settings.text_speed
+        self.world.screen_shake = self.settings.screen_shake
         self.hud = Hud(self.assets, self.content.items)
         self.debug = DebugOverlay(self.assets)
         self.pause: PauseMenu | None = None
         self.shop: Shop | None = None
         self.ending: Ending | None = None
         self.minigame: MiniGame | None = None
+        self.companion = Companion(self.content.hints)
+        self.companion.enabled = self.settings.hints
         self.file_select: FileSelect | None = None
         if file_select:
             self.file_select = FileSelect(self.assets, self.content,
@@ -100,6 +104,7 @@ class Game:
         self.world = World(self.assets, self.state, self.input, self.audio, self.content,
                            self.state.room)
         self.world.text_speed = self.settings.text_speed
+        self.world.screen_shake = self.settings.screen_shake
         self._last_room = self.world.room.id
 
     def _sync_players(self) -> None:
@@ -111,6 +116,7 @@ class Game:
 
     def _update_play(self) -> None:
         self._sync_players()
+        self.companion.update(self.world)
         self.state.playtime += DT
         self.world.tick_clock(DT)
         self.hud.tick(self.state, self.audio, self.settings.low_health_beep)
@@ -143,6 +149,7 @@ class Game:
             return
         if self.world.room.id != self._last_room:
             self._last_room = self.world.room.id
+            self.companion.reset()
             self.autosave()
 
     def _open_pause(self, page: int) -> None:
@@ -200,6 +207,8 @@ class Game:
         self._sync_players()
         self.audio.set_volumes(self.settings.music_volume, self.settings.sfx_volume)
         self.world.text_speed = self.settings.text_speed
+        self.world.screen_shake = self.settings.screen_shake
+        self.companion.enabled = self.settings.hints
         self.settings.save()
 
     def save(self) -> None:
