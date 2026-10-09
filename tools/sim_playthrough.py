@@ -477,8 +477,8 @@ def run(max_frames: int, quiet: bool) -> dict[str, float]:
     pygame.display.set_mode((320, 240))
     from eldermoor.game import Game
     from eldermoor.input import Input
-    game = Game(inp=Input(), start_room="village_00")
-    game.state.respawn_room = "village_00"
+    game = Game(inp=Input(), start_room="ow_1105")
+    game.state.respawn_room = "ow_1105"
     # The route walks past the village shop, so the sim assumes the Oak Shield
     # has been bought; the bot does not play the minigame of earning embers.
     game.state.give("shield")

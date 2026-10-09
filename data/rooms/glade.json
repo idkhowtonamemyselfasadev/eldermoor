@@ -1,0 +1,45 @@
+{
+  "id": "glade",
+  "name": "The Hollow Glade",
+  "tileset": "meadow",
+  "region": "thornwood",
+  "music": "overworld_day",
+  "spawn": [
+    152,
+    96
+  ],
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "T,...*.....,....*..T",
+    "T..............,...T",
+    "T.....=========....T",
+    "T..*..=.......=....T",
+    "T.....=..S....=..r.T",
+    "T.b...=.......=....T",
+    "T.....=.......=....T",
+    "T..~~.=..,....=...*T",
+    "T.~~~.=.......=....T",
+    "T..~..=========....T",
+    "T,....*....\"\"..,...T",
+    "TTTTTTTTTTTTTTTTTTTT"
+  ],
+  "objects": [
+    {
+      "kind": "sign",
+      "at": [
+        9,
+        5
+      ],
+      "text": "sign.glade"
+    },
+    {
+      "kind": "reward",
+      "at": [
+        17,
+        5
+      ],
+      "what": "shell",
+      "flag": "shell:glade"
+    }
+  ]
+}

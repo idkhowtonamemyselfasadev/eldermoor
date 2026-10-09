@@ -1,7 +1,20 @@
 {
-  "id": "t1_01", "name": "Temple Mouth", "tileset": "temple", "dungeon": "temple1", "floor": 1,
-  "map_pos": [2, 4], "spawn": [152, 160],
-  "exits": {"north": "t1_02"},
+  "id": "t1_01",
+  "name": "Temple Mouth",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    2,
+    4
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "north": "t1_02"
+  },
   "tiles": [
     "TTTTTTTTT..TTTTTTTTT",
     "M..................M",
@@ -18,10 +31,40 @@
     "MMMMMMMMMMMMMMMMMMMM"
   ],
   "objects": [
-    {"kind": "stairs", "at": [9, 11], "to": "meadow_05", "spawn": [152, 96]},
-    {"kind": "stairs", "at": [10, 11], "to": "meadow_05", "spawn": [152, 96]}
+    {
+      "kind": "stairs",
+      "at": [
+        9,
+        11
+      ],
+      "to": "ow_0909",
+      "spawn": [
+        152,
+        96
+      ]
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        10,
+        11
+      ],
+      "to": "ow_0909",
+      "spawn": [
+        152,
+        96
+      ]
+    }
   ],
   "triggers": [
-    {"on": "enter", "do": [{"say": "story.temple1.enter"}], "flag": "t1_seen"}
+    {
+      "on": "enter",
+      "do": [
+        {
+          "say": "story.temple1.enter"
+        }
+      ],
+      "flag": "t1_seen"
+    }
   ]
 }

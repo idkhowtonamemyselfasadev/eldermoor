@@ -53,7 +53,7 @@ def test_debug_overlay_toggles_and_draws(game, assets):
     assert game.debug.enabled
     game.draw(canvas)
     lines = game.debug.lines(game)
-    assert any("meadow_00" in ln for ln in lines) and any("keyboard" in ln for ln in lines)
+    assert any("glade" in ln for ln in lines) and any("keyboard" in ln for ln in lines)
     assert canvas.get_at((6, HUD_H + 6))[:3] in (assets.colour("lime"), assets.colour("ink"), (0, 0, 0))
     tap(game, "debug")
     assert not game.debug.enabled

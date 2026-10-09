@@ -1,10 +1,8 @@
 {
   "_comment": "Every line of text in the game. Dialogue values may be a list: one entry per page.",
-
   "title.name": "LANTERN OF ELDERMOOR",
   "title.empty": "{n}. NEW LAMPLIGHTER",
   "title.slot": "{n}. {f} FLAMES  {h}:{m}  {p}%",
-
   "menu.items": "ITEMS",
   "menu.quest": "QUEST",
   "menu.map": "MAP",
@@ -24,7 +22,6 @@
   "menu.cancel": "Back",
   "menu.slot": "Slot {n}",
   "menu.empty": "Nothing yet. Go and find something.",
-
   "quest.flames": "Flames reclaimed  {n} of 8",
   "quest.hearts": "Hearts {n}   pieces {p}",
   "quest.shells": "Seashells {n} of 40",
@@ -32,11 +29,9 @@
   "quest.deaths": "Lanterns dropped {n}",
   "quest.time": "Time played {h}:{m}",
   "quest.completion": "Completion {p}%",
-
   "map.overworld": "Eldermoor",
   "map.rooms": "{n} places seen",
   "map.nomap": "No map of this temple yet.",
-
   "item.sword": "Lamplighter's Blade",
   "item.shield": "Oak Shield",
   "item.lantern": "The Little Lantern",
@@ -49,10 +44,15 @@
   "item.flame_ember": "The Ember Flame",
   "item.heart_piece": "Piece of Heart",
   "item.nodesc": "",
-
-  "get.sword": ["You lift your master's blade. It is lighter than it looks.", "Press A to swing. Hold A to gather a spin."],
+  "get.sword": [
+    "You lift your master's blade. It is lighter than it looks.",
+    "Press A to swing. Hold A to gather a spin."
+  ],
   "get.shield": "An oak shield. Hold L and nothing gets past you.",
-  "get.lantern": ["The Little Lantern! Its flame does not go out.", "Set it to B, X or Y, then press that button to light torches and burn webs."],
+  "get.lantern": [
+    "The Little Lantern! Its flame does not go out.",
+    "Set it to B, X or Y, then press that button to light torches and burn webs."
+  ],
   "get.feather": "The Updraft Feather. Press its button to hop a gap.",
   "get.bombs": "Fen Bombs. They crack more than rock.",
   "get.bottle": "An empty bottle. Something will want to live in it.",
@@ -64,26 +64,32 @@
   "get.heart_container": "A whole heart. You stand a little straighter.",
   "get.shell": "A seashell, far from any sea.",
   "get.embers": "Embers.",
-  "get.flame.temple1": ["The first Flame comes to your wick without a sound.", "One of eight. The mist on the meadow thins a little.", "Take it home to the Great Lantern."],
-
+  "get.flame.temple1": [
+    "The first Flame comes to your wick without a sound.",
+    "One of eight. The mist on the meadow thins a little.",
+    "Take it home to the Great Lantern."
+  ],
   "door.locked": "Locked. A small key would turn it.",
   "door.bigkey": "This lock is far too grand for a small key.",
-
   "shop.title": "WARES",
   "shop.hello": "Mind the lamp oil. Take what you can pay for.",
   "shop.thanks": "Good. Don't break it.",
   "shop.poor": "Come back with more embers.",
   "shop.sold": "You already have one of those.",
-
   "sign.blank": "The paint has run off this one.",
   "sign.village": "LAMPLIGHT VILLAGE - keep the wicks trimmed.",
   "sign.north": "NORTH: the meadow road. Mind the thistles.",
   "sign.temple": "TEMPLE OF THE FIRST FLAME. Closed by order of nobody at all.",
   "sign.shop": "WARES. Knock if the door sticks.",
-
   "npc.hello": "Evening.",
-  "npc.elder.1": ["Wren. The Great Lantern has gone out - all eight flames taken.", "Eight temples, eight thieves, eight flames. You are the only lamplighter left standing.", "Take the north road. The first temple is past the meadow."],
-  "npc.elder.2": ["One flame home. Seven to go, and the mist knows it."],
+  "npc.elder.1": [
+    "Wren. The Great Lantern has gone out - all eight flames taken.",
+    "Eight temples, eight thieves, eight flames. You are the only lamplighter left standing.",
+    "Take the north road. The first temple is past the meadow."
+  ],
+  "npc.elder.2": [
+    "One flame home. Seven to go, and the mist knows it."
+  ],
   "npc.shop.1": "Sixty embers for the shield. Cut the grass, it pays.",
   "npc.kid.1": "I saw a thing in the long grass. It had TEETH.",
   "npc.kid.2": "You went in the temple? With that little lantern?",
@@ -92,11 +98,11 @@
   "npc.guard.1": "Nobody goes up the north road at night. Nobody sensible.",
   "npc.guard.2": "You came back. That's one more than I expected.",
   "npc.wren_home": "Your own bed. It will still be here afterwards.",
-
-  "story.temple1.enter": ["Something far below is breathing warm air up the stairs."],
+  "story.temple1.enter": [
+    "Something far below is breathing warm air up the stairs."
+  ],
   "story.temple1.miniboss": "The floor cracks. Something with a jaw comes up through it.",
   "story.temple1.boss": "THE ASHEN MAW",
-
   "enemy.mote": "Cinder Mote",
   "enemy.thistle": "Thistlehop",
   "enemy.crag": "Cragguard",
@@ -105,7 +111,6 @@
   "enemy.burrow": "Dustmole",
   "boss.cinderjaw": "CINDERJAW",
   "boss.ashmaw": "THE ASHEN MAW",
-
   "bestiary.mote": "A knot of leftover fire. Hops. Does not think.",
   "bestiary.thistle": "Hides in the long grass until you are close enough to regret it.",
   "bestiary.crag": "Armour on the front, temper at the back. Get behind it.",
@@ -114,9 +119,23 @@
   "bestiary.burrow": "Travels under the floor and comes up where you were standing.",
   "bestiary.cinderjaw": "It circles, it slams, and then it is stuck for a moment. That moment is yours.",
   "bestiary.ashmaw": "Shut, it is a wall. Light the four torches and it opens.",
-
   "dungeon.temple1": "Temple of the First Flame",
-
   "puzzle.torches": "Somewhere a bolt slides back.",
-  "hint.lantern": "Set the Lantern to a button in the ITEMS menu first."
+  "hint.lantern": "Set the Lantern to a button in the ITEMS menu first.",
+  "map.warp": "Warp lanterns lit:",
+  "map.nowarp": "No warp lanterns lit yet.",
+  "warp.lit": "The warp lantern takes your flame. You can come back to this one from the map.",
+  "region.meadow": "Lamplight Meadows",
+  "region.village": "Lamplight Village",
+  "region.thornwood": "Thornwood",
+  "region.saltmarsh": "Saltmarsh",
+  "region.cinder": "Mount Cinder",
+  "region.tarn": "The Frozen Tarn",
+  "region.fen": "The Sunken Fen",
+  "region.desert": "The Hollow Desert",
+  "region.mistlands": "The Mistlands",
+  "sign.bramble": "BRAMBLE HOLLOW. The thorns grow back by morning.",
+  "sign.tidewrack": "TIDEWRACK. Low tide only.",
+  "sign.longglass": "THE LONG GLASS. Bring water.",
+  "sign.glade": "THE HOLLOW GLADE. Quiet, isn't it."
 }

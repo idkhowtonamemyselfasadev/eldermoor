@@ -1,0 +1,96 @@
+"""What the hero's buttons actually do: talking, opening, cutting, burning, swinging."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+import pygame
+
+from eldermoor.config import TILE
+from eldermoor.entities import DIRS
+from eldermoor.objects import PushBlock, Torch
+
+if TYPE_CHECKING:
+    from eldermoor.hero import Hero
+    from eldermoor.world import World
+
+LANTERN_FRAMES = 26
+
+
+# ----- hero actions ---------------------------------------------------
+def try_interact(world: World, hero: Hero) -> bool:
+    """A press in front of the hero: talk, read, open, unlock or push."""
+    front = hero.front_rect()
+    for ent in world.entities:
+        if ent is hero or not ent.alive:
+            continue
+        if ent.body_rect().colliderect(front):
+            if isinstance(ent, PushBlock):
+                dx, dy = DIRS[hero.facing]
+                return ent.push(world, dx, dy)
+            if ent.interact(world):
+                return True
+    return False
+
+
+def use_item(world: World, hero: Hero, item: str | None) -> None:
+    """Use whatever is in a B/X/Y slot."""
+    if item is None or not world.state.has(item):
+        return
+    if item == "lantern":
+        _use_lantern(world, hero)
+    elif item == "feather":
+        hero.hop()
+        world.audio.play("jump")
+    elif item.startswith("bottle"):
+        _use_bottle(world, item)
+    else:
+        world.audio.play("error")
+    world.trigger("item_used", item)
+
+
+def _use_lantern(world: World, hero: Hero) -> None:
+    if hero.lantern_timer > 0:
+        return
+    hero.lantern_timer = LANTERN_FRAMES
+    world.audio.play("burn")
+    front = hero.front_rect()
+    world.hit_tiles(front, "burn")
+    for ent in world.entities:
+        if isinstance(ent, Torch) and ent.body_rect().colliderect(front):
+            ent.light(world)
+
+
+def _use_bottle(world: World, item: str) -> None:
+    content = world.state.flag(f"bottle:{item}")
+    if not content:
+        world.audio.play("error")
+        return
+    world.state.set_flag(f"bottle:{item}", 0)
+    world.state.heal(99)
+    world.audio.play("fairy")
+
+
+def sword_hit(world: World, hero: Hero, rect: pygame.Rect) -> None:
+    """Apply a sword rect to enemies, crystals and cuttable tiles."""
+    world.hit_tiles(rect, "cut")
+    for ent in list(world.entities):
+        if ent is hero or not ent.alive or ent.team != "enemy":
+            continue
+        if id(ent) in hero.hit_this_swing:
+            continue
+        if ent.body_rect().colliderect(rect):
+            hero.hit_this_swing.add(id(ent))
+            ent.take_damage(world, max(1, world.state.sword_level), hero)
+
+
+def hit_tiles(world: World, rect: pygame.Rect, kind: str) -> int:
+    """Clear every tile under ``rect`` that this tool removes. Returns the count."""
+    cleared = 0
+    for col, row, td in world.room.interactive_cells(rect, kind):
+        world.set_tile(col, row, td.becomes or ".")
+        world.audio.play({"cut": "cut", "burn": "burn", "smash": "smash"}.get(kind, "cut"))
+        if td.drop:
+            world.drop_from(col * TILE, row * TILE, td.drop)
+        cleared += 1
+        world.trigger("tile_cleared", td.sprite)
+    return cleared

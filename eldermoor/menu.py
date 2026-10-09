@@ -44,6 +44,7 @@ class PauseMenu:
         self.cursor = 0
         self.message = ""
         self.want_save = False
+        self.want_warp = ""
 
     # ----- frame ---------------------------------------------------------
     def update(self, inp: Input) -> str | None:
@@ -89,7 +90,14 @@ class PauseMenu:
         pass
 
     def _update_map(self, inp: Input) -> None:
-        pass
+        """Flip through the lit warp lanterns; A travels to one."""
+        regions = sorted(self.state.warps)
+        if not regions:
+            return
+        self._move_cursor(inp, len(regions), 1)
+        if inp.pressed("a"):
+            self.want_warp = self.state.warps[regions[self.cursor]]
+            self.audio.play("warp")
 
     def _update_settings(self, inp: Input) -> None:
         self._move_cursor(inp, len(SETTINGS_ROWS), 1)
@@ -197,6 +205,7 @@ class PauseMenu:
                       self.assets.colour("white"))
             font.draw(target, self.content.text.get("map.rooms", n=len(self.state.rooms_visited)),
                       12, 56, self.assets.colour("mist"))
+            self._draw_warps(target)
             return
         progress = self.state.progress(dungeon.id)
         font.draw(target, self.content.text.get(dungeon.name), 12, 28, self.assets.colour("gold"))
@@ -220,6 +229,20 @@ class PauseMenu:
                 target.fill(self.assets.colour("gold"), cell.inflate(-6, -6))
             elif progress.compass and room_id == dungeon.boss_room:
                 target.fill(self.assets.colour("red"), cell.inflate(-6, -6))
+
+    def _draw_warps(self, target: pygame.Surface) -> None:
+        """The list of lit warp lanterns on the overworld map page."""
+        font = self.assets.font8
+        regions = sorted(self.state.warps)
+        if not regions:
+            font.draw(target, self.content.text.get("map.nowarp"), 12, 76,
+                      self.assets.colour("stone"))
+            return
+        font.draw(target, self.content.text.get("map.warp"), 12, 76,
+                  self.assets.colour("mist"))
+        for i, region in enumerate(regions):
+            colour = self.assets.colour("gold") if i == self.cursor else self.assets.colour("white")
+            font.draw(target, self.content.text.get(f"region.{region}"), 24, 92 + i * 12, colour)
 
     def _draw_settings(self, target: pygame.Surface) -> None:
         font = self.assets.font8

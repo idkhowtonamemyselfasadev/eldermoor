@@ -115,10 +115,17 @@ class Room:
     # ----- loading -------------------------------------------------------
     @classmethod
     def load(cls, room_id: str, root: Path = DATA, tilesets: dict[str, Tileset] | None = None) -> Room:
-        """Read data/rooms/<room_id>.json and validate its size."""
-        raw = json.loads((root / "rooms" / f"{room_id}.json").read_text(encoding="utf-8"))
-        ts = cls._tileset_for(raw["tileset"], root, tilesets)
-        tiles = cls._parse_tiles(room_id, raw["tiles"], ts)
+        """Build a room: its own JSON file if it has one, else its map sheet."""
+        path = root / "rooms" / f"{room_id}.json"
+        if not path.exists():
+            from eldermoor.mapsheet import find_sheet
+            sheet = find_sheet(room_id, root)
+            if sheet is None:
+                raise FileNotFoundError(f"no room {room_id!r}")
+            return sheet.build(room_id, tilesets, root)
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        ts = cls.tileset_for(raw["tileset"], root, tilesets)
+        tiles = cls.parse_tiles(room_id, raw["tiles"], ts)
         spawn = tuple(raw.get("spawn", (PLAY_W // 2 - 8, PLAY_H // 2 - 8)))
         map_pos = tuple(raw.get("map_pos", (0, 0)))
         return cls(
@@ -132,7 +139,7 @@ class Room:
         )
 
     @staticmethod
-    def _tileset_for(name: str, root: Path, cache: dict[str, Tileset] | None) -> Tileset:
+    def tileset_for(name: str, root: Path, cache: dict[str, Tileset] | None) -> Tileset:
         if cache is not None and name in cache:
             return cache[name]
         ts = Tileset.load(name, root)
@@ -141,7 +148,7 @@ class Room:
         return ts
 
     @staticmethod
-    def _parse_tiles(room_id: str, rows: list[str], ts: Tileset) -> list[list[int]]:
+    def parse_tiles(room_id: str, rows: list[str], ts: Tileset) -> list[list[int]]:
         if len(rows) != PLAY_ROWS:
             raise ValueError(f"room {room_id}: expected {PLAY_ROWS} rows, got {len(rows)}")
         tiles: list[list[int]] = []
@@ -159,6 +166,11 @@ class Room:
     def palette_region(self) -> str:
         """Region palette this room draws with (its own, else the tileset's)."""
         return self.region or self.tileset.region
+
+    @property
+    def outdoors(self) -> bool:
+        """True for screens the sun and the mist can reach."""
+        return not self.dungeon and not self.id.startswith("house")
 
     def tile_at(self, col: int, row: int) -> TileDef | None:
         """TileDef at grid position, None outside the room."""
@@ -208,24 +220,28 @@ class Room:
         return out
 
     # ----- drawing -------------------------------------------------------
-    def render(self, assets: Assets) -> pygame.Surface:
+    def render(self, assets: Assets, region: str | None = None) -> pygame.Surface:
         """Draw the whole tile layer to a new PLAY_W x PLAY_H surface."""
-        sheet = assets.region_tiles(self.palette_region)
+        sheet = assets.region_tiles(region or self.palette_region)
         surf = pygame.Surface((PLAY_W, PLAY_H))
         for r, row in enumerate(self.tiles):
             for c, tid in enumerate(row):
                 surf.blit(sheet.get(self.tileset.tiles[tid].sprite), (c * TILE, r * TILE))
         return surf
 
-    def draw_tile(self, surf: pygame.Surface, assets: Assets, col: int, row: int) -> None:
+    def draw_tile(self, surf: pygame.Surface, assets: Assets, col: int, row: int,
+                  region: str | None = None) -> None:
         """Repaint one tile onto an already-rendered room surface."""
         td = self.tile_at(col, row)
         if td is None:
             return
-        sheet = assets.region_tiles(self.palette_region)
+        sheet = assets.region_tiles(region or self.palette_region)
         surf.blit(sheet.get(td.sprite), (col * TILE, row * TILE))
 
 
 def list_rooms(root: Path = DATA) -> list[str]:
-    """All room ids present in data/rooms/."""
-    return sorted(p.stem for p in (root / "rooms").glob("*.json"))
+    """Every room id: the hand-written JSON rooms plus every map-sheet screen."""
+    from eldermoor.mapsheet import sheet_room_ids
+    ids = {p.stem for p in (root / "rooms").glob("*.json")}
+    ids.update(sheet_room_ids(root))
+    return sorted(ids)

@@ -7,14 +7,14 @@ from typing import TYPE_CHECKING, Any
 
 import pygame
 
-from eldermoor import rewards
+from eldermoor import actions, rewards
 from eldermoor.bosses import Boss
 from eldermoor.config import PLAY_H, PLAY_W, PLAY_Y, TEXT_SPEED_DEFAULT, TILE
 from eldermoor.content import Content
 from eldermoor.enemies import Enemy, Projectile
-from eldermoor.entities import DIRS, Entity
+from eldermoor.entities import Entity
 from eldermoor.hero import Hero
-from eldermoor.objects import Door, PushBlock, Torch, build
+from eldermoor.objects import Door, Torch, build
 from eldermoor.pickups import Pickup, spawn_drop
 from eldermoor.script import fire
 from eldermoor.state import GameState
@@ -29,6 +29,10 @@ if TYPE_CHECKING:
 
 EDGE_MARGIN = 6
 LANTERN_FRAMES = 26
+#: eight real minutes from dawn to dawn
+DAY_LENGTH = 8 * 60.0
+NIGHT_FROM = 0.55
+NIGHT_TO = 0.95
 
 
 class World:
@@ -58,6 +62,7 @@ class World:
         self.play_rect = pygame.Rect(0, 0, PLAY_W, PLAY_H)
         self.text_speed = TEXT_SPEED_DEFAULT
         self.god_mode = False
+        self._surface_night = False
         self.last_safe = (0.0, 0.0)
         self.room = Room.load(start_room or self.state.room, tilesets=self.tilesets)
         self.enter_room(self.room.id, *self.state_position(start_room))
@@ -89,9 +94,11 @@ class World:
         return self.state.rooms_visited
 
     def state_position(self, start_room: str | None) -> tuple[float | None, float | None]:
-        """Where to place the hero on construction."""
+        """Where to place the hero on construction: a saved spot, else the room's own."""
         if start_room is not None and start_room != self.state.room:
             return None, None
+        if not self.state.rooms_visited:
+            return None, None          # a fresh game uses the room's spawn point
         return self.state.x, self.state.y
 
     # ----- rooms ---------------------------------------------------------
@@ -138,8 +145,24 @@ class World:
                 if "spawn" in action:
                     self.spawn_from_spec(dict(action["spawn"]))
 
+    def spec_applies(self, spec: dict[str, Any]) -> bool:
+        """Whether a room-object entry is live right now (time of day, flags)."""
+        if spec.get("if_night") and not self.is_night:
+            return False
+        if spec.get("if_day") and self.is_night:
+            return False
+        flag = spec.get("if_flag")
+        if flag and not self.state.flag(str(flag)):
+            return False
+        unless = spec.get("unless_flag")
+        if unless and self.state.flag(str(unless)):
+            return False
+        return True
+
     def spawn_from_spec(self, spec: dict[str, Any]) -> Entity | None:
         """Create one entity from a room-object entry (``kind`` picks the class)."""
+        if not self.spec_applies(spec):
+            return None
         kind = str(spec.get("kind", ""))
         if kind == "enemy":
             return self._spawn_enemy(spec)
@@ -188,20 +211,43 @@ class World:
         if not track and self.room.dungeon:
             dungeon = self.content.dungeons.get(self.room.dungeon)
             track = dungeon.music if dungeon else ""
-        if not track:
-            track = "village" if self.room.id.startswith("village") else "overworld_day"
-        self.audio.play_music(track)
+        if not track and self.room.outdoors:
+            track = "overworld_night" if self.is_night else "overworld_day"
+        self.audio.play_music(track or "overworld_day")
+
+    @property
+    def is_night(self) -> bool:
+        """True while the mist is up. The clock only runs outdoors."""
+        phase = (self.state.minutes_of_day % DAY_LENGTH) / DAY_LENGTH
+        return NIGHT_FROM <= phase < NIGHT_TO
+
+    @property
+    def draw_region(self) -> str:
+        """Palette the current room draws with, night included."""
+        if self.room.outdoors and self.is_night:
+            return "night"
+        return self.room.palette_region
+
+    def tick_clock(self, seconds: float) -> None:
+        """Advance the day/night clock; indoors and underground time stands still."""
+        if self.room.outdoors:
+            was = self.is_night
+            self.state.minutes_of_day = (self.state.minutes_of_day + seconds) % DAY_LENGTH
+            if self.is_night != was:
+                self._room_surface = None
+                self.update_music()
 
     def room_surface(self) -> pygame.Surface:
-        """The current room's tile layer, rendered once and cached."""
-        if self._room_surface is None:
-            self._room_surface = self.room.render(self.assets)
+        """The current room's tile layer, rendered once and cached per palette."""
+        if self._room_surface is None or self._surface_night != self.is_night:
+            self._room_surface = self.room.render(self.assets, self.draw_region)
+            self._surface_night = self.is_night
         return self._room_surface
 
     def set_tile(self, col: int, row: int, char: str) -> None:
         """Change a tile and repaint it on the cached room surface."""
         self.room.set_tile(col, row, char)
-        self.room.draw_tile(self.room_surface(), self.assets, col, row)
+        self.room.draw_tile(self.room_surface(), self.assets, col, row, self.draw_region)
 
     def warp(self, room_id: str, x: float | None = None, y: float | None = None) -> None:
         """Jump straight to a room (stairs, debug, loading a save)."""
@@ -335,76 +381,19 @@ class World:
     # ----- hero actions ---------------------------------------------------
     def try_interact(self, hero: Hero) -> bool:
         """A press in front of the hero: talk, read, open, unlock or push."""
-        front = hero.front_rect()
-        for ent in self.entities:
-            if ent is hero or not ent.alive:
-                continue
-            if ent.body_rect().colliderect(front):
-                if isinstance(ent, PushBlock):
-                    dx, dy = DIRS[hero.facing]
-                    return ent.push(self, dx, dy)
-                if ent.interact(self):
-                    return True
-        return False
+        return actions.try_interact(self, hero)
 
     def use_item(self, hero: Hero, item: str | None) -> None:
         """Use whatever is in a B/X/Y slot."""
-        if item is None or not self.state.has(item):
-            return
-        if item == "lantern":
-            self._use_lantern(hero)
-        elif item == "feather":
-            hero.hop()
-            self.audio.play("jump")
-        elif item.startswith("bottle"):
-            self._use_bottle(item)
-        else:
-            self.audio.play("error")
-        self.trigger("item_used", item)
-
-    def _use_lantern(self, hero: Hero) -> None:
-        if hero.lantern_timer > 0:
-            return
-        hero.lantern_timer = LANTERN_FRAMES
-        self.audio.play("burn")
-        front = hero.front_rect()
-        self.hit_tiles(front, "burn")
-        for ent in self.entities:
-            if isinstance(ent, Torch) and ent.body_rect().colliderect(front):
-                ent.light(self)
-
-    def _use_bottle(self, item: str) -> None:
-        content = self.state.flag(f"bottle:{item}")
-        if not content:
-            self.audio.play("error")
-            return
-        self.state.set_flag(f"bottle:{item}", 0)
-        self.state.heal(99)
-        self.audio.play("fairy")
+        actions.use_item(self, hero, item)
 
     def sword_hit(self, hero: Hero, rect: pygame.Rect) -> None:
         """Apply a sword rect to enemies, crystals and cuttable tiles."""
-        self.hit_tiles(rect, "cut")
-        for ent in list(self.entities):
-            if ent is hero or not ent.alive or ent.team != "enemy":
-                continue
-            if id(ent) in hero.hit_this_swing:
-                continue
-            if ent.body_rect().colliderect(rect):
-                hero.hit_this_swing.add(id(ent))
-                ent.take_damage(self, max(1, self.state.sword_level), hero)
+        actions.sword_hit(self, hero, rect)
 
     def hit_tiles(self, rect: pygame.Rect, kind: str) -> int:
-        """Clear every tile under ``rect`` that this tool removes. Returns the count."""
-        cleared = 0
-        for col, row, td in self.room.interactive_cells(rect, kind):
-            self.set_tile(col, row, td.becomes or ".")
-            self.audio.play({"cut": "cut", "burn": "burn", "smash": "smash"}.get(kind, "cut"))
-            if td.drop:
-                self.drop_from(col * TILE, row * TILE, td.drop)
-            cleared += 1
-            self.trigger("tile_cleared", td.sprite)
-        return cleared
+        """Clear every tile under ``rect`` that this tool removes."""
+        return actions.hit_tiles(self, rect, kind)
 
     def stun_boss(self, state: str = "stunned") -> None:
         """Put the room's boss into a vulnerable state."""

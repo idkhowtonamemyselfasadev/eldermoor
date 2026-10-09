@@ -1,0 +1,551 @@
+{
+ "prefix": "ow",
+ "tileset": "meadow",
+ "region": "meadow",
+ "music": "overworld_day",
+ "night_music": "overworld_night",
+ "layers": [
+  {
+   "name": "eldermoor",
+   "rows": 16,
+   "cols": 16
+  }
+ ],
+ "regions": {
+  "eldermoor": [
+   "iiiiitttttcccccc",
+   "iiiiitttttcccccc",
+   "iiiiitttttcccccc",
+   "wwwwitttttcccccc",
+   "wwwwwfffffcccddd",
+   "wwwwwfffffdddddd",
+   "wwwwwfffffdddddd",
+   "wwwwwfffffdddddd",
+   "wwwwmmmmmmdddddd",
+   "wwwmmmmmmmmddddd",
+   "mmmmmmmmmmmmdddd",
+   "mmmmvvvvmmmmmsss",
+   "sssmvvvvmmmsssss",
+   "ssssmmmmmsssssss",
+   "ssssssssssssssss",
+   "ssssssssssssssss"
+  ]
+ },
+ "region_names": {
+  "i": "mistlands",
+  "t": "tarn",
+  "c": "cinder",
+  "w": "thornwood",
+  "f": "fen",
+  "d": "desert",
+  "m": "meadow",
+  "v": "village",
+  "s": "saltmarsh"
+ },
+ "region_spawns": {
+  "meadow": {
+   "types": [
+    "mote",
+    "thistle"
+   ],
+   "count": 2,
+   "night": [
+    "wisp",
+    "thistle"
+   ]
+  },
+  "village": {
+   "types": [],
+   "count": 0
+  },
+  "thornwood": {
+   "types": [
+    "thistle",
+    "crag"
+   ],
+   "count": 2,
+   "night": [
+    "wisp"
+   ]
+  },
+  "saltmarsh": {
+   "types": [
+    "mote",
+    "burrow"
+   ],
+   "count": 2,
+   "night": [
+    "wisp",
+    "burrow"
+   ]
+  },
+  "cinder": {
+   "types": [
+    "mote",
+    "spitter"
+   ],
+   "count": 3
+  },
+  "tarn": {
+   "types": [
+    "wisp",
+    "mote"
+   ],
+   "count": 2
+  },
+  "fen": {
+   "types": [
+    "burrow",
+    "spitter"
+   ],
+   "count": 2,
+   "night": [
+    "wisp"
+   ]
+  },
+  "desert": {
+   "types": [
+    "burrow",
+    "crag"
+   ],
+   "count": 2,
+   "night": [
+    "wisp",
+    "burrow"
+   ]
+  },
+  "mistlands": {
+   "types": [
+    "wisp",
+    "crag",
+    "spitter"
+   ],
+   "count": 3
+  }
+ },
+ "screens": {
+  "ow_1105": {
+   "name": "Lamplight Village",
+   "music": "village",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      3,
+      3
+     ],
+     "to": "house_wren",
+     "spawn": [
+      48,
+      64
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      4,
+      3
+     ],
+     "to": "house_wren",
+     "spawn": [
+      64,
+      64
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "npc",
+     "at": [
+      14,
+      9
+     ],
+     "sprite": "npc_elder",
+     "face": "down",
+     "lines": [
+      {
+       "text": "npc.elder.1"
+      },
+      {
+       "if_flag": "flame:temple1",
+       "text": "npc.elder.2"
+      }
+     ]
+    },
+    {
+     "kind": "npc",
+     "at": [
+      3,
+      10
+     ],
+     "sprite": "npc_kid",
+     "face": "down",
+     "lines": [
+      {
+       "text": "npc.kid.1"
+      },
+      {
+       "if_flag": "boss:cinderjaw",
+       "text": "npc.kid.2"
+      }
+     ]
+    },
+    {
+     "kind": "sign",
+     "at": [
+      2,
+      8
+     ],
+     "text": "sign.village"
+    },
+    {
+     "kind": "warp",
+     "at": [
+      17,
+      9
+     ],
+     "region": "meadow",
+     "flag": "warp:meadow",
+     "id": "meadow"
+    }
+   ]
+  },
+  "ow_1106": {
+   "name": "Lamplight, East Row",
+   "music": "village",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      3,
+      3
+     ],
+     "to": "house_shop",
+     "spawn": [
+      48,
+      64
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      4,
+      3
+     ],
+     "to": "house_shop",
+     "spawn": [
+      64,
+      64
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "npc",
+     "at": [
+      14,
+      8
+     ],
+     "sprite": "npc_baker",
+     "face": "down",
+     "text": "npc.baker.1"
+    },
+    {
+     "kind": "sign",
+     "at": [
+      1,
+      4
+     ],
+     "text": "sign.shop"
+    }
+   ]
+  },
+  "ow_1104": {
+   "name": "The Still Pond",
+   "music": "village",
+   "objects": [
+    {
+     "kind": "npc",
+     "at": [
+      11,
+      9
+     ],
+     "sprite": "npc_fisher",
+     "face": "up",
+     "text": "npc.fisher.1"
+    },
+    {
+     "kind": "reward",
+     "at": [
+      18,
+      2
+     ],
+     "what": "heart_piece",
+     "flag": "hp:village_pond"
+    }
+   ]
+  },
+  "ow_1005": {
+   "name": "The North Gate",
+   "music": "village",
+   "objects": [
+    {
+     "kind": "npc",
+     "at": [
+      6,
+      6
+     ],
+     "sprite": "npc_guard",
+     "face": "right",
+     "lines": [
+      {
+       "text": "npc.guard.1"
+      },
+      {
+       "if_flag": "flame:temple1",
+       "text": "npc.guard.2"
+      }
+     ]
+    },
+    {
+     "kind": "sign",
+     "at": [
+      13,
+      6
+     ],
+     "text": "sign.north"
+    }
+   ]
+  },
+  "ow_0909": {
+   "name": "Temple of the First Flame",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      4
+     ],
+     "to": "t1_01",
+     "spawn": [
+      152,
+      160
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      4
+     ],
+     "to": "t1_01",
+     "spawn": [
+      152,
+      160
+     ]
+    },
+    {
+     "kind": "sign",
+     "at": [
+      13,
+      6
+     ],
+     "text": "sign.temple"
+    }
+   ]
+  },
+  "ow_0602": {
+   "name": "Bramble Hollow",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      4
+     ],
+     "to": "t2_f1_0402",
+     "spawn": [
+      152,
+      160
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      4
+     ],
+     "to": "t2_f1_0402",
+     "spawn": [
+      152,
+      160
+     ]
+    }
+   ]
+  },
+  "ow_1403": {
+   "name": "Tidewrack",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      4
+     ],
+     "to": "t3_f1_0402",
+     "spawn": [
+      152,
+      160
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      4
+     ],
+     "to": "t3_f1_0402",
+     "spawn": [
+      152,
+      160
+     ]
+    }
+   ]
+  },
+  "ow_0613": {
+   "name": "The Long Glass",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      4
+     ],
+     "to": "t4_f1_0402",
+     "spawn": [
+      152,
+      160
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      4
+     ],
+     "to": "t4_f1_0402",
+     "spawn": [
+      152,
+      160
+     ]
+    }
+   ]
+  },
+  "ow_0802": {
+   "name": "Thornwood Waystone",
+   "objects": [
+    {
+     "kind": "warp",
+     "at": [
+      9,
+      6
+     ],
+     "region": "thornwood",
+     "flag": "warp:thornwood",
+     "id": "thornwood"
+    }
+   ]
+  },
+  "ow_1405": {
+   "name": "Saltmarsh Waystone",
+   "objects": [
+    {
+     "kind": "warp",
+     "at": [
+      9,
+      3
+     ],
+     "region": "saltmarsh",
+     "flag": "warp:saltmarsh",
+     "id": "saltmarsh"
+    }
+   ]
+  },
+  "ow_0313": {
+   "name": "Cinder Waystone",
+   "objects": [
+    {
+     "kind": "warp",
+     "at": [
+      9,
+      6
+     ],
+     "region": "cinder",
+     "flag": "warp:cinder",
+     "id": "cinder"
+    }
+   ]
+  },
+  "ow_0209": {
+   "name": "Tarn Waystone",
+   "objects": [
+    {
+     "kind": "warp",
+     "at": [
+      8,
+      3
+     ],
+     "region": "tarn",
+     "flag": "warp:tarn",
+     "id": "tarn"
+    }
+   ]
+  },
+  "ow_0607": {
+   "name": "Fen Waystone",
+   "objects": [
+    {
+     "kind": "warp",
+     "at": [
+      9,
+      3
+     ],
+     "region": "fen",
+     "flag": "warp:fen",
+     "id": "fen"
+    }
+   ]
+  },
+  "ow_0913": {
+   "name": "Desert Waystone",
+   "objects": [
+    {
+     "kind": "warp",
+     "at": [
+      9,
+      6
+     ],
+     "region": "desert",
+     "flag": "warp:desert",
+     "id": "desert"
+    }
+   ]
+  },
+  "ow_0202": {
+   "name": "Mistlands Waystone",
+   "dark": true,
+   "objects": [
+    {
+     "kind": "warp",
+     "at": [
+      9,
+      6
+     ],
+     "region": "mistlands",
+     "flag": "warp:mistlands",
+     "id": "mistlands"
+    }
+   ]
+  }
+ }
+}

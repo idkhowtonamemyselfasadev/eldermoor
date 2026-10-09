@@ -110,8 +110,8 @@ def test_death_sends_the_hero_to_the_respawn_point(game):
 
 
 def test_overworld_respawn_is_the_last_screen(village):
-    village.world.warp("meadow_01")
-    assert village.state.respawn_room == "meadow_01"
+    village.world.warp("ow_1010")
+    assert village.state.respawn_room == "ow_1010"
 
 
 def test_low_health_beep_only_when_low(game, silent_audio):

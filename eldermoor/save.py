@@ -31,7 +31,7 @@ def _v1_to_v2(raw: dict[str, Any]) -> dict[str, Any]:
     raw.setdefault("slots", [None, None, None])
     raw.setdefault("flags", {})
     raw.setdefault("dungeons", {})
-    raw.setdefault("room", "village_00")
+    raw.setdefault("room", "ow_1105")
     raw["version"] = 2
     return raw
 

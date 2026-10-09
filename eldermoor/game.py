@@ -19,7 +19,7 @@ from eldermoor.shop import Shop
 from eldermoor.state import GameState
 from eldermoor.world import World
 
-NEW_GAME_ROOM = "village_00"
+NEW_GAME_ROOM = "ow_1105"
 
 
 class Game:
@@ -90,6 +90,7 @@ class Game:
 
     def _update_play(self) -> None:
         self.state.playtime += DT
+        self.world.tick_clock(DT)
         self.hud.tick(self.state, self.audio, self.settings.low_health_beep)
         if self.world.dialogue is None:
             if self.input.pressed("start"):
@@ -125,6 +126,10 @@ class Game:
         if menu.want_save:
             menu.want_save = False
             self.save()
+        if menu.want_warp:
+            target, menu.want_warp = menu.want_warp, ""
+            self.pause = None
+            self.world.warp(target)
 
     def _update_shop(self) -> None:
         if self.shop is not None and self.shop.update(self.input) == "close":

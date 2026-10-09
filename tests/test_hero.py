@@ -117,6 +117,6 @@ def test_left_swing_mirrors_right(game):
 
 def test_room_blocked_treats_water_as_blocking(assets):
     import pygame
-    room = Room.load("village_03")                     # the still pond
+    room = Room.load("ow_1104")                     # the still pond
     assert room.blocked(pygame.Rect(5 * 16, 4 * 16, 4, 4)), "deep water blocks"
     assert not room.blocked(pygame.Rect(9 * 16, 10 * 16, 4, 4))

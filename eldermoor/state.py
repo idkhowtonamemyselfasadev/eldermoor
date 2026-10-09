@@ -67,15 +67,16 @@ class GameState:
     slots: list[str | None] = field(default_factory=lambda: [None, None, None])
     flags: dict[str, int] = field(default_factory=dict)
     dungeons: dict[str, DungeonProgress] = field(default_factory=dict)
-    room: str = "village_00"
+    room: str = "ow_1105"
     x: float = 152.0
     y: float = 112.0
     facing: str = "down"
-    respawn_room: str = "village_00"
+    respawn_room: str = "ow_1105"
     respawn_x: float = 152.0
     respawn_y: float = 112.0
     dungeon: str = ""                                # "" on the overworld
     rooms_visited: list[str] = field(default_factory=list)
+    warps: dict[str, str] = field(default_factory=dict)   # region -> room id
     playtime: float = 0.0
     deaths: int = 0
     minutes_of_day: float = 0.0                      # day/night clock

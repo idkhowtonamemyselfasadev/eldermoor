@@ -54,7 +54,7 @@ def silent_audio():
     return audio
 
 
-def make_game(assets, content, audio, room: str = "meadow_00", sword: bool = True):
+def make_game(assets, content, audio, room: str = "glade", sword: bool = True):
     """A Game in a given room, optionally already holding the sword."""
     from eldermoor.game import Game
     from eldermoor.input import Input
@@ -67,14 +67,14 @@ def make_game(assets, content, audio, room: str = "meadow_00", sword: bool = Tru
 
 @pytest.fixture
 def game(assets, content, silent_audio):
-    """A fresh Game on the meadow screen with a scriptable Input."""
+    """A fresh Game in the Hollow Glade: walled, quiet, and always the same."""
     return make_game(assets, content, silent_audio)
 
 
 @pytest.fixture
 def village(assets, content, silent_audio):
     """A fresh Game standing in Lamplight Village."""
-    return make_game(assets, content, silent_audio, room="village_00")
+    return make_game(assets, content, silent_audio, room="ow_1105")
 
 
 def step(game, n: int = 1) -> None:

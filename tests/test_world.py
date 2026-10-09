@@ -11,7 +11,7 @@ from eldermoor.tilemap import Collision, Room, Tileset, list_rooms
 
 def test_every_room_loads_and_references_existing_sprites(assets):
     rooms = list_rooms()
-    assert len(rooms) >= 2
+    assert len(rooms) >= 256, "the kingdom is 16 x 16 screens plus the hand-written rooms"
     for rid in rooms:
         room = Room.load(rid)
         assert len(room.tiles) == 13 and all(len(r) == 20 for r in room.tiles)
@@ -48,6 +48,7 @@ def test_bad_room_rejected(tmp_path):
 
 def test_flip_scroll_east_then_back(game):
     w = game.world
+    w.warp("ow_1009")          # out on the meadow road, where screens join up
     h = w.hero
     h.y = 98  # the row the east doorway sits on
     game.input.press("right")
@@ -56,7 +57,7 @@ def test_flip_scroll_east_then_back(game):
         step(game)
         frames += 1
         assert frames < 500, "never reached the exit"
-    assert w.room.id == "meadow_01"
+    assert w.room.id == "ow_1010"
     assert w.transition.direction == "east" and w.transition.frame == 0
     assert h.x == 0
     assert h.y == 96, "the hero is lined up with the doorway he came through"
@@ -65,31 +66,32 @@ def test_flip_scroll_east_then_back(game):
     assert w.transition is not None and h.x == x_during, "logic pauses during the scroll"
     step(game)
     assert w.transition is None, "exactly 12 frames"
-    assert w.rooms_visited == ["meadow_00", "meadow_01"]
+    assert w.rooms_visited[-2:] == ["ow_1009", "ow_1010"]
     game.input.release_all()
     game.input.press("left")
     for _ in range(60):
         step(game)
         if w.transition is not None:
             break
-    assert w.room.id == "meadow_00" and h.x == PLAY_W - 16
+    assert w.room.id == "ow_1009" and h.x == PLAY_W - 16
     step(game, FLIP_SCROLL_FRAMES)
-    assert w.transition is None and w.rooms_visited == ["meadow_00", "meadow_01"]
+    assert w.transition is None and w.rooms_visited[-2:] == ["ow_1009", "ow_1010"]
 
 
 def test_edge_without_exit_clamps(game):
     w = game.world
-    w.warp("meadow_00", x=150, y=0)
+    w.warp("ow_1009", x=150, y=0)
     w.room.exits.pop("north", None)
     # remove the tree row so the hero can reach the edge
     w.room.tiles[0] = [w.room.tileset.legend["."]] * 20
     game.input.press("up")
     step(game, 30)
-    assert w.hero.y == 0 and w.transition is None and w.room.id == "meadow_00"
+    assert w.hero.y == 0 and w.transition is None and w.room.id == "ow_1009"
 
 
 def test_transition_draw_covers_play_area(game):
     w = game.world
+    w.warp("ow_1009")
     w.hero.y = 98
     w.start_transition("east")
     canvas = pygame.Surface((320, 240))

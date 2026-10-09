@@ -27,7 +27,7 @@ def test_chest_opens_once_and_sets_a_flag(village):
     face_and_act(village, chest)
     assert chest.opened and village.state.has("sword")
     assert village.state.flag("chest:wren_sword") == 1
-    village.world.warp("village_00")
+    village.world.warp("ow_1105")
     village.world.warp("house_wren")
     again = next(e for e in village.world.entities if isinstance(e, Chest))
     assert again.opened, "a chest stays open after you leave the room"
@@ -122,19 +122,19 @@ def test_push_block_moves_one_tile(game):
 
 
 def test_reward_is_taken_on_touch_and_stays_taken(village):
-    village.world.warp("village_03")
+    village.world.warp("ow_1104")
     reward = next(e for e in village.world.entities if isinstance(e, Reward))
     village.world.hero.x = float(reward.x)
     village.world.hero.y = float(reward.y)
     step(village, 2)
     assert village.state.heart_pieces == 1
-    village.world.warp("village_00")
-    village.world.warp("village_03")
+    village.world.warp("ow_1105")
+    village.world.warp("ow_1104")
     assert not [e for e in village.world.entities if isinstance(e, Reward)]
 
 
 def test_cutting_grass_can_drop_something(game):
-    game.world.warp("meadow_00")
+    game.world.warp("ow_1010")
     room = game.world.room
     cuttable = [(c, r) for r in range(13) for c in range(20)
                 if (t := room.tile_at(c, r)) and t.interact == "cut"]
@@ -148,7 +148,7 @@ def test_cutting_grass_can_drop_something(game):
 
 def test_stairs_move_the_hero_between_rooms(village):
     world = village.world
-    world.warp("village_00", 72, 88)
+    world.warp("ow_1105", 48, 80)      # on the path below Wren's own door
     for _ in range(60):
         village.input.begin_frame()
         village.input.press("up")

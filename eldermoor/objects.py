@@ -384,11 +384,42 @@ class Reward(RoomObject):
             world.take_reward(self.what, self.spec)
 
 
+class WarpLantern(RoomObject):
+    """A region's warp lantern. Touch it once and you can come back to it."""
+
+    body = pygame.Rect(2, 4, 12, 12)
+    blocks_movement = True
+
+    def __init__(self, world: World, spec: dict[str, Any]) -> None:
+        super().__init__(world, spec)
+        self.region = str(spec.get("region", "meadow"))
+        self.lit = bool(world.state.flag(self.flag_name))
+
+    def sprite_name(self) -> str:
+        """Dark post, or one of the two flame frames."""
+        if not self.lit:
+            return "warp_unlit"
+        return f"warp_lit_{(self.frame // 10) % 2}"
+
+    def update(self, world: World) -> None:
+        """Light on first touch and remember the region."""
+        self.frame += 1
+        if self.lit:
+            return
+        if self.body_rect().inflate(6, 6).colliderect(world.hero.body_rect()):
+            self.lit = True
+            self.mark(world)
+            world.state.warps[self.region] = world.room.id
+            world.audio.play("secret")
+            world.say("warp.lit", after=None)
+            world.trigger("warp_lit", self.region)
+
+
 #: room object kind -> class
 KINDS: dict[str, Callable[[World, dict[str, Any]], RoomObject]] = {
     "chest": Chest, "sign": Sign, "npc": Npc, "door": Door, "torch": Torch,
     "switch": FloorSwitch, "crystal": Crystal, "block": PushBlock,
-    "stairs": Stairs, "reward": Reward,
+    "stairs": Stairs, "reward": Reward, "warp": WarpLantern,
 }
 
 

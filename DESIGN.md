@@ -127,3 +127,75 @@ different problem — one for milestone 8, where PROMPT.md asks for the
 balance pass and the 90-hour measurement. The tool already reports what it
 achieved from the save state rather than from goals it gave up on, so the
 number never flatters itself.
+
+---
+
+## Milestone 3 — The kingdom (plan)
+
+Goal: all 256 overworld screens, every region, day and night, the warp
+lanterns, every kind of item gate placed where it belongs, and Temples 2, 3
+and 4 with the Power Bracelet, the Bombs and Hookshot, and the Bow.
+
+### 3.1 Map sheets: how 256 hand-made screens get authored
+
+One JSON file per screen does not scale to 361 rooms, and it makes the
+screens drift apart: neighbouring doorways stop lining up and roads stop at
+the seam. So the overworld is painted as **one continuous canvas**:
+
+    data/overworld/eldermoor.map     208 lines x 320 characters
+                                     = 16 x 16 screens of 20 x 13 tiles
+
+Every tile is still placed by hand, one legend character at a time — but a
+road that leaves a screen is literally the same row of characters on the
+other side, so continuity is free and the whole kingdom can be read at once.
+`eldermoor/mapsheet.py` slices the canvas into rooms on demand:
+
+* a screen's id is `ow_<row><col>`, zero-padded (`ow_0713`);
+* exits are **derived**: a screen has an exit where its own edge and the
+  neighbour's facing edge are both walkable for at least two tiles, which
+  removes one-way exits and misaligned doorways by construction;
+* `data/overworld/sheet.json` carries the per-screen extras — region,
+  name, music, objects, triggers — and only for screens that need them.
+
+Dungeons use the same machinery: one canvas per floor
+(`data/dungeons/temple2/f1.map`), so a temple's rooms line up by
+construction too. The Ember Temple's existing 35 JSON rooms stay as they
+are; `Room.load` tries `data/rooms/<id>.json` first and falls back to the
+sheets.
+
+### 3.2 Regions
+Eight, each a palette swap of the shared tile sheet plus its own tileset
+entries, music, enemies and secrets:
+
+| region | where | gate that opens it |
+| --- | --- | --- |
+| Lamplight & meadows | south centre | none (start) |
+| Thornwood | west, rows 3-8 | sword (cut the thorns) |
+| Saltmarsh & coast | the whole south edge | Fins, later |
+| Mount Cinder | north-east | Fire Boots, later |
+| Frozen Tarn | north centre | Fire Boots melt the ice |
+| Sunken Fen | centre | Hookshot |
+| Hollow Desert | east, rows 4-11 | Power Bracelet |
+| Mistlands | north-west | the Lantern, very late |
+
+Every region is *visible* before it is enterable: the screen next door shows
+the thorns, the ice or the chasm first.
+
+### 3.3 Day and night
+An eight-minute clock in `GameState.minutes_of_day`. Night swaps the tile
+sheet for the `night` palette variant that already exists, changes which
+enemies spawn, and gates a handful of secrets. The clock stops indoors and
+in dungeons.
+
+### 3.4 Warp lanterns
+One per region, an object that lights on first touch, sets a flag and adds
+the region to the Select-screen warp list. Warping is chosen from the map
+screen with A.
+
+### 3.5 Temples 2-4
+Temple 2 "Bramble Hollow" (Thornwood) — Power Bracelet: lift rocks and pots,
+throw them. Temple 3 "Tidewrack" (Saltmarsh) — Bombs in the first half,
+Hookshot from the mini-boss. Temple 4 "The Long Glass" (Hollow Desert) —
+Bow: switches, eyes, flying enemies. Each is 35+ rooms on a map sheet, each
+with its own mini-boss, boss, map, compass, Great Key, heart container and
+Flame, and each validated by `tools/validate_data.py` exactly like Temple 1.

@@ -128,7 +128,7 @@ def test_audio_repeat_guard(tmp_path):
     assert audio.log.count("hit") == 2, "the log records every request"
 
 
-@pytest.mark.parametrize("room_id", ["village_00", "t1_01", "t1_31"])
+@pytest.mark.parametrize("room_id", ["glade", "t1_01", "t1_31"])
 def test_room_json_is_indented_and_parsable(room_id):
     raw = json.loads(Path(f"data/rooms/{room_id}.json").read_text())
     assert len(raw["tiles"]) == 13
