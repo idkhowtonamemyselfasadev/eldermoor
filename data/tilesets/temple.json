@@ -1,120 +1,128 @@
 {
-  "name": "temple",
-  "region": "cinder",
-  "tiles": {
-    "0": {
-      "char": ".",
-      "sprite": "t_floor",
-      "collision": "floor"
-    },
-    "1": {
-      "char": ",",
-      "sprite": "t_floor_tile",
-      "collision": "floor"
-    },
-    "2": {
-      "char": "M",
-      "sprite": "t_wall",
-      "collision": "solid"
-    },
-    "3": {
-      "char": "T",
-      "sprite": "t_wall_top",
-      "collision": "solid"
-    },
-    "4": {
-      "char": "P",
-      "sprite": "t_pillar",
-      "collision": "solid",
-      "hook": true
-    },
-    "5": {
-      "char": "Y",
-      "sprite": "t_statue",
-      "collision": "solid",
-      "hook": true
-    },
-    "6": {
-      "char": "0",
-      "sprite": "t_pit",
-      "collision": "pit"
-    },
-    "7": {
-      "char": "L",
-      "sprite": "t_lava",
-      "collision": "lava"
-    },
-    "8": {
-      "char": "w",
-      "sprite": "t_web",
-      "collision": "solid",
-      "interact": "burn",
-      "becomes": ".",
-      "drop": "web"
-    },
-    "9": {
-      "char": "u",
-      "sprite": "t_stairs_up",
-      "collision": "floor"
-    },
-    "10": {
-      "char": ">",
-      "sprite": "t_stairs_down",
-      "collision": "floor"
-    },
-    "11": {
-      "char": "X",
-      "sprite": "t_crack",
-      "collision": "bombable",
-      "interact": "bomb",
-      "becomes": ".",
-      "drop": "rock"
-    },
-    "12": {
-      "char": "R",
-      "sprite": "t_rubble",
-      "collision": "floor"
-    },
-    "13": {
-      "char": "~",
-      "sprite": "t_water",
-      "collision": "water"
-    },
-    "14": {
-      "char": "p",
-      "sprite": "t_plate",
-      "collision": "floor"
-    },
-    "15": {
-      "char": "o",
-      "sprite": "t_pot",
-      "collision": "solid",
-      "interact": "cut",
-      "becomes": ".",
-      "drop": "pot"
-    },
-    "16": {
-      "char": "b",
-      "sprite": "t_barrier_blue",
-      "collision": "solid"
-    },
-    "17": {
-      "char": "r",
-      "sprite": "t_barrier_red",
-      "collision": "floor"
-    },
-    "18": {
-      "char": "=",
-      "sprite": "path",
-      "collision": "floor"
-    },
-    "19": {
-      "char": "O",
-      "sprite": "rock",
-      "collision": "liftable",
-      "interact": "lift",
-      "becomes": ".",
-      "drop": "rock"
-    }
+ "name": "temple",
+ "region": "cinder",
+ "tiles": {
+  "0": {
+   "char": ".",
+   "sprite": "t_floor",
+   "collision": "floor"
+  },
+  "1": {
+   "char": ",",
+   "sprite": "t_floor_tile",
+   "collision": "floor"
+  },
+  "2": {
+   "char": "M",
+   "sprite": "t_wall",
+   "collision": "solid"
+  },
+  "3": {
+   "char": "T",
+   "sprite": "t_wall_top",
+   "collision": "solid"
+  },
+  "4": {
+   "char": "P",
+   "sprite": "t_pillar",
+   "collision": "solid",
+   "hook": true
+  },
+  "5": {
+   "char": "Y",
+   "sprite": "t_statue",
+   "collision": "solid",
+   "hook": true
+  },
+  "6": {
+   "char": "0",
+   "sprite": "t_pit",
+   "collision": "pit"
+  },
+  "7": {
+   "char": "L",
+   "sprite": "t_lava",
+   "collision": "lava"
+  },
+  "8": {
+   "char": "w",
+   "sprite": "t_web",
+   "collision": "solid",
+   "interact": "burn",
+   "becomes": ".",
+   "drop": "web"
+  },
+  "9": {
+   "char": "u",
+   "sprite": "t_stairs_up",
+   "collision": "floor"
+  },
+  "10": {
+   "char": ">",
+   "sprite": "t_stairs_down",
+   "collision": "floor"
+  },
+  "11": {
+   "char": "X",
+   "sprite": "t_crack",
+   "collision": "bombable",
+   "interact": "bomb",
+   "becomes": ".",
+   "drop": "rock"
+  },
+  "12": {
+   "char": "R",
+   "sprite": "t_rubble",
+   "collision": "floor"
+  },
+  "13": {
+   "char": "~",
+   "sprite": "t_water",
+   "collision": "water"
+  },
+  "14": {
+   "char": "p",
+   "sprite": "t_plate",
+   "collision": "floor"
+  },
+  "15": {
+   "char": "o",
+   "sprite": "t_pot",
+   "collision": "solid",
+   "interact": "cut",
+   "becomes": ".",
+   "drop": "pot"
+  },
+  "16": {
+   "char": "b",
+   "sprite": "t_barrier_blue",
+   "collision": "solid"
+  },
+  "17": {
+   "char": "r",
+   "sprite": "t_barrier_red",
+   "collision": "floor"
+  },
+  "18": {
+   "char": "=",
+   "sprite": "path",
+   "collision": "floor"
+  },
+  "19": {
+   "char": "O",
+   "sprite": "rock",
+   "collision": "liftable",
+   "interact": "lift",
+   "becomes": ".",
+   "drop": "rock"
+  },
+  "20": {
+   "char": "J",
+   "sprite": "t_ice",
+   "collision": "solid",
+   "interact": "melt",
+   "becomes": ".",
+   "drop": "none"
   }
+ }
 }

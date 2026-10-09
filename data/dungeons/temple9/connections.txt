@@ -1,0 +1,13 @@
+# The Great Lantern, 4 x 4 rooms. The last climb: no keys, only the eight
+# Flames and whatever you have learned to do with them.
+[east]
+.e.
+ee.
+.ee
+e.e
+[south]
+ss.s
+.sss
+ss.s
+[entrance]
+3,2

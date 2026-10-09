@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 import pygame
 
 from eldermoor.config import (
+    CLOAK_SPEED_FACTOR,
     HERO_IDLE_FRAME_TIME,
     HERO_INVULN_FRAMES,
     HERO_KNOCKBACK_SPEED,
@@ -19,6 +20,7 @@ from eldermoor.config import (
     SHIELD_SPEED_FACTOR,
     SPIN_CHARGE_FRAMES,
     SPIN_FRAMES,
+    SWIM_SPEED_FACTOR,
     SWING_FRAME_TIME,
     SWING_FRAMES,
     SWING_TOTAL,
@@ -79,6 +81,8 @@ class Hero(Entity):
         self.carrying: str | None = None
         self.carry_drop = ""
         self.hooking = False
+        self.cloaked = False
+        self.swimming = False
 
     # ----- queries used by the rest of the game --------------------------
     @property
@@ -123,6 +127,8 @@ class Hero(Entity):
             self.block_cooldown -= 1
         # the shield answers the button even while being shoved around
         self.shielding = world.input.is_held("l") and world.state.shield_level > 0
+        self.swimming = world.in_water(self)
+        self.cloaked = self._cloak_held(world)
         if self.step_knockback(world):
             return
         if self.roll_timer > 0:
@@ -137,6 +143,15 @@ class Hero(Entity):
         self._read_actions(world)
         if not self.busy:
             self._walk(world)
+
+    def _cloak_held(self, world: World) -> bool:
+        """True while the Mirror Cloak's button is down and the cloak is owned."""
+        if not world.state.has("mirror_cloak"):
+            return False
+        slots = world.state.slots
+        if "mirror_cloak" not in slots:
+            return False
+        return world.input.is_held(("b", "x", "y")[slots.index("mirror_cloak")])
 
     def _read_actions(self, world: World) -> None:
         inp = world.input
@@ -174,6 +189,10 @@ class Hero(Entity):
             speed = HERO_SPEED * (DIAG if dx and dy else 1.0)
             if self.shielding:
                 speed *= SHIELD_SPEED_FACTOR
+            if self.swimming:
+                speed *= SWIM_SPEED_FACTOR
+            if self.cloaked:
+                speed *= CLOAK_SPEED_FACTOR
             self.move(world, dx * speed, dy * speed)
             self.anim_timer += 1
             if self.anim_timer >= HERO_WALK_FRAME_TIME:
@@ -190,8 +209,8 @@ class Hero(Entity):
 
     # ----- sword ---------------------------------------------------------
     def start_swing(self, world: World | None = None) -> None:
-        """Begin a sword swing (ignored if one is in progress)."""
-        if self.swinging or self.spinning:
+        """Begin a sword swing (ignored if one is in progress, or while swimming)."""
+        if self.swinging or self.spinning or self.swimming or self.carrying is not None:
             return
         self.swinging = True
         self.swing_timer = 0
@@ -349,6 +368,8 @@ class Hero(Entity):
         """Draw hero, shield and sword; the sword goes behind the hero when facing up."""
         if self.invuln > 0 and (self.invuln // 3) % 2 == 1:
             return
+        if self.cloaked and (self.frame // 4) % 2 == 0:
+            return                       # the cloak blinks him half out of the world
         oy -= self.hop_height
         if self.carrying is not None and assets.sprites.has(self.carrying):
             target.blit(assets.sprites.get(self.carrying),

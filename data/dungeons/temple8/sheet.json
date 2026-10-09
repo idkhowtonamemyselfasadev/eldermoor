@@ -1,0 +1,458 @@
+{
+ "prefix": "t8",
+ "tileset": "temple",
+ "region": "mistlands",
+ "dungeon": "temple8",
+ "music": "temple_ember",
+ "id_layer": true,
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 6,
+   "cols": 6,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "mistlands": {
+   "types": [
+    "crag",
+    "wisp",
+    "burrow"
+   ],
+   "count": 2
+  }
+ },
+ "screens": {
+  "t8_f1_0502": {
+   "name": "The Giant's Door",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_0102",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_0102",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.temple8.enter"
+      }
+     ],
+     "flag": "t8_seen"
+    }
+   ]
+  },
+  "t8_f1_0300": {
+   "name": "Stonejaw",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t8_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t8_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      5
+     ],
+     "type": "stonejaw"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t8_miniboss",
+     "do": [
+      {
+       "shake": 24
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         4
+        ],
+        "item": "gauntlet",
+        "flag": "t8_chest_item"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "t8_f1_0000": {
+   "name": "The Titan Maw",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "big",
+     "flag": "t8_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "big",
+     "flag": "t8_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      8,
+      4
+     ],
+     "type": "titanmaw"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t8_boss",
+     "do": [
+      {
+       "shake": 40
+      },
+      {
+       "open": "*"
+      },
+      {
+       "spawn": {
+        "kind": "reward",
+        "at": [
+         9,
+         7
+        ],
+        "what": "flame",
+        "dungeon": "temple8",
+        "item": "flame_mist",
+        "flag": "flame:temple8"
+       }
+      }
+     ]
+    }
+   ],
+   "music": "boss"
+  },
+  "t8_f1_0403": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t8_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t8_door_a",
+     "id": "a"
+    }
+   ]
+  },
+  "t8_f1_0303": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t8_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t8_door_a",
+     "id": "a"
+    }
+   ]
+  },
+  "t8_f1_0201": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      18,
+      6
+     ],
+     "lock": "small",
+     "flag": "t8_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      18,
+      7
+     ],
+     "lock": "small",
+     "flag": "t8_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "t8_f1_0202": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      1,
+      6
+     ],
+     "lock": "small",
+     "flag": "t8_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      1,
+      7
+     ],
+     "lock": "small",
+     "flag": "t8_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "t8_f1_0400": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t8_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t8_door_c",
+     "id": "c"
+    }
+   ]
+  },
+  "t8_f1_0100": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "big",
+     "flag": "t8_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "big",
+     "flag": "t8_door_boss",
+     "id": "bk"
+    }
+   ]
+  },
+  "t8_f1_0402": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "map",
+     "flag": "t8_chest_map"
+    }
+   ]
+  },
+  "t8_f1_0304": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "compass",
+     "flag": "t8_chest_compass"
+    }
+   ]
+  },
+  "t8_f1_0005": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "bigkey",
+     "flag": "t8_chest_bigkey"
+    }
+   ]
+  },
+  "t8_f1_0503": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t8_key1"
+    }
+   ]
+  },
+  "t8_f1_0404": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t8_key2"
+    }
+   ]
+  },
+  "t8_f1_0204": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t8_key3"
+    }
+   ]
+  },
+  "t8_f1_0302": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t8_key4"
+    }
+   ]
+  },
+  "t8_f1_0205": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "whistle",
+     "flag": "t8_chest_whistle"
+    }
+   ]
+  },
+  "t8_f1_0500": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:t8_secret"
+    }
+   ]
+  },
+  "t8_f1_0505": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "shell",
+     "flag": "shell:t8_55"
+    }
+   ]
+  }
+ }
+}

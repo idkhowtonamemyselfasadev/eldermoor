@@ -4,7 +4,8 @@
 Checks, in order:
 
 * every room loads, is 20x13 and uses legend characters its tileset defines;
-* every exit is reciprocal and its doorway is at least two tiles wide;
+* every exit is reciprocal and its doorway is at least two tiles wide
+  (water, lava and pits count: gear is the gate, not the wall);
 * every sprite, icon, tile, enemy, item and text key a room names exists;
 * every enemy attack has a wind-up of at least ENEMY_TELEGRAPH_MIN frames;
 * every dialogue line fits the three-line box without being cut off;
@@ -29,12 +30,14 @@ from eldermoor.config import ENEMY_TELEGRAPH_MIN, PLAY_COLS, PLAY_ROWS  # noqa: 
 from eldermoor.content import Content  # noqa: E402
 from eldermoor.objects import KINDS  # noqa: E402
 from eldermoor.textbox import DIALOGUE_COLS, paginate  # noqa: E402
-from eldermoor.tilemap import BLOCKING, Collision, Room, Tileset, list_rooms  # noqa: E402
+from eldermoor.tilemap import BLOCKING, SEALED, Collision, Room, Tileset, list_rooms  # noqa: E402
 
 #: which held item clears which tile interaction
-TOOL_FOR = {"cut": "sword", "burn": "lantern", "bomb": "bombs", "lift": "bracelet", "smash": "sword"}
+TOOL_FOR = {"cut": "sword", "burn": "lantern", "bomb": "bombs", "lift": "bracelet",
+            "smash": "sword", "melt": "fire_boots"}
 #: collision classes a held item lets you cross
-CROSS_WITH = {Collision.PIT: "feather", Collision.WATER: "fins", Collision.LAVA: "fire_boots"}
+CROSS_WITH = {Collision.PIT: "feather", Collision.WATER: "fins",
+              Collision.LAVA: "fire_boots"}
 EDGE_CELLS = {
     "north": [(c, 0) for c in range(PLAY_COLS)],
     "south": [(c, PLAY_ROWS - 1) for c in range(PLAY_COLS)],
@@ -89,13 +92,13 @@ def _check_exits(report: Report, rooms: dict[str, Room], room_id: str, room: Roo
         if rooms[target].exits.get(opposite[direction]) != room_id:
             report.fail(f"{room_id}: exit {direction} to {target} is one-way")
         gaps = [cell for cell in EDGE_CELLS[direction]
-                if room.collision_at(*cell) not in BLOCKING]
+                if room.collision_at(*cell) not in SEALED]
         if len(gaps) < 2:
             report.fail(f"{room_id}: {direction} doorway is {len(gaps)} tile(s) wide, want 2")
         other = rooms[target]
         back = opposite[direction]
         theirs = [cell for cell in EDGE_CELLS[back]
-                  if other.collision_at(*cell) not in BLOCKING]
+                  if other.collision_at(*cell) not in SEALED]
         axis = 0 if direction in ("north", "south") else 1
         if gaps and theirs and not {c[axis] for c in gaps} & {c[axis] for c in theirs}:
             report.fail(f"{room_id}: {direction} doorway does not line up with {target}")
@@ -388,12 +391,12 @@ def check_dungeons(report: Report, content: Content, rooms: dict[str, Room]) -> 
             report.fail(f"{dungeon.id}: unreachable rooms {unreached}")
         if dungeon.boss_room not in run.reached:
             report.fail(f"{dungeon.id}: boss room {dungeon.boss_room} cannot be reached")
-        if "flame" not in run.items:
+        if dungeon.flame and "flame" not in run.items:
             report.fail(f"{dungeon.id}: the Flame cannot be taken")
         for needed in ("map", "compass", dungeon.item):
             if needed and needed not in run.items:
                 report.fail(f"{dungeon.id}: {needed} cannot be collected")
-        if not run.big_key:
+        if dungeon.small_keys and not run.big_key:
             report.fail(f"{dungeon.id}: the Great Key cannot be collected")
         keys, doors = _count_keys_and_doors(rooms, ids)
         if keys < doors:

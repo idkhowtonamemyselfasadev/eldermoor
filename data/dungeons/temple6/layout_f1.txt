@@ -1,0 +1,8 @@
+# temple6, 6 x 6 rooms, planned by tools/plan_dungeon.py
+# from connections.txt and motifs.txt. Every room is reachable.
+r_s+m_pillars r_e+m_statues r_sew+m_pots r_sew+m_tiles r_w+m_rubble r_s+m_statues
+r_nse+m_pit r_sew+m_water r_nw+m_webs r_nse+m_plates r_sew+m_lavaflow_ew r_nsw+m_statues
+r_n+m_pillars r_nse+m_tiles r_sew+m_rubble r_nsew+m_pits r_new+m_pit r_nsw+m_water
+r_se+m_webs r_nsew+m_plates r_nw+m_pillars r_nse+m_statues r_sew+m_lavaflow_ns r_nsw+m_tiles
+r_nse+m_rubble r_nsew+m_pits r_sew+m_pit r_nsew+m_water r_nsew+m_lava r_nsw+m_plates
+r_n+m_pillars r_ne+m_statues r_new+m_statues r_nw+m_tiles r_ne+m_rubble r_nw+m_pits

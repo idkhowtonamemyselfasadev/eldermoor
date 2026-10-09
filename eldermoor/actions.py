@@ -61,6 +61,9 @@ def try_interact(world: World, hero: Hero) -> bool:
             continue
         if ent.body_rect().colliderect(front):
             if isinstance(ent, PushBlock):
+                if ent.heavy and not world.state.has("gauntlet"):
+                    world.audio.play("error")
+                    return True
                 dx, dy = DIRS[hero.facing]
                 return ent.push(world, dx, dy)
             if ent.interact(world):
@@ -80,6 +83,12 @@ def use_item(world: World, hero: Hero, item: str | None) -> None:
         fire_hookshot(world, hero)
     elif item == "bow":
         shoot_arrow(world, hero)
+    elif item == "mirror_cloak":
+        pass                       # the cloak works while its button is held
+    elif item == "whistle":
+        world.blow_whistle()
+    elif item == "fire_boots":
+        _melt_ice(world, hero)
     elif item == "feather":
         hero.hop()
         world.audio.play("jump")
@@ -100,6 +109,12 @@ def _use_lantern(world: World, hero: Hero) -> None:
     for ent in world.entities:
         if isinstance(ent, Torch) and ent.body_rect().colliderect(front):
             ent.light(world)
+
+
+def _melt_ice(world: World, hero: Hero) -> None:
+    """The Cinderstep Boots take the ice out of a doorway."""
+    if world.hit_tiles(hero.front_rect(), "melt"):
+        world.audio.play("burn")
 
 
 def _use_bottle(world: World, item: str) -> None:

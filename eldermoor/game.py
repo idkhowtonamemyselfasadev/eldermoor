@@ -11,6 +11,7 @@ from eldermoor.audio import Audio
 from eldermoor.config import CANVAS_H, CANVAS_W, DT
 from eldermoor.content import Content
 from eldermoor.debug import DebugOverlay
+from eldermoor.ending import Ending
 from eldermoor.hud import Hud
 from eldermoor.input import Input
 from eldermoor.menu import FileSelect, PauseMenu
@@ -42,6 +43,7 @@ class Game:
         self.debug = DebugOverlay(self.assets)
         self.pause: PauseMenu | None = None
         self.shop: Shop | None = None
+        self.ending: Ending | None = None
         self.file_select: FileSelect | None = None
         if file_select:
             self.file_select = FileSelect(self.assets, self.content,
@@ -58,6 +60,8 @@ class Game:
         """Which screen is on top."""
         if self.file_select is not None:
             return "file"
+        if self.ending is not None:
+            return "ending"
         if self.shop is not None:
             return "shop"
         if self.pause is not None:
@@ -106,6 +110,13 @@ class Game:
             self.shop = Shop(self.world, list(spec.get("shop", [])),
                              str(spec.get("greeting", "shop.hello")))
             self.audio.play("menu_select")
+        if self.world.pending_warp_menu:
+            self.world.pending_warp_menu = False
+            self._open_pause(2)
+            return
+        if self.world.pending_ending:
+            self._start_ending(self.world.pending_ending)
+            return
         if self.world.room.id != self._last_room:
             self._last_room = self.world.room.id
             self.autosave()
@@ -130,6 +141,23 @@ class Game:
             target, menu.want_warp = menu.want_warp, ""
             self.pause = None
             self.world.warp(target)
+
+    # ----- ending --------------------------------------------------------
+    def _start_ending(self, which: str) -> None:
+        """Hand the screen over to the credits and bank the finished run."""
+        self.world.pending_ending = ""
+        self.state.set_flag("cleared", 1)
+        self.state.set_flag("ending", 2 if which == "full" else 1)
+        self.save()
+        self.ending = Ending(self.assets, self.content, self.state, self.audio, which)
+
+    def _update_ending(self) -> None:
+        if self.ending is None or not self.ending.update(self.input):
+            return
+        self.ending = None
+        self.audio.play_music("title")
+        self.file_select = FileSelect(self.assets, self.content,
+                                      savefile.all_summaries(), self.audio)
 
     def _update_shop(self) -> None:
         if self.shop is not None and self.shop.update(self.input) == "close":
@@ -162,6 +190,9 @@ class Game:
         canvas.fill(self.assets.colour("ink"), pygame.Rect(0, 0, CANVAS_W, CANVAS_H))
         if self.file_select is not None:
             self.file_select.draw(canvas)
+            return
+        if self.ending is not None:
+            self.ending.draw(canvas)
             return
         if self.shop is not None:
             self.shop.draw(canvas)

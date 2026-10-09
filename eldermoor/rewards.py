@@ -78,6 +78,8 @@ def take_reward(world: World, what: str, spec: dict[str, Any]) -> None:
         progress = state.progress(dungeon_id)
         progress.flame = True
         progress.cleared = True
+        if len([d for d in state.dungeons.values() if d.flame]) >= 8:
+            state.set_flag("flames8")
         state.give(str(spec.get("item", "flame_ember")))
         world.audio.play("flame_get")
         world.say(f"get.flame.{dungeon_id}", after=world.leave_dungeon)

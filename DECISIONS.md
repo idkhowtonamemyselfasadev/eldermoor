@@ -147,7 +147,25 @@ Decisions made without asking, with the reason. Newest at the bottom.
     and the engine tests use it because it is walled, quiet and unchanging.
 38. **The Hookshot stops a tile short of its anchor**, because the anchor is
     a pillar and standing inside one is not an option.
-39. **Fins, Fire Boots, the Mirror Cloak and the Titan Gauntlet are not in
-    the game yet, but their gates are.** Water, lava, ice and the heavy
-    blocks are already painted where they belong, which is what PROMPT.md
-    asks for: every region is seen before it can be entered.
+39. **Fins, Fire Boots, the Mirror Cloak and the Titan Gauntlet had their
+    gates before they existed.** Water, lava, ice and the heavy blocks were
+    painted where they belong in milestone 3, which is what PROMPT.md asks
+    for: every region is seen before it can be entered. Milestone 4 only
+    had to hand over the relics.
+40. **A doorway is an exit unless solid rock stands in it.** Deriving exits
+    from walkability alone sealed every flooded or burning hall off from
+    its neighbours, because the doorway tile itself was water. Water, lava,
+    pits, cracked walls and blocks now join two screens and the relic is
+    the gate — which is also what the game already did inside a room.
+41. **The final temple is gated by the Flames, not by a key.** The door on
+    `ow_0906` has eight sockets; the stairs only exist once `flames8` is
+    set. A sign says so either way, because a door that does nothing is a
+    bug report waiting to be filed.
+42. **The ending is a screen, not a cutscene room.** `world.pending_ending`
+    hands the canvas to `eldermoor/ending.py`, which owns its pages and
+    the crawl. The run is saved *before* the credits start, so quitting
+    halfway through them still leaves a finished file.
+43. **Which ending you get is read off `state.completion()`**, at 95 % or
+    better, rather than from a flag set by a side quest. One number already
+    counts everything the post-game cares about; a second bookkeeping path
+    would only drift from it.

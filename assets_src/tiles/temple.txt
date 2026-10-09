@@ -243,6 +243,24 @@ kkkmmkkkkkkkkkkk
 kkkkkkkkkkkkkkkk
 kkkkkkkkkkmmkkkk
 kkkkkkkkkkkkkkkk
+@t_ice 16 16
+m6mmmmmmmmmmmm6m
+6mmmmm6mmmm6mmmm
+mmmm6mmmmmmmmmmm
+mmmmmmmmm6mmmm6m
+mmm6mmmmmmmmmmmm
+mmmmmmmmmmm6mmmm
+m6mmmm6mmmmmmmmm
+mmmmmmmmmmmmm6mm
+mmmmm6mmmmmmmmmm
+mm6mmmmmmm6mmmmm
+mmmmmmm6mmmmmm6m
+mmmmmmmmmmmmmmmm
+m6mmmm6mmmm6mmmm
+mmmmmmmmmmmmmmmm
+mmmm6mmmmm6mmmm6
+6mmmmmmmmmmmmmmm
+
 @t_plate 16 16
 3333333333333333
 3000000000000003

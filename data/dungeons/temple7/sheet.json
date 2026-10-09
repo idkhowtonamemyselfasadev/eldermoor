@@ -1,0 +1,445 @@
+{
+ "prefix": "t7",
+ "tileset": "temple",
+ "region": "tarn",
+ "dungeon": "temple7",
+ "music": "temple_ember",
+ "id_layer": true,
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 6,
+   "cols": 6,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "tarn": {
+   "types": [
+    "wisp",
+    "crag",
+    "spitter"
+   ],
+   "count": 2
+  }
+ },
+ "screens": {
+  "t7_f1_0502": {
+   "name": "The Glass Door",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_0107",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_0107",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.temple7.enter"
+      }
+     ],
+     "flag": "t7_seen"
+    }
+   ]
+  },
+  "t7_f1_0100": {
+   "name": "Frostjaw",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t7_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t7_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      5
+     ],
+     "type": "frostjaw"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t7_miniboss",
+     "do": [
+      {
+       "shake": 24
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         4
+        ],
+        "item": "mirror_cloak",
+        "flag": "t7_chest_item"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "t7_f1_0005": {
+   "name": "The Glass King",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "big",
+     "flag": "t7_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "big",
+     "flag": "t7_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      8,
+      4
+     ],
+     "type": "glassking"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t7_boss",
+     "do": [
+      {
+       "shake": 40
+      },
+      {
+       "open": "*"
+      },
+      {
+       "spawn": {
+        "kind": "reward",
+        "at": [
+         9,
+         7
+        ],
+        "what": "flame",
+        "dungeon": "temple7",
+        "item": "flame_fen",
+        "flag": "flame:temple7"
+       }
+      }
+     ]
+    }
+   ],
+   "music": "boss"
+  },
+  "t7_f1_0203": {
+   "name": "The Watching Walk"
+  },
+  "t7_f1_0204": {
+   "name": "The Long Mirror",
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t7_key3"
+    }
+   ]
+  },
+  "t7_f1_0403": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t7_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t7_door_a",
+     "id": "a"
+    }
+   ]
+  },
+  "t7_f1_0303": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t7_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t7_door_a",
+     "id": "a"
+    }
+   ]
+  },
+  "t7_f1_0201": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      18,
+      6
+     ],
+     "lock": "small",
+     "flag": "t7_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      18,
+      7
+     ],
+     "lock": "small",
+     "flag": "t7_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "t7_f1_0202": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      1,
+      6
+     ],
+     "lock": "small",
+     "flag": "t7_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      1,
+      7
+     ],
+     "lock": "small",
+     "flag": "t7_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "t7_f1_0000": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t7_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t7_door_c",
+     "id": "c"
+    }
+   ]
+  },
+  "t7_f1_0105": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "big",
+     "flag": "t7_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "big",
+     "flag": "t7_door_boss",
+     "id": "bk"
+    }
+   ]
+  },
+  "t7_f1_0402": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "map",
+     "flag": "t7_chest_map"
+    }
+   ]
+  },
+  "t7_f1_0304": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "compass",
+     "flag": "t7_chest_compass"
+    }
+   ]
+  },
+  "t7_f1_0002": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "bigkey",
+     "flag": "t7_chest_bigkey"
+    }
+   ]
+  },
+  "t7_f1_0501": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t7_key1"
+    }
+   ]
+  },
+  "t7_f1_0404": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t7_key2"
+    }
+   ]
+  },
+  "t7_f1_0302": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t7_key4"
+    }
+   ]
+  },
+  "t7_f1_0505": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:t7_secret"
+    },
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "shell",
+     "flag": "shell:t7_55"
+    }
+   ]
+  }
+ }
+}

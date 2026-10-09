@@ -1,0 +1,445 @@
+{
+ "prefix": "t6",
+ "tileset": "temple",
+ "region": "cinder",
+ "dungeon": "temple6",
+ "music": "temple_ember",
+ "id_layer": true,
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 6,
+   "cols": 6,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "cinder": {
+   "types": [
+    "mote",
+    "spitter",
+    "crag"
+   ],
+   "count": 2
+  }
+ },
+ "screens": {
+  "t6_f1_0502": {
+   "name": "The Kiln Door",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_0212",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_0212",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.temple6.enter"
+      }
+     ],
+     "flag": "t6_seen"
+    }
+   ]
+  },
+  "t6_f1_0200": {
+   "name": "Slagjaw",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t6_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t6_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      5
+     ],
+     "type": "slagjaw"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t6_miniboss",
+     "do": [
+      {
+       "shake": 24
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         4
+        ],
+        "item": "fire_boots",
+        "flag": "t6_chest_item"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "t6_f1_0005": {
+   "name": "The Kiln Maw",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "big",
+     "flag": "t6_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "big",
+     "flag": "t6_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      8,
+      4
+     ],
+     "type": "kilnmaw"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t6_boss",
+     "do": [
+      {
+       "shake": 40
+      },
+      {
+       "open": "*"
+      },
+      {
+       "spawn": {
+        "kind": "reward",
+        "at": [
+         9,
+         7
+        ],
+        "what": "flame",
+        "dungeon": "temple6",
+        "item": "flame_cinder",
+        "flag": "flame:temple6"
+       }
+      }
+     ]
+    }
+   ],
+   "music": "boss"
+  },
+  "t6_f1_0401": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t6_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t6_door_a",
+     "id": "a"
+    }
+   ]
+  },
+  "t6_f1_0301": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t6_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t6_door_a",
+     "id": "a"
+    }
+   ]
+  },
+  "t6_f1_0303": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t6_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t6_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "t6_f1_0203": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t6_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t6_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "t6_f1_0100": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t6_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t6_door_c",
+     "id": "c"
+    }
+   ]
+  },
+  "t6_f1_0105": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "big",
+     "flag": "t6_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "big",
+     "flag": "t6_door_boss",
+     "id": "bk"
+    }
+   ]
+  },
+  "t6_f1_0402": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "map",
+     "flag": "t6_chest_map"
+    }
+   ]
+  },
+  "t6_f1_0304": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "compass",
+     "flag": "t6_chest_compass"
+    }
+   ]
+  },
+  "t6_f1_0004": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "bigkey",
+     "flag": "t6_chest_bigkey"
+    }
+   ]
+  },
+  "t6_f1_0503": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t6_key1"
+    }
+   ]
+  },
+  "t6_f1_0404": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t6_key2"
+    }
+   ]
+  },
+  "t6_f1_0204": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t6_key3"
+    }
+   ]
+  },
+  "t6_f1_0302": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t6_key4"
+    }
+   ]
+  },
+  "t6_f1_0500": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:t6_secret"
+    }
+   ]
+  },
+  "t6_f1_0505": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "shell",
+     "flag": "shell:t6_55"
+    }
+   ]
+  }
+ }
+}

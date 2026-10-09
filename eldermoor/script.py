@@ -25,6 +25,12 @@ def _matches(world: World, trigger: dict[str, Any], event: str, value: Any) -> b
     """True if this trigger fires for the event."""
     if trigger.get("on") != event:
         return False
+    need = trigger.get("if_flag")
+    if need and not world.state.flag(str(need)):
+        return False
+    unless = trigger.get("unless_flag")
+    if unless and world.state.flag(str(unless)):
+        return False
     if "id" in trigger and str(trigger["id"]) != str(value):
         return False
     if event == "torches_lit":
@@ -118,6 +124,11 @@ def _stun_boss(world: World, state: Any) -> None:
     world.stun_boss(str(state) if state else "stunned")
 
 
+def _ending(world: World, which: Any) -> None:
+    """Roll the credits."""
+    world.pending_ending = str(which)
+
+
 def _warp(world: World, spec: Any) -> None:
     """Move the hero to another room: [room_id] or [room_id, x, y]."""
     if isinstance(spec, str):
@@ -129,5 +140,5 @@ def _warp(world: World, spec: Any) -> None:
 ACTIONS = {
     "open": _open, "reveal": _reveal, "spawn": _spawn, "jingle": _jingle,
     "set_flag": _set_flag, "clear_flag": _clear_flag, "say": _say, "give": _give,
-    "shake": _shake, "stun_boss": _stun_boss, "warp": _warp,
+    "shake": _shake, "stun_boss": _stun_boss, "warp": _warp, "ending": _ending,
 }

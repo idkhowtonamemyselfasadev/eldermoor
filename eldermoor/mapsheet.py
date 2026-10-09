@@ -20,9 +20,9 @@ from pathlib import Path
 from typing import Any
 
 from eldermoor.config import DATA, PLAY_COLS, PLAY_ROWS
-from eldermoor.tilemap import BLOCKING, OPPOSITE, Room, Tileset
+from eldermoor.tilemap import BLOCKING, OPPOSITE, SEALED, Room, Tileset
 
-#: a doorway needs this many walkable tiles on both sides to count as an exit
+#: a doorway needs this many unsealed tiles on both sides to count as an exit
 DOORWAY_MIN = 2
 EDGE_INDEX = {"north": 0, "south": PLAY_ROWS - 1, "west": 0, "east": PLAY_COLS - 1}
 
@@ -134,7 +134,7 @@ class MapSheet:
 
     # ----- rooms ---------------------------------------------------------
     def exits(self, layer: SheetLayer, row: int, col: int, ts: Tileset) -> dict[str, str]:
-        """Exits derived from both sides of each edge being walkable."""
+        """Exits derived from both sides of each edge being clear of solid rock."""
         here = self.block(layer, row, col)
         out: dict[str, str] = {}
         for direction, (dr, dc) in (("north", (-1, 0)), ("south", (1, 0)),
@@ -154,17 +154,21 @@ class MapSheet:
 
     @staticmethod
     def _edge_open(block: list[str], direction: str, ts: Tileset) -> set[int]:
-        """Indexes along one edge whose tile can be walked on."""
+        """Indexes along one edge whose tile is not solid rock.
+
+        Water, lava and pits count: the hero crosses them once the right gear
+        is in the bag, so the screens are joined and the gear is the gate.
+        """
         open_at: set[int] = set()
         if direction in ("north", "south"):
             line = block[EDGE_INDEX[direction]]
             for c, ch in enumerate(line):
-                if ts.tiles[ts.legend[ch]].collision not in BLOCKING:
+                if ts.tiles[ts.legend[ch]].collision not in SEALED:
                     open_at.add(c)
         else:
             index = EDGE_INDEX[direction]
             for r, line in enumerate(block):
-                if ts.tiles[ts.legend[line[index]]].collision not in BLOCKING:
+                if ts.tiles[ts.legend[line[index]]].collision not in SEALED:
                     open_at.add(r)
         return open_at
 

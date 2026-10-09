@@ -138,6 +138,11 @@ CAST = [
     ("thornjaw", "hollowking", "g", "i", "h"),
     ("brinejaw", "tideclaw", "j", "u", "m"),
     ("sandjaw", "glassmaw", "8", "f", "p"),
+    ("weedjaw", "drownking", "t", "u", "i"),
+    ("slagjaw", "kilnmaw", "c", "e", "d"),
+    ("frostjaw", "glassking", "k", "m", "6"),
+    ("stonejaw", "titanmaw", "3", "5", "v"),
+    ("mistjaw", "thequiet", "2", "v", "5"),
 ]
 
 

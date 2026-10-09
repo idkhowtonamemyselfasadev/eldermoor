@@ -7,14 +7,14 @@ from typing import TYPE_CHECKING, Any
 
 import pygame
 
-from eldermoor import actions, rewards
+from eldermoor import actions, render, rewards
 from eldermoor.bosses import Boss
 from eldermoor.config import PLAY_H, PLAY_W, PLAY_Y, TEXT_SPEED_DEFAULT, TILE
 from eldermoor.content import Content
 from eldermoor.enemies import Enemy, Projectile
 from eldermoor.entities import Entity
 from eldermoor.hero import Hero
-from eldermoor.objects import Door, Torch, build
+from eldermoor.objects import Door, build
 from eldermoor.pickups import Pickup, spawn_drop
 from eldermoor.script import fire
 from eldermoor.state import GameState
@@ -56,6 +56,8 @@ class World:
         self.dialogue: TextBox | None = None
         self.dialogue_after: Any = None
         self.pending_shop: dict[str, Any] | None = None
+        self.pending_warp_menu = False
+        self.pending_ending = ""
         self.shake_timer = 0
         self.boss: Boss | None = None
         self._room_surface: pygame.Surface | None = None
@@ -271,9 +273,24 @@ class World:
         """Living enemies in the room."""
         return [e for e in self.entities if isinstance(e, Enemy) and e.alive]
 
+    def hero_passable(self) -> frozenset[Collision]:
+        """Tile classes Wren can enter, given what he has found.
+
+        The Fins make water swimmable, the Fire Boots make lava walkable for
+        as long as they hold out, and the Feather carries him over a pit.
+        """
+        allowed: set[Collision] = set()
+        if self.state.has("fins"):
+            allowed.add(Collision.WATER)
+        if self.state.has("fire_boots"):
+            allowed.add(Collision.LAVA)
+        if self.hero.airborne or self.hero.hooking:
+            allowed |= set(HOPPABLE)
+        return frozenset(allowed)
+
     def blocked(self, rect: pygame.Rect, ignore: Entity | None = None) -> bool:
         """True if a rect hits a blocking tile or a solid entity."""
-        passable = HOPPABLE if (ignore is self.hero and self.hero.airborne) else frozenset()
+        passable = self.hero_passable() if ignore is self.hero else frozenset()
         if self.room.blocked(rect, passable):
             return True
         for ent in self.entities:
@@ -300,6 +317,12 @@ class World:
         self.audio.play("shoot")
         return self.spawn(shot)
 
+    def in_water(self, entity: Entity) -> bool:
+        """True when an entity is standing in water (swimming, if it can)."""
+        rect = entity.body_rect()
+        return self.room.collision_at(rect.centerx // TILE,
+                                      rect.centery // TILE) is Collision.WATER
+
     def shake(self, frames: int = 12) -> None:
         """Shake the screen for a few frames."""
         self.shake_timer = max(self.shake_timer, frames)
@@ -319,6 +342,14 @@ class World:
         self.dialogue = TextBox(pages, self.text_speed, choice)
         self.dialogue_after = after
         return self.dialogue
+
+    def blow_whistle(self) -> None:
+        """The Whistle of Winds opens the warp list wherever you stand."""
+        if not self.state.warps:
+            self.say("whistle.nowarp")
+            return
+        self.audio.play("warp")
+        self.pending_warp_menu = True
 
     def request_shop(self, spec: dict[str, Any]) -> None:
         """Ask the game to open a shop screen after this conversation."""
@@ -405,7 +436,7 @@ class World:
             self.boss.stun(self, state)
 
     def on_hero_death(self) -> None:
-        """Zelda rules: back to the dungeon entrance or the village, items kept."""
+        """The old rules: back to the dungeon entrance or the village, items kept."""
         state = self.state
         state.deaths += 1
         state.health = state.max_hearts * 2
@@ -440,6 +471,10 @@ class World:
         if hero.airborne or hero.invulnerable:
             return
         hazard = self.room.hazard_at(hero.body_rect())
+        if hazard is Collision.LAVA and self.state.has("fire_boots"):
+            return
+        if hazard is Collision.PIT and hero.hooking:
+            return
         if hazard is None:
             if not self.room.blocked(hero.body_rect()):
                 self.last_safe = (hero.x, hero.y)
@@ -527,42 +562,8 @@ class World:
     @property
     def shake_offset(self) -> tuple[int, int]:
         """Screen-shake offset for this frame."""
-        if self.shake_timer <= 0:
-            return 0, 0
-        return (self.shake_timer % 3) - 1, (self.shake_timer % 2)
+        return render.shake_offset(self)
 
     def draw(self, target: pygame.Surface, oy: int = PLAY_Y) -> None:
         """Draw the play area at vertical offset ``oy``."""
-        if self.transition is not None:
-            self.transition.draw(target, oy)
-            return
-        sx, sy = self.shake_offset
-        target.blit(self.room_surface(), (sx, oy + sy))
-        for ent in sorted(self.entities, key=lambda e: (e.depth, e.layer)):
-            ent.draw(target, self.assets, oy + sy)
-        if self.room.dark:
-            self._draw_darkness(target, oy + sy)
-        if self.boss is not None and self.boss.alive:
-            self.boss.draw_bar(target, self.assets, self.textdb.get(self.boss.name_key))
-        if self.dialogue is not None:
-            self.dialogue.draw(target, self.assets)
-
-    def _draw_darkness(self, target: pygame.Surface, oy: int) -> None:
-        """A dark room: black except a circle around Wren, wider with the Lantern lit.
-
-        Lighting the room's torch clears it for good, which is what the
-        Lantern is for.
-        """
-        if any(isinstance(e, Torch) and e.lit for e in self.entities):
-            return
-        radius = 30
-        if self.state.has("lantern"):
-            radius = 76 if self.hero.lantern_timer > 0 else 62
-        shade = pygame.Surface((PLAY_W, PLAY_H), pygame.SRCALPHA)
-        shade.fill((2, 2, 8, 248))
-        cx, cy = self.hero.center
-        for i in range(6):
-            r = radius - i * radius // 7
-            alpha = 248 - round(248 * (1.0 - i / 6.0) ** 0.6)
-            pygame.draw.circle(shade, (2, 2, 8, alpha), (round(cx), round(cy)), r)
-        target.blit(shade, (0, oy))
+        render.draw_world(self, target, oy)

@@ -570,6 +570,171 @@
      "id": "mistlands"
     }
    ]
+  },
+  "ow_0706": {
+   "name": "The Drowned Stair",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      4
+     ],
+     "to": "t5_f1_0502",
+     "spawn": [
+      152,
+      160
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      4
+     ],
+     "to": "t5_f1_0502",
+     "spawn": [
+      152,
+      160
+     ]
+    }
+   ]
+  },
+  "ow_0212": {
+   "name": "The Kiln",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      4
+     ],
+     "to": "t6_f1_0502",
+     "spawn": [
+      152,
+      160
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      4
+     ],
+     "to": "t6_f1_0502",
+     "spawn": [
+      152,
+      160
+     ]
+    }
+   ]
+  },
+  "ow_0107": {
+   "name": "The Glass Tarn",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      4
+     ],
+     "to": "t7_f1_0502",
+     "spawn": [
+      152,
+      160
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      4
+     ],
+     "to": "t7_f1_0502",
+     "spawn": [
+      152,
+      160
+     ]
+    }
+   ]
+  },
+  "ow_0102": {
+   "name": "The Giant's Step",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      4
+     ],
+     "to": "t8_f1_0502",
+     "spawn": [
+      152,
+      160
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      4
+     ],
+     "to": "t8_f1_0502",
+     "spawn": [
+      152,
+      160
+     ]
+    }
+   ]
+  },
+  "ow_0906": {
+   "name": "The Great Lantern",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      4
+     ],
+     "to": "t9_f1_0302",
+     "spawn": [
+      152,
+      160
+     ],
+     "if_flag": "flames8"
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      4
+     ],
+     "to": "t9_f1_0302",
+     "spawn": [
+      152,
+      160
+     ],
+     "if_flag": "flames8"
+    },
+    {
+     "kind": "sign",
+     "at": [
+      8,
+      5
+     ],
+     "text": "sign.great_lantern",
+     "unless_flag": "flames8"
+    },
+    {
+     "kind": "sign",
+     "at": [
+      11,
+      5
+     ],
+     "text": "sign.great_lantern_open",
+     "if_flag": "flames8"
+    }
+   ]
   }
  }
 }

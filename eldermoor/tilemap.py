@@ -32,6 +32,9 @@ class Collision(StrEnum):
 
 BLOCKING = frozenset({Collision.SOLID, Collision.WATER, Collision.LAVA, Collision.PIT,
                       Collision.BOMBABLE, Collision.LIFTABLE})
+#: a doorway is an exit unless solid rock stands in it: water, lava, pits,
+#: cracked walls and blocks are all crossable or clearable with the right gear
+SEALED = frozenset({Collision.SOLID})
 #: classes a hopping entity (Feather) floats over
 HOPPABLE = frozenset({Collision.PIT, Collision.WATER})
 #: classes that hurt or swallow whatever walks onto them
@@ -39,7 +42,7 @@ HAZARD = frozenset({Collision.LAVA, Collision.PIT})
 
 OPPOSITE = {"north": "south", "south": "north", "east": "west", "west": "east"}
 #: tile interactions: which tool clears the tile
-INTERACTIONS = frozenset({"cut", "lift", "burn", "bomb", "smash"})
+INTERACTIONS = frozenset({"cut", "lift", "burn", "bomb", "smash", "melt"})
 
 
 @dataclass(frozen=True)

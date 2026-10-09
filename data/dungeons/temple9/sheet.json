@@ -1,0 +1,276 @@
+{
+ "prefix": "t9",
+ "tileset": "temple",
+ "region": "mistlands",
+ "dungeon": "temple9",
+ "music": "temple_ember",
+ "id_layer": true,
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 4,
+   "cols": 4,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "mistlands": {
+   "types": [
+    "wisp",
+    "crag",
+    "spitter"
+   ],
+   "count": 3
+  }
+ },
+ "screens": {
+  "t9_f1_0302": {
+   "name": "The Lantern Door",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_0906",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_0906",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.temple9.enter"
+      }
+     ],
+     "flag": "t9_seen"
+    }
+   ]
+  },
+  "t9_f1_0100": {
+   "name": "The Last Stair",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "shut",
+     "flag": "t9_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "shut",
+     "flag": "t9_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      5,
+      5
+     ],
+     "type": "sentinel"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      14,
+      5
+     ],
+     "type": "sentinel"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "if_flag": "flames8",
+     "flag": "t9_opened",
+     "do": [
+      {
+       "open": "bk"
+      },
+      {
+       "jingle": "secret"
+      }
+     ]
+    }
+   ]
+  },
+  "t9_f1_0000": {
+   "name": "The Quiet",
+   "music": "boss",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "shut",
+     "flag": "t9_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "shut",
+     "flag": "t9_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      8,
+      4
+     ],
+     "type": "thequiet"
+    },
+    {
+     "kind": "torch",
+     "at": [
+      2,
+      2
+     ],
+     "id": "q1",
+     "burn_time": 900
+    },
+    {
+     "kind": "torch",
+     "at": [
+      17,
+      2
+     ],
+     "id": "q2",
+     "burn_time": 900
+    },
+    {
+     "kind": "torch",
+     "at": [
+      2,
+      10
+     ],
+     "id": "q3",
+     "burn_time": 900
+    },
+    {
+     "kind": "torch",
+     "at": [
+      17,
+      10
+     ],
+     "id": "q4",
+     "burn_time": 900
+    }
+   ],
+   "triggers": [
+    {
+     "on": "torches_lit",
+     "count": 4,
+     "do": [
+      {
+       "stun_boss": "stunned"
+      },
+      {
+       "jingle": "puzzle"
+      }
+     ]
+    },
+    {
+     "on": "boss_dead",
+     "flag": "t9_boss",
+     "do": [
+      {
+       "shake": 60
+      },
+      {
+       "set_flag": "game_won"
+      },
+      {
+       "ending": "auto"
+      }
+     ]
+    }
+   ]
+  },
+  "t9_f1_0003": {
+   "name": "The High Shelf",
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:t9_03"
+    }
+   ]
+  },
+  "t9_f1_0002": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "shell",
+     "flag": "shell:t9_02"
+    }
+   ]
+  },
+  "t9_f1_0201": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "map",
+     "flag": "t9_chest_map"
+    }
+   ]
+  },
+  "t9_f1_0102": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "compass",
+     "flag": "t9_chest_compass"
+    }
+   ]
+  }
+ }
+}

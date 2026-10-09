@@ -133,3 +133,51 @@ screens and the whole 35-room Ember Temple, from its door to the Flame.
   over pits; arrows that spend from a quiver.
 - HUD counters for bombs and arrows; tiles can be hookshot anchors.
 - 402 rooms, 14 enemy kinds, 125 tests.
+
+
+## 0.4.0 — Milestone 4: Temples 5 to 8, the Great Lantern, the endings
+
+### Relics
+- **Fins** (Drowned Hollow) — deep water becomes swimmable. Wren swims at
+  72 % of his walking speed and cannot swing a sword while he does it.
+- **Cinderstep Boots** (The Kiln) — lava is walkable and no longer bites,
+  and they melt an ice wall out of a doorway.
+- **Mirror Cloak** (The Long Mirror) — hold its button and anything that
+  hunts by sight loses Wren entirely; reflectable shots come straight back
+  at whoever fired them. The cloak costs 20 % of his speed.
+- **Titan Gauntlet** (The Giant's Gate) — the heavy blocks, painted into
+  the world since milestone 3, finally move.
+- **Whistle of Winds** (also The Giant's Gate) — opens the warp list
+  wherever you stand, as long as one lantern is lit somewhere.
+
+### Temples
+- **Drowned Hollow** (Tidewrack, 36 rooms) — the Fins; Weedjaw and the
+  Drowned King. The flooded halls are crossed by swimming, not by draining.
+- **The Kiln** (Cinderwaste, 36 rooms) — the Cinderstep Boots; Slagjaw and
+  the Kiln Maw. Lava rivers cut the floor in two until the boots arrive.
+- **The Long Mirror** (Hollow Tarn, 36 rooms) — the Mirror Cloak; Frostjaw
+  and the Glass King. Sentinels watch the only road; ice walls bar the rest.
+- **The Giant's Gate** (Mistlands, 36 rooms) — the Titan Gauntlet and the
+  Whistle of Winds; Stonejaw and the Titan Maw.
+- **The Great Lantern** (16 rooms) — the final temple. Its door has eight
+  sockets and no handle: it opens only once all eight Flames burn. Mistjaw
+  guards the stair and **The Quiet** waits at the top.
+- Five new boss pairs (36 new boss frames from `tools/sketch_bosses.py`),
+  and all nine dungeons proved completable by `tools/validate_data.py`.
+
+### Endings
+- Two endings: the short goodbye, and the long one for a run at 95 %
+  completion or better, both followed by a credits crawl
+  (`eldermoor/ending.py`, the `ending` script action, a new `credits`
+  track and `great_lantern` for the final temple).
+- Finishing the game banks the run: the `cleared` and `ending` flags are
+  saved before the credits roll, and the file select comes back after.
+
+### Engine and tools
+- Screens are joined wherever solid rock is not in the doorway: water,
+  lava and pits in a doorway are gates for the right relic, not walls
+  (`tilemap.SEALED`), which is what lets a flooded or burning hall be laid
+  out as one continuous map sheet.
+- Triggers take `if_flag` / `unless_flag`; the `ending` action hands the
+  screen to the credits; an `t_ice` tile sprite replaces the stand-in.
+- 562 rooms, 24 enemy kinds, 143 tests.

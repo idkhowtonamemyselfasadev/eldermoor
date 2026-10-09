@@ -128,3 +128,39 @@
 ..0kk0..
 ...00...
 ........
+@icon_cloak 8 8
+..0000..
+.0vvvv0.
+0vv66vv0
+0v6006v0
+0vv66vv0
+0vvvvvv0
+.0vvvv0.
+..0000..
+@icon_gauntlet 8 8
+.000000.
+0ffffff0
+0f3333f0
+0f3333f0
+0ffffff0
+.0f33f0.
+.0ffff0.
+..0000..
+@icon_whistle 8 8
+........
+.000000.
+0f8888f0
+0f8008f0
+0f8888f0
+.000000.
+...00...
+........
+@icon_shellbag 8 8
+..0000..
+.0pppp0.
+0p6pp6p0
+0pp66pp0
+0pppppp0
+.0pppp0.
+..0000..
+........

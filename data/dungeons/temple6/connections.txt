@@ -1,0 +1,16 @@
+# The Kiln, 6 x 6 rooms. Lava floors the Cinderstep Boots make walkable.
+[east]
+.eee.
+ee.ee
+.eeee
+ee.ee
+eeeee
+.ee.e
+[south]
+s.ss.s
+ss.sss
+.sss.s
+ss.sss
+ssssss
+[entrance]
+5,2

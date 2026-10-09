@@ -101,7 +101,8 @@ def test_every_sfx_renders(tmp_path):
 
 def test_songs_cover_the_slice():
     songs = {p.stem for p in (build_audio.SRC / "songs").glob("*.song")}
-    assert {"title", "village", "overworld_day", "temple_ember", "boss"} <= songs
+    assert {"title", "village", "overworld_day", "temple_ember", "boss",
+            "credits", "great_lantern"} <= songs
     for path in (build_audio.SRC / "songs").glob("*.song"):
         song = json.loads(path.read_text())
         assert song["channels"], path.stem

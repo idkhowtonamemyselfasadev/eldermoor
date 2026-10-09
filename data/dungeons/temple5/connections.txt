@@ -1,0 +1,16 @@
+# The Drowned Stair, 6 x 6 rooms. Deep water until the Fins come up.
+[east]
+e.ee.
+.ee.e
+eeeee
+ee.ee
+.eeee
+ee.ee
+[south]
+ss.sss
+.sssss
+ss.ss.
+.ss.ss
+ss.sss
+[entrance]
+5,2

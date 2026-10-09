@@ -199,3 +199,25 @@ Hookshot from the mini-boss. Temple 4 "The Long Glass" (Hollow Desert) —
 Bow: switches, eyes, flying enemies. Each is 35+ rooms on a map sheet, each
 with its own mini-boss, boss, map, compass, Great Key, heart container and
 Flame, and each validated by `tools/validate_data.py` exactly like Temple 1.
+
+
+### 3.6 Temples 5-8 and the Great Lantern
+Temple 5 "Drowned Hollow" (Tidewrack) — Fins: deep water is a road. Temple 6
+"The Kiln" (Cinderwaste) — Cinderstep Boots: lava is a floor, ice is not a
+wall. Temple 7 "The Long Mirror" (Hollow Tarn) — Mirror Cloak: the watchers
+lose you, and their shots come home. Temple 8 "The Giant's Gate" (Mistlands)
+— Titan Gauntlet and the Whistle of Winds. Each is 36 rooms on a map sheet
+with a mini-boss, a boss, a map, a compass, four keys, a Great Key, a heart
+container and a Flame.
+
+Temple 9 "The Great Lantern" is smaller on purpose: 16 rooms, no keys and no
+Flame, because its door is the lock. It opens on the eighth Flame and ends
+at The Quiet. Beating it writes `cleared` and rolls one of two endings,
+chosen by `state.completion()` against `FULL_ENDING_AT`.
+
+The map sheets for these five are what forced `tilemap.SEALED`: a hall that
+is flooded or on fire has water or lava in its doorway, and the old rule —
+an exit exists where both sides are walkable — quietly cut those rooms out
+of the dungeon. Exits now exist unless solid rock is in the way, and the
+relic is the gate. `tools/validate_data.py` carries the same rule, so the
+proof of completability is still a proof.

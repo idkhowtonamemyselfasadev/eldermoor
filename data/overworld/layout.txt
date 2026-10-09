@@ -5,15 +5,15 @@
 # Roads: the trunk runs north-south down column 5 and east-west along row 11,
 # through Lamplight Village.  Spurs climb to each temple door.
 cliff_nw cliff_n  cliff_n  cliff_n  cliff_n  cliff_n  cliff_n  cliff_n  cliff_n  cliff_n  cliff_n  cliff_n  cliff_n  cliff_n  cliff_n  cliff_ne
-cliff_w  ruin     dense    ruin     trees    ice      open     ice      trees    open     lava     rocks    lava     open     rocks    cliff_e
-cliff_w  trees    ruin     open     dense    open     ice      open     ice      lantern  rocks    lava     open     lava     open     cliff_e
+cliff_w   ruin      temple_door ruin      trees     ice       open      temple_door trees     open      lava      rocks     lava      open      rocks     cliff_e
+cliff_w   trees     ruin      open      dense     open      ice       open      ice       lantern   rocks     lava      temple_door lava      open      cliff_e
 cliff_w  dense    trees    dense    ruin     ice      open     trees    ice      open     lava     open     rocks    open     lava     cliff_e
 cliff_w  dense    trees    dense    trees    road_ns  marsh    open     marsh    trees    lava     rocks    chasm    dunes    dunes    cliff_e
 cliff_w  thorns   trees    dense    open     road_ns  marsh    river_ns marsh    open     dunes    rocks    dunes    dunes    crackwall cliff_e
 cliff_w  dense    temple_door trees open     road_ns  marsh    river_ns marsh    open     dunes    dunes    rocks    temple_door dunes cliff_e
-cliff_w  trees    road_ns  dense    open     road_ns  marsh    river_ns marsh    open     dunes    rocks    dunes    road_ns  dunes    cliff_e
+cliff_w   trees     road_ns   dense     open      road_ns   temple_door river_ns  marsh     open      dunes     rocks     dunes     road_ns   dunes     cliff_e
 cliff_w  dense    road_ns  thorns   meadow   road_ns  marsh    river_ns marsh    grassy   boulders dunes    rocks    road_ns  dunes    cliff_e
-cliff_w  trees    road_ns  meadow   grassy   road_ns  grassy   meadow   trees    temple_door lantern dunes  rocks    road_ns  dunes    cliff_e
+cliff_w   trees     road_ns   meadow    grassy    road_ns   temple_door meadow    trees     temple_door lantern   dunes     rocks     road_ns   dunes     cliff_e
 cliff_w  meadow   road_ns  grassy   open     village_n meadow  pond     meadow   road_ns  meadow   grassy   rocks    road_ns  dunes    cliff_e
 cliff_w  road_ew  road_cross road_ew village_w village_c village_e road_ew road_ew road_cross road_ew road_ew road_ew road_cross dunes cliff_e
 cliff_w  marsh    marsh    road_ns  grassy   road_ns  meadow   grassy   meadow   meadow   meadow   marsh    marsh    marsh    coast    cliff_e

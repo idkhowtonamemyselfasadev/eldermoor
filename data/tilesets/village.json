@@ -185,6 +185,14 @@
       "sprite": "t_statue",
       "collision": "solid",
       "hook": true
+    },
+    "34": {
+      "char": "J",
+      "sprite": "t_water",
+      "collision": "solid",
+      "interact": "melt",
+      "becomes": ".",
+      "drop": "none"
     }
   }
 }

@@ -1,0 +1,445 @@
+{
+ "prefix": "t5",
+ "tileset": "temple",
+ "region": "tidewrack",
+ "dungeon": "temple5",
+ "music": "temple_ember",
+ "id_layer": true,
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 6,
+   "cols": 6,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "tidewrack": {
+   "types": [
+    "mote",
+    "wisp",
+    "burrow"
+   ],
+   "count": 2
+  }
+ },
+ "screens": {
+  "t5_f1_0502": {
+   "name": "The Drowned Door",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_0706",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_0706",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.temple5.enter"
+      }
+     ],
+     "flag": "t5_seen"
+    }
+   ]
+  },
+  "t5_f1_0100": {
+   "name": "Weedjaw",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t5_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t5_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      5
+     ],
+     "type": "weedjaw"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t5_miniboss",
+     "do": [
+      {
+       "shake": 24
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         4
+        ],
+        "item": "fins",
+        "flag": "t5_chest_item"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "t5_f1_0005": {
+   "name": "The Drowned King",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "big",
+     "flag": "t5_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "big",
+     "flag": "t5_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      8,
+      4
+     ],
+     "type": "drownking"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t5_boss",
+     "do": [
+      {
+       "shake": 40
+      },
+      {
+       "open": "*"
+      },
+      {
+       "spawn": {
+        "kind": "reward",
+        "at": [
+         9,
+         7
+        ],
+        "what": "flame",
+        "dungeon": "temple5",
+        "item": "flame_tarn",
+        "flag": "flame:temple5"
+       }
+      }
+     ]
+    }
+   ],
+   "music": "boss"
+  },
+  "t5_f1_0401": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t5_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t5_door_a",
+     "id": "a"
+    }
+   ]
+  },
+  "t5_f1_0301": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t5_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t5_door_a",
+     "id": "a"
+    }
+   ]
+  },
+  "t5_f1_0201": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      18,
+      6
+     ],
+     "lock": "small",
+     "flag": "t5_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      18,
+      7
+     ],
+     "lock": "small",
+     "flag": "t5_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "t5_f1_0202": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      1,
+      6
+     ],
+     "lock": "small",
+     "flag": "t5_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      1,
+      7
+     ],
+     "lock": "small",
+     "flag": "t5_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "t5_f1_0000": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t5_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t5_door_c",
+     "id": "c"
+    }
+   ]
+  },
+  "t5_f1_0105": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "big",
+     "flag": "t5_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "big",
+     "flag": "t5_door_boss",
+     "id": "bk"
+    }
+   ]
+  },
+  "t5_f1_0402": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "map",
+     "flag": "t5_chest_map"
+    }
+   ]
+  },
+  "t5_f1_0304": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "compass",
+     "flag": "t5_chest_compass"
+    }
+   ]
+  },
+  "t5_f1_0002": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "bigkey",
+     "flag": "t5_chest_bigkey"
+    }
+   ]
+  },
+  "t5_f1_0500": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t5_key1"
+    }
+   ]
+  },
+  "t5_f1_0404": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t5_key2"
+    }
+   ]
+  },
+  "t5_f1_0204": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t5_key3"
+    }
+   ]
+  },
+  "t5_f1_0302": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t5_key4"
+    }
+   ]
+  },
+  "t5_f1_0400": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:t5_secret"
+    }
+   ]
+  },
+  "t5_f1_0505": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "shell",
+     "flag": "shell:t5_55"
+    }
+   ]
+  }
+ }
+}

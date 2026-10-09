@@ -108,8 +108,10 @@ class Enemy(Entity):
         self.touch_hero(world)
 
     def touch_hero(self, world: World) -> None:
-        """Hurt the hero on contact."""
+        """Hurt the hero on contact. A blind thing cannot hurt what it cannot see."""
         if self.contact_damage <= 0:
+            return
+        if world.hero.cloaked and self.definition.raw.get("cloak_blind"):
             return
         if self.body_rect().colliderect(world.hero.body_rect()):
             world.hero.hurt(world, self.contact_damage, self)
@@ -207,7 +209,7 @@ class Projectile(Entity):
             return
         hero = world.hero
         if rect.colliderect(hero.body_rect()):
-            if hero.blocks_from(*self.center) and self.reflectable:
+            if (hero.cloaked or hero.blocks_from(*self.center)) and self.reflectable:
                 world.audio.play("block")
                 self.vx, self.vy = -self.vx, -self.vy
                 self.team = "hero"

@@ -292,6 +292,8 @@ class PushBlock(RoomObject):
     def __init__(self, world: World, spec: dict[str, Any]) -> None:
         super().__init__(world, spec)
         self.target: tuple[float, float] | None = None
+        #: a heavy block waits for the Titan Gauntlet
+        self.heavy = bool(spec.get("heavy", False))
 
     def sprite_name(self) -> str:
         """The block sprite."""

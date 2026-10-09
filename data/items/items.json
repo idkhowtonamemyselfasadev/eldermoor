@@ -103,6 +103,60 @@
       "icon": "icon_flame",
       "kind": "quest",
       "order": 43
+    },
+    "fins": {
+      "name": "item.fins",
+      "icon": "icon_fins",
+      "kind": "equip",
+      "order": 16
+    },
+    "fire_boots": {
+      "name": "item.fire_boots",
+      "icon": "icon_boots",
+      "kind": "equip",
+      "order": 17
+    },
+    "mirror_cloak": {
+      "name": "item.mirror_cloak",
+      "icon": "icon_cloak",
+      "kind": "active",
+      "order": 18
+    },
+    "gauntlet": {
+      "name": "item.gauntlet",
+      "icon": "icon_gauntlet",
+      "kind": "equip",
+      "order": 19
+    },
+    "whistle": {
+      "name": "item.whistle",
+      "icon": "icon_whistle",
+      "kind": "active",
+      "order": 20
+    },
+    "flame_tarn": {
+      "name": "item.flame_tarn",
+      "icon": "icon_flame",
+      "kind": "quest",
+      "order": 44
+    },
+    "flame_cinder": {
+      "name": "item.flame_cinder",
+      "icon": "icon_flame",
+      "kind": "quest",
+      "order": 45
+    },
+    "flame_fen": {
+      "name": "item.flame_fen",
+      "icon": "icon_flame",
+      "kind": "quest",
+      "order": 46
+    },
+    "flame_mist": {
+      "name": "item.flame_mist",
+      "icon": "icon_flame",
+      "kind": "quest",
+      "order": 47
     }
   }
 }

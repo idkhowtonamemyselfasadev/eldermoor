@@ -1,0 +1,16 @@
+# The Giant's Step, 6 x 6 rooms. Blocks nobody could shift before.
+[east]
+.ee.e
+ee.ee
+eeeee
+.eeee
+ee.ee
+.eee.
+[south]
+s.sss.
+ss.s.s
+.ssss.
+ss.sss
+s.ssss
+[entrance]
+5,2

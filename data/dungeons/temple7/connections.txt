@@ -1,0 +1,17 @@
+# The Glass Tarn, 6 x 6 rooms. Beams, mirrors and things that only see you
+# when the cloak is down.
+[east]
+ee.e.
+.ee.e
+eeeee
+.ee.e
+ee.ee
+eeeee
+[south]
+ss.s.s
+.ssss.
+ss.sss
+s.ss.s
+sssss.
+[entrance]
+5,2

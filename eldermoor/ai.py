@@ -25,7 +25,16 @@ if TYPE_CHECKING:
 MoveFn = Callable[["Entity", "World", dict[str, Any]], None]
 
 
+def blind_to(ent: Entity, world: World) -> bool:
+    """True when the Mirror Cloak hides the hero from this creature."""
+    definition = getattr(ent, "definition", None)
+    return bool(world.hero.cloaked and definition is not None
+                and definition.raw.get("cloak_blind"))
+
+
 def _towards(ent: Entity, world: World) -> tuple[float, float]:
+    if blind_to(ent, world):
+        return ent.heading if ent.heading != (0.0, 0.0) else (0.0, 1.0)
     ax, ay = ent.center
     bx, by = world.hero.center
     dx, dy = bx - ax, by - ay
@@ -177,7 +186,7 @@ class Brain:
         """One frame: run the move function, then take any transition."""
         params = self.current
         MOVES.get(str(params.get("move", "none")), move_none)(ent, world, params)
-        dist = ent.distance_to(world.hero)
+        dist = 10 ** 6 if blind_to(ent, world) else ent.distance_to(world.hero)
         near = params.get("if_near")
         far = params.get("if_far")
         if near and dist <= float(near.get("dist", 32)):
