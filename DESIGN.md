@@ -355,3 +355,54 @@ in temple one from 22 to 4.
 measures an overworld screen and a dungeon room over the productive part of
 its run, and the rest is content counted out of `data/` at stated costs.
 51 hours for the main line, 102 to 100 %.
+
+
+--------------------------------------------------------------------------
+## 8. The definition of done, line by line
+
+PROMPT.md ends with a list. Here is each line with what backs it, measured
+rather than asserted, and what is not backed.
+
+| Asked for | Built | Checked by |
+| --- | --- | --- |
+| runs from `python main.py` | yes | `pytest`, and played headless |
+| runs from the PyInstaller build | yes, on Linux | the build was run and the binary played |
+| Linux, Windows, macOS | code and scripts for all three; **run and verified on Linux only** | — |
+| windowed or fullscreen | yes | `tests/test_hud_app.py` |
+| keyboard or gamepad | yes | `tests/test_input.py`, `tests/test_coop.py` |
+| 256-screen overworld | 256 | `tools/validate_data.py` |
+| 8 temples + 6 optional + post-game | 9 temples (the eighth Flame opens a ninth), 6 caves, the Temple of Mists | `tools/validate_data.py` |
+| ≥ 24 bosses | 28 | `tests/test_enemies.py` |
+| ≥ 60 enemies | 61 kinds | `tests/test_enemies.py`, which also proves each is placed |
+| ≥ 120 items/collectibles | 168 (40 items, 40 heart pieces, 40 shells, 12 rings, 24 figurines, 12 furniture) | `tools/validate_data.py` |
+| 25+ puzzle types | 26, listed below | the rooms that use them load and validate |
+| 40 heart pieces | 40 | `tools/validate_data.py` |
+| trading sequence | 10 steps | `tests/test_side_content.py` |
+| minigames | 3 | `tests/test_side_content.py` |
+| 2 endings | 2, chosen at 95 % | `tests/test_relics.py` |
+| Master Quest | yes | `tests/test_postgame.py` |
+| Boss Rush | 22 rounds | `tests/test_postgame.py` |
+| co-op | yes | `tests/test_coop.py` |
+| only the 12 buttons | yes | `tests/test_input.py` |
+| ≥ 90 h to 100 % | 106 h projected (53 h main line) | `tools/sim_playthrough.py`, workings printed |
+| all tests green | 230 | `pytest` |
+| data validation green | 0 problems | `tools/validate_data.py` |
+| README steps verified | yes | run from a clean virtual environment |
+
+The one honest gap: the game has only ever been run on Linux. Nothing in it
+is platform-specific - pygame-ce, pathlib, and a config directory chosen per
+platform - and `run.bat` and the macOS path in the README are written from
+the same shape as the Linux one, but written is not run.
+
+### The 26 puzzle types
+Cut grass; lift and throw rocks and pots; smash pots; bomb cracked walls;
+burn torches with the Lantern; light several torches at once; floor
+switches, held and latched; crystals shot or struck; push blocks; heavy
+blocks that wait for the Gauntlet; pits crossed with the Feather; pits
+crossed by hookshot; water crossed with the Fins; lava walked with the
+Cinderstep Boots; ice walls melted; ice floors that carry you; hookshot
+posts; eyes shot with the Bow; small-key doors; the Great Key door; doors
+that open when a room is cleared; doors that open on a puzzle; one-way
+ledges; dark rooms lit by the Lantern; sentinels blinded by the Mirror
+Cloak; and counted sets of things to find - five pots, nine frogs, three
+sheep - that open a quest rather than a door.

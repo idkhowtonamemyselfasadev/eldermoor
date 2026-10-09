@@ -160,6 +160,22 @@ out. It fails the build rather than the player.
 `CHANGELOG.md` is what happened in which order.
 
 --------------------------------------------------------------------------
+## What is in it
+
+667 rooms, of which 256 are the overworld; nine temples, six optional caves
+and a post-game temple; 61 kinds of creature, 28 of them bosses; 40 items,
+40 heart pieces, 40 seashells, 12 rings, 24 figurines and 12 pieces of
+furniture; 30 side quests, a ten-step trading chain, three minigames, two
+endings, a Boss Rush, a Master Quest and local co-op. 684 lines of
+dialogue. `tools/sim_playthrough.py` projects about 53 hours for the main
+line and 106 to 100 %, and prints its workings.
+
+It has been built and played on Linux. The Windows and macOS instructions
+above are written from the same shape and have not been run on those
+machines; nothing in the game is platform-specific, but that is a claim
+about the code rather than a test result.
+
+--------------------------------------------------------------------------
 ## About the kingdom
 
 Eldermoor is original. Its places, people, creatures, items and story are
