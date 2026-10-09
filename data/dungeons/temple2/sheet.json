@@ -1,0 +1,558 @@
+{
+ "prefix": "t2",
+ "tileset": "temple",
+ "region": "bramble",
+ "dungeon": "temple2",
+ "music": "temple_ember",
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 6,
+   "cols": 6,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "bramble": {
+   "types": [
+    "thistle",
+    "crag",
+    "burrow"
+   ],
+   "count": 2
+  }
+ },
+ "screens": {
+  "t2_f1_0502": {
+   "name": "The Bramble Door",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_0602",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_0602",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.temple2.enter"
+      }
+     ],
+     "flag": "t2_seen"
+    }
+   ]
+  },
+  "t2_f1_0403": {
+   "name": "The Root Hall",
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      4
+     ],
+     "item": "map",
+     "flag": "t2_chest_map"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      5,
+      8
+     ],
+     "type": "thistle"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      14,
+      8
+     ],
+     "type": "mote"
+    }
+   ]
+  },
+  "t2_f1_0404": {
+   "name": "The Jar Store",
+   "objects": [
+    {
+     "kind": "enemy",
+     "at": [
+      6,
+      4
+     ],
+     "type": "crag"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      13,
+      8
+     ],
+     "type": "thistle"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "all_enemies_dead",
+     "flag": "t2_store",
+     "do": [
+      {
+       "jingle": "secret"
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         6
+        ],
+        "item": "key",
+        "flag": "t2_key1"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "t2_f1_0204": {
+   "name": "The Cistern",
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      4
+     ],
+     "item": "compass",
+     "flag": "t2_chest_compass"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      5,
+      9
+     ],
+     "type": "wisp"
+    }
+   ]
+  },
+  "t2_f1_0203": {
+   "name": "The Rockfall",
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      6
+     ],
+     "item": "key",
+     "flag": "t2_key2"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      14,
+      4
+     ],
+     "type": "burrow"
+    }
+   ]
+  },
+  "t2_f1_0205": {
+   "name": "The Still Jars",
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      4
+     ],
+     "item": "key",
+     "flag": "t2_key3"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      6,
+      8
+     ],
+     "type": "spitter"
+    }
+   ]
+  },
+  "t2_f1_0505": {
+   "name": "The Low Store",
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      6
+     ],
+     "item": "key",
+     "flag": "t2_key4"
+    }
+   ]
+  },
+  "t2_f1_0005": {
+   "name": "The Great Lock",
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      6
+     ],
+     "item": "bigkey",
+     "flag": "t2_chest_bigkey"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      5,
+      4
+     ],
+     "type": "crag"
+    }
+   ]
+  },
+  "t2_f1_0103": {
+   "name": "The Tucked Shelf",
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:t2_13"
+    }
+   ]
+  },
+  "t2_f1_0500": {
+   "name": "The Warm Spring",
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      9
+     ],
+     "what": "shell",
+     "flag": "shell:t2_50"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "jingle": "fairy"
+      }
+     ]
+    }
+   ]
+  },
+  "t2_f1_0301": {
+   "name": "Thornjaw",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      1,
+      6
+     ],
+     "lock": "small",
+     "flag": "t2_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      1,
+      7
+     ],
+     "lock": "small",
+     "flag": "t2_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      5
+     ],
+     "type": "thornjaw"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t2_miniboss",
+     "do": [
+      {
+       "shake": 24
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         4
+        ],
+        "item": "bracelet",
+        "flag": "t2_chest_bracelet"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "t2_f1_0300": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      18,
+      6
+     ],
+     "lock": "small",
+     "flag": "t2_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      18,
+      7
+     ],
+     "lock": "small",
+     "flag": "t2_door_c",
+     "id": "c"
+    }
+   ]
+  },
+  "t2_f1_0402": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t2_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t2_door_a",
+     "id": "a"
+    }
+   ]
+  },
+  "t2_f1_0302": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t2_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t2_door_a",
+     "id": "a"
+    }
+   ]
+  },
+  "t2_f1_0202": {
+   "name": "The Knot",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t2_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t2_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      5,
+      5
+     ],
+     "type": "crag"
+    }
+   ]
+  },
+  "t2_f1_0102": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t2_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t2_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      6,
+      5
+     ],
+     "type": "thistle"
+    }
+   ]
+  },
+  "t2_f1_0100": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "big",
+     "flag": "t2_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "big",
+     "flag": "t2_door_boss",
+     "id": "bk"
+    }
+   ]
+  },
+  "t2_f1_0000": {
+   "name": "The Hollow King",
+   "music": "boss",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "big",
+     "flag": "t2_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "big",
+     "flag": "t2_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      8,
+      4
+     ],
+     "type": "hollowking"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t2_boss",
+     "do": [
+      {
+       "shake": 40
+      },
+      {
+       "open": "*"
+      },
+      {
+       "spawn": {
+        "kind": "reward",
+        "at": [
+         9,
+         7
+        ],
+        "what": "flame",
+        "dungeon": "temple2",
+        "item": "flame_bramble",
+        "flag": "flame:temple2"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "id_layer": true
+}

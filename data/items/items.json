@@ -1,16 +1,84 @@
 {
   "_comment": "Item registry. 'kind': active = usable from a B/X/Y slot, equip = sword/shield/tunic tier, passive = ring, quest = story or dungeon item, collect = counter, consumable = bought and spent. 'name' and 'desc' are keys into data/text/en.json.",
   "items": {
-    "sword":        {"name": "item.sword",        "icon": "icon_sword",    "kind": "equip",  "order": 1},
-    "shield":       {"name": "item.shield",       "icon": "icon_shield",   "kind": "equip",  "order": 2, "cost": 60},
-    "lantern":      {"name": "item.lantern",      "icon": "icon_lantern",  "kind": "active", "order": 10},
-    "bombs":        {"name": "item.bombs",        "icon": "icon_bomb",     "kind": "active", "order": 11},
-    "feather":      {"name": "item.feather",      "icon": "icon_feather",  "kind": "active", "order": 12},
-    "bottle1":      {"name": "item.bottle",       "icon": "icon_bottle",   "kind": "active", "order": 20},
-    "map_temple1":  {"name": "item.map",          "icon": "icon_map",      "kind": "quest",  "order": 30},
-    "compass_temple1": {"name": "item.compass",   "icon": "icon_compass",  "kind": "quest",  "order": 31},
-    "bigkey_temple1":  {"name": "item.bigkey",    "icon": "icon_bigkey",   "kind": "quest",  "order": 32},
-    "flame_ember":  {"name": "item.flame_ember",  "icon": "icon_flame",    "kind": "quest",  "order": 40},
-    "heart_piece":  {"name": "item.heart_piece",  "icon": "icon_piece",    "kind": "collect","order": 50}
+    "sword": {
+      "name": "item.sword",
+      "icon": "icon_sword",
+      "kind": "equip",
+      "order": 1
+    },
+    "shield": {
+      "name": "item.shield",
+      "icon": "icon_shield",
+      "kind": "equip",
+      "order": 2,
+      "cost": 60
+    },
+    "lantern": {
+      "name": "item.lantern",
+      "icon": "icon_lantern",
+      "kind": "active",
+      "order": 10
+    },
+    "bombs": {
+      "name": "item.bombs",
+      "icon": "icon_bomb",
+      "kind": "active",
+      "order": 11
+    },
+    "feather": {
+      "name": "item.feather",
+      "icon": "icon_feather",
+      "kind": "active",
+      "order": 12
+    },
+    "bottle1": {
+      "name": "item.bottle",
+      "icon": "icon_bottle",
+      "kind": "active",
+      "order": 20
+    },
+    "map_temple1": {
+      "name": "item.map",
+      "icon": "icon_map",
+      "kind": "quest",
+      "order": 30
+    },
+    "compass_temple1": {
+      "name": "item.compass",
+      "icon": "icon_compass",
+      "kind": "quest",
+      "order": 31
+    },
+    "bigkey_temple1": {
+      "name": "item.bigkey",
+      "icon": "icon_bigkey",
+      "kind": "quest",
+      "order": 32
+    },
+    "flame_ember": {
+      "name": "item.flame_ember",
+      "icon": "icon_flame",
+      "kind": "quest",
+      "order": 40
+    },
+    "heart_piece": {
+      "name": "item.heart_piece",
+      "icon": "icon_piece",
+      "kind": "collect",
+      "order": 50
+    },
+    "bracelet": {
+      "name": "item.bracelet",
+      "icon": "icon_bracelet",
+      "kind": "active",
+      "order": 13
+    },
+    "flame_bramble": {
+      "name": "item.flame_bramble",
+      "icon": "icon_flame",
+      "kind": "quest",
+      "order": 41
+    }
   }
 }

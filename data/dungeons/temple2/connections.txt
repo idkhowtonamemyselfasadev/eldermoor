@@ -1,0 +1,21 @@
+# Bramble Hollow, 6 x 6 rooms.  Hand-drawn connection map: this is the
+# dungeon's design, and tools/plan_dungeon.py turns it into layout_f1.txt.
+#
+# [east]  six rows of five cells: 'e' joins a room to its eastern neighbour.
+# [south] five rows of six cells: 's' joins a room to its southern neighbour.
+# A '.' is a wall.  Locked doors are objects in sheet.json, laid over a doorway.
+[east]
+.eee.
+.e..e
+eeeee
+e..ee
+eeeee
+.eeee
+[south]
+s.ssss
+sss.ss
+s.ss.s
+s.s.ss
+sssss.
+[entrance]
+5,2

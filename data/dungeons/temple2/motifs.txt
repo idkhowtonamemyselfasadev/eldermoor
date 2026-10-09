@@ -1,0 +1,37 @@
+# What goes inside each room of Bramble Hollow, over the frame the
+# connection map gives it. Names come from data/dungeons/blocks.txt.
+0,0 m_statues
+0,2 m_tiles
+0,3 m_lavapool
+0,4 m_pots
+0,5 m_pillars
+1,0 m_pillars
+1,1 m_webs
+1,2 m_pots
+1,3 m_rubble
+1,4 m_pits
+1,5 m_boulderwall
+2,0 m_tiles
+2,1 m_pillars
+2,2 m_statues
+2,3 m_boulders
+2,4 m_water
+2,5 m_pots
+3,0 m_pillars
+3,1 m_rubble
+3,2 m_maze
+3,3 m_pits
+3,4 m_webs
+3,5 m_pots
+4,0 m_pots
+4,1 m_lava
+4,2 m_tiles
+4,3 m_pillars
+4,4 m_pots
+4,5 m_pit
+5,0 m_water
+5,1 m_pots
+5,2 m_statues
+5,3 m_pillars
+5,4 m_rubble
+5,5 m_pots

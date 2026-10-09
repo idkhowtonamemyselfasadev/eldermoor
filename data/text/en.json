@@ -137,5 +137,21 @@
   "sign.bramble": "BRAMBLE HOLLOW. The thorns grow back by morning.",
   "sign.tidewrack": "TIDEWRACK. Low tide only.",
   "sign.longglass": "THE LONG GLASS. Bring water.",
-  "sign.glade": "THE HOLLOW GLADE. Quiet, isn't it."
+  "sign.glade": "THE HOLLOW GLADE. Quiet, isn't it.",
+  "item.bracelet": "Power Bracelet",
+  "get.bracelet": [
+    "The Power Bracelet. Stone feels like bread now.",
+    "Press A at a rock or a pot to lift it, and A again to throw it."
+  ],
+  "dungeon.temple2": "Bramble Hollow",
+  "get.flame.temple2": [
+    "The second Flame settles on your wick.",
+    "Two of eight. The thorns along the north road look thinner."
+  ],
+  "boss.thornjaw": "THORNJAW",
+  "boss.hollowking": "THE HOLLOW KING",
+  "bestiary.thornjaw": "It rolls, it stops, and for a moment it is only a rock.",
+  "bestiary.hollowking": "Throw the temple back at it.",
+  "story.temple2.enter": "Roots have got in through the roof. Something has been using them.",
+  "item.flame_bramble": "The Bramble Flame"
 }

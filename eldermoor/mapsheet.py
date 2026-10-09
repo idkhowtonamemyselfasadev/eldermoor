@@ -55,6 +55,8 @@ class MapSheet:
         self.region_grid: dict[str, list[str]] = raw.get("regions", {})
         self.region_spawns: dict[str, dict[str, Any]] = raw.get("region_spawns", {})
         self.night_music: str = raw.get("night_music", "")
+        #: dungeon ids name their floor ("t2_f1_0502"); the overworld does not
+        self.id_layer: bool = bool(raw.get("id_layer", len(raw["layers"]) > 1))
         self.layers: dict[str, SheetLayer] = {}
         for entry in raw["layers"]:
             self.layers[entry["name"]] = self._load_layer(entry)
@@ -79,7 +81,7 @@ class MapSheet:
     # ----- ids -----------------------------------------------------------
     def room_id(self, layer: SheetLayer, row: int, col: int) -> str:
         """Id of one screen, e.g. ``ow_0713`` or ``t2_f1_0304``."""
-        if len(self.layers) > 1:
+        if self.id_layer:
             return f"{self.prefix}_{layer.name}_{row:02d}{col:02d}"
         return f"{self.prefix}_{row:02d}{col:02d}"
 
@@ -100,7 +102,7 @@ class MapSheet:
             return None
         rest = room_id[len(self.prefix) + 1:]
         layer_name = ""
-        if len(self.layers) > 1:
+        if self.id_layer:
             layer_name, _, rest = rest.partition("_")
         if len(rest) != 4 or not rest.isdigit():
             return None

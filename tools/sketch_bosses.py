@@ -80,35 +80,35 @@ class Grid:
         return f"@{name} {self.w} {self.h}\n{rows}\n"
 
 
-def cinderjaw(open_jaw: bool) -> Grid:
-    """Mini-boss: an ember beetle, 32x32, mandibles closed or spread."""
+def cinderjaw(open_jaw: bool, shell: str = "q", glow: str = "e", eye: str = "f") -> Grid:
+    """A mini-boss beetle, 32x32, mandibles closed or spread."""
     g = Grid(32, 32)
-    g.ellipse(15.5, 15.0, 14.0, 11.5, "q")
-    g.ring(15.5, 15.0, 7.5, 9.0, "e")
+    g.ellipse(15.5, 15.0, 14.0, 11.5, shell)
+    g.ring(15.5, 15.0, 7.5, 9.0, glow)
     g.ring(15.5, 15.0, 11.0, 11.6, "0")
     for ex in (9.5, 21.5):
-        g.disc(ex, 11.0, 3.4, "f")
+        g.disc(ex, 11.0, 3.4, eye)
         g.disc(ex, 11.0, 1.4, "0")
     spread = 0.55 if open_jaw else 0.15
     for side in (-1, 1):
-        g.spike(15.5 + side * 5, 24.0, math.pi / 2 + side * spread, 7.0, 2.2, "e")
-        g.spike(15.5 + side * 5, 24.0, math.pi / 2 + side * spread, 7.0, 1.0, "f")
+        g.spike(15.5 + side * 5, 24.0, math.pi / 2 + side * spread, 7.0, 2.2, glow)
+        g.spike(15.5 + side * 5, 24.0, math.pi / 2 + side * spread, 7.0, 1.0, eye)
     for side in (-1, 1):
         g.block(15 + side * 13, 18, 15 + side * 15, 19, "0")
         g.block(15 + side * 13, 10, 15 + side * 15, 11, "0")
     return g
 
 
-def ashmaw(open_mouth: bool) -> Grid:
-    """Ember Temple boss: the Ashen Maw, 48x48, mouth shut or gaping."""
+def ashmaw(open_mouth: bool, shell: str = "q", glow: str = "e", eye: str = "f") -> Grid:
+    """A temple boss, 48x48, mouth shut or gaping."""
     g = Grid(48, 48)
-    g.disc(23.5, 26.0, 21.0, "q")
-    g.ring(23.5, 26.0, 16.5, 18.0, "e")
+    g.disc(23.5, 26.0, 21.0, shell)
+    g.ring(23.5, 26.0, 16.5, 18.0, glow)
     mouth_r = 12.0 if open_mouth else 7.0
     g.disc(23.5, 28.0, mouth_r, "c")
     if open_mouth:
-        g.disc(23.5, 28.0, 5.5, "e")
-        g.disc(23.5, 28.0, 2.5, "f")
+        g.disc(23.5, 28.0, 5.5, glow)
+        g.disc(23.5, 28.0, 2.5, eye)
         for i in range(8):
             a = math.pi * 2 * i / 8 + math.pi / 8
             tx = 23.5 + math.cos(a) * (mouth_r - 1)
@@ -118,7 +118,7 @@ def ashmaw(open_mouth: bool) -> Grid:
         g.ring(23.5, 28.0, 6.0, 7.0, "0")
         g.block(12, 27, 35, 28, "0")
     for ex in (13.0, 34.0):
-        g.disc(ex, 13.0, 4.5, "f")
+        g.disc(ex, 13.0, 4.5, eye)
         g.disc(ex, 13.0, 2.0, "d")
         g.disc(ex, 13.0, 0.9, "0")
     g.ring(23.5, 26.0, 20.2, 21.0, "0")
@@ -126,22 +126,31 @@ def ashmaw(open_mouth: bool) -> Grid:
 
 
 HEADER = """# Bosses, composed by tools/sketch_bosses.py and then editable by hand.
-#   cinderjaw  32x32 mini-boss of the Ember Temple (mandible slam)
-#   ashmaw     48x48 temple boss, the Ashen Maw (shut / gaping)
-# Palette: 0 ink, 6 white, c blood, d red, e ember, f gold, q rust
+# Each temple gets a jaw-shaped mini-boss (32x32) and a maw-shaped boss
+# (48x48) in its own colours; the two frames are its shut and open poses.
+# Palette: 0 ink, 6 white, c blood, d red, e ember, f gold, q rust, g moss,
+#          h leaf, i lime, k sea, u cyan, m ice, n plum, o violet, 8 sand
 """
+
+#: temple -> (mini-boss name, boss name, shell, glow, eye)
+CAST = [
+    ("cinderjaw", "ashmaw", "q", "e", "f"),
+    ("thornjaw", "hollowking", "g", "i", "h"),
+    ("brinejaw", "tideclaw", "j", "u", "m"),
+    ("sandjaw", "glassmaw", "8", "f", "p"),
+]
 
 
 def main() -> int:
     """Write bosses.txt."""
-    blocks = [
-        cinderjaw(False).text("cinderjaw_0"),
-        cinderjaw(True).text("cinderjaw_1"),
-        ashmaw(False).text("ashmaw_0"),
-        ashmaw(True).text("ashmaw_1"),
-    ]
+    blocks = []
+    for mini, boss, shell, glow, eye in CAST:
+        blocks.append(cinderjaw(False, shell, glow, eye).text(f"{mini}_0"))
+        blocks.append(cinderjaw(True, shell, glow, eye).text(f"{mini}_1"))
+        blocks.append(ashmaw(False, shell, glow, eye).text(f"{boss}_0"))
+        blocks.append(ashmaw(True, shell, glow, eye).text(f"{boss}_1"))
     OUT.write_text(HEADER + "\n" + "\n".join(blocks), encoding="utf-8")
-    print("wrote", OUT.relative_to(ROOT))
+    print(f"wrote {OUT.relative_to(ROOT)}: {len(blocks)} frames")
     return 0
 
 

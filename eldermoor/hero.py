@@ -76,6 +76,8 @@ class Hero(Entity):
         self.lantern_timer = 0
         self.hit_this_swing: set[int] = set()
         self.block_cooldown = 0
+        self.carrying: str | None = None
+        self.carry_drop = ""
 
     # ----- queries used by the rest of the game --------------------------
     @property
@@ -145,10 +147,15 @@ class Hero(Entity):
                 world.use_item(self, world.state.slots[index])
                 return
         if inp.pressed("a"):
+            if self.carrying is not None:
+                world.throw_carried(self)
+                return
             if world.try_interact(self):
                 return
             if world.state.sword_level > 0:
                 self.start_swing(world)
+        if self.carrying is not None:
+            return
         if inp.is_held("a") and world.state.sword_level >= 2 and not self.swinging:
             self.charge = min(self.charge + 1, SPIN_CHARGE_FRAMES)
         elif inp.released("a") and self.charge >= SPIN_CHARGE_FRAMES:
@@ -342,6 +349,9 @@ class Hero(Entity):
         if self.invuln > 0 and (self.invuln // 3) % 2 == 1:
             return
         oy -= self.hop_height
+        if self.carrying is not None and assets.sprites.has(self.carrying):
+            target.blit(assets.sprites.get(self.carrying),
+                        (round(self.x), round(self.y) + oy - 12))
         sword = self.sword_sprite()
         hero = assets.sprites.get(self.sprite_name(), self.flip)
         if sword and self.facing == "up":

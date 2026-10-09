@@ -6,8 +6,10 @@ from typing import TYPE_CHECKING
 import pygame
 
 from eldermoor.config import TILE
+from eldermoor.enemies import Thrown
 from eldermoor.entities import DIRS
 from eldermoor.objects import PushBlock, Torch
+from eldermoor.tilemap import Collision
 
 if TYPE_CHECKING:
     from eldermoor.hero import Hero
@@ -17,8 +19,40 @@ LANTERN_FRAMES = 26
 
 
 # ----- hero actions ---------------------------------------------------
+def lift_tile(world: World, hero: Hero) -> bool:
+    """With the Power Bracelet, pick up the rock or pot the hero is facing."""
+    if hero.carrying is not None or not world.state.has("bracelet"):
+        return False
+    front = hero.front_rect()
+    for col, row in world.room.cells(front):
+        tile = world.room.tile_at(col, row)
+        if tile is None or tile.interact not in ("lift", "cut"):
+            continue
+        if tile.collision not in (Collision.LIFTABLE, Collision.SOLID):
+            continue
+        world.set_tile(col, row, tile.becomes or ".")
+        hero.carrying = tile.sprite
+        hero.carry_drop = tile.drop or "rock"
+        world.audio.play("lift")
+        return True
+    return False
+
+
+def throw_carried(world: World, hero: Hero) -> None:
+    """Throw whatever the hero is holding in the direction he faces."""
+    if hero.carrying is None:
+        return
+    dx, dy = DIRS[hero.facing]
+    shot = Thrown(hero.x + dx * 8, hero.y + dy * 8, dx * 2.6, dy * 2.6,
+                  hero.carrying, hero.carry_drop)
+    hero.carrying = None
+    hero.carry_drop = ""
+    world.audio.play("throw")
+    world.spawn(shot)
+
+
 def try_interact(world: World, hero: Hero) -> bool:
-    """A press in front of the hero: talk, read, open, unlock or push."""
+    """A press in front of the hero: talk, read, open, unlock, push or lift."""
     front = hero.front_rect()
     for ent in world.entities:
         if ent is hero or not ent.alive:

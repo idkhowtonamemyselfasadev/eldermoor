@@ -395,6 +395,10 @@ class World:
         """Clear every tile under ``rect`` that this tool removes."""
         return actions.hit_tiles(self, rect, kind)
 
+    def throw_carried(self, hero: Hero) -> None:
+        """Throw the rock or pot the hero is holding."""
+        actions.throw_carried(self, hero)
+
     def stun_boss(self, state: str = "stunned") -> None:
         """Put the room's boss into a vulnerable state."""
         if self.boss is not None:

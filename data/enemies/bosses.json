@@ -1,42 +1,272 @@
 {
   "_comment": "Mini-boss and boss of the Ember Temple. 'weak_states' are the only states in which damage lands, so the temple item is what opens the window.",
-
   "cinderjaw": {
-    "name": "boss.cinderjaw", "bestiary": "bestiary.cinderjaw",
-    "boss": true, "mini": true,
-    "sprite": "cinderjaw", "frames": 2, "frame_time": 14, "size": 32,
-    "body": [4, 10, 24, 20],
-    "hp": 12, "damage": 2, "speed": 0.7, "drop": "enemy_tough",
-    "weak_states": ["stunned"],
-    "ai": {"start": "roam", "states": {
-      "roam":    {"move": "chase", "speed": 0.62, "time": 110, "next": "ready",
-                  "if_near": {"dist": 44, "go": "ready"}},
-      "ready":   {"move": "none", "time": 28, "telegraph": true, "next": "slam"},
-      "slam":    {"move": "dash", "speed": 2.4, "time": 34, "next": "stunned"},
-      "stunned": {"move": "none", "time": 96, "next": "roam"}
-    }},
-    "phases": [{"below": 6, "speed_mul": 1.4, "start": "ready"}]
-  },
-
-  "ashmaw": {
-    "name": "boss.ashmaw", "bestiary": "bestiary.ashmaw",
+    "name": "boss.cinderjaw",
+    "bestiary": "bestiary.cinderjaw",
     "boss": true,
-    "sprite": "ashmaw", "frames": 2, "frame_time": 22, "size": 48,
-    "body": [6, 14, 36, 28],
-    "hp": 18, "damage": 2, "speed": 0.4, "drop": "none",
-    "reward": "heart_container",
-    "weak_states": ["stunned"],
-    "ai": {"start": "shut", "states": {
-      "shut":    {"move": "chase", "speed": 0.34, "time": 150, "next": "wind"},
-      "wind":    {"move": "none", "time": 30, "telegraph": true, "next": "spit"},
-      "spit":    {"move": "shoot", "shot": "shot_ember", "shot_speed": 1.5, "shot_damage": 2,
-                  "time": 18, "next": "roam"},
-      "roam":    {"move": "wander", "speed": 0.5, "turn": 40, "time": 110, "next": "wind"},
-      "stunned": {"move": "none", "time": 150, "next": "shut"}
-    }},
+    "mini": true,
+    "sprite": "cinderjaw",
+    "frames": 2,
+    "frame_time": 14,
+    "size": 32,
+    "body": [
+      4,
+      10,
+      24,
+      20
+    ],
+    "hp": 12,
+    "damage": 2,
+    "speed": 0.7,
+    "drop": "enemy_tough",
+    "weak_states": [
+      "stunned"
+    ],
+    "ai": {
+      "start": "roam",
+      "states": {
+        "roam": {
+          "move": "chase",
+          "speed": 0.62,
+          "time": 110,
+          "next": "ready",
+          "if_near": {
+            "dist": 44,
+            "go": "ready"
+          }
+        },
+        "ready": {
+          "move": "none",
+          "time": 28,
+          "telegraph": true,
+          "next": "slam"
+        },
+        "slam": {
+          "move": "dash",
+          "speed": 2.4,
+          "time": 34,
+          "next": "stunned"
+        },
+        "stunned": {
+          "move": "none",
+          "time": 96,
+          "next": "roam"
+        }
+      }
+    },
     "phases": [
-      {"below": 12, "speed_mul": 1.25, "start": "wind"},
-      {"below": 6, "speed_mul": 1.25, "start": "spit"}
+      {
+        "below": 6,
+        "speed_mul": 1.4,
+        "start": "ready"
+      }
+    ]
+  },
+  "ashmaw": {
+    "name": "boss.ashmaw",
+    "bestiary": "bestiary.ashmaw",
+    "boss": true,
+    "sprite": "ashmaw",
+    "frames": 2,
+    "frame_time": 22,
+    "size": 48,
+    "body": [
+      6,
+      14,
+      36,
+      28
+    ],
+    "hp": 18,
+    "damage": 2,
+    "speed": 0.4,
+    "drop": "none",
+    "reward": "heart_container",
+    "weak_states": [
+      "stunned"
+    ],
+    "ai": {
+      "start": "shut",
+      "states": {
+        "shut": {
+          "move": "chase",
+          "speed": 0.34,
+          "time": 150,
+          "next": "wind"
+        },
+        "wind": {
+          "move": "none",
+          "time": 30,
+          "telegraph": true,
+          "next": "spit"
+        },
+        "spit": {
+          "move": "shoot",
+          "shot": "shot_ember",
+          "shot_speed": 1.5,
+          "shot_damage": 2,
+          "time": 18,
+          "next": "roam"
+        },
+        "roam": {
+          "move": "wander",
+          "speed": 0.5,
+          "turn": 40,
+          "time": 110,
+          "next": "wind"
+        },
+        "stunned": {
+          "move": "none",
+          "time": 150,
+          "next": "shut"
+        }
+      }
+    },
+    "phases": [
+      {
+        "below": 12,
+        "speed_mul": 1.25,
+        "start": "wind"
+      },
+      {
+        "below": 6,
+        "speed_mul": 1.25,
+        "start": "spit"
+      }
+    ]
+  },
+  "thornjaw": {
+    "name": "boss.thornjaw",
+    "bestiary": "bestiary.thornjaw",
+    "boss": true,
+    "mini": true,
+    "sprite": "thornjaw",
+    "frames": 2,
+    "frame_time": 12,
+    "size": 32,
+    "body": [
+      4,
+      10,
+      24,
+      20
+    ],
+    "hp": 14,
+    "damage": 2,
+    "speed": 0.8,
+    "drop": "enemy_tough",
+    "weak_states": [
+      "stunned"
+    ],
+    "ai": {
+      "start": "roam",
+      "states": {
+        "roam": {
+          "move": "wander",
+          "speed": 0.7,
+          "turn": 40,
+          "time": 100,
+          "next": "ready",
+          "if_near": {
+            "dist": 56,
+            "go": "ready"
+          }
+        },
+        "ready": {
+          "move": "none",
+          "time": 26,
+          "telegraph": true,
+          "next": "roll"
+        },
+        "roll": {
+          "move": "dash",
+          "speed": 2.8,
+          "time": 40,
+          "next": "stunned"
+        },
+        "stunned": {
+          "move": "none",
+          "time": 90,
+          "next": "roam"
+        }
+      }
+    },
+    "phases": [
+      {
+        "below": 7,
+        "speed_mul": 1.35,
+        "start": "ready"
+      }
+    ]
+  },
+  "hollowking": {
+    "name": "boss.hollowking",
+    "bestiary": "bestiary.hollowking",
+    "boss": true,
+    "sprite": "hollowking",
+    "frames": 2,
+    "frame_time": 20,
+    "size": 48,
+    "body": [
+      6,
+      14,
+      36,
+      28
+    ],
+    "hp": 20,
+    "damage": 2,
+    "speed": 0.45,
+    "drop": "none",
+    "reward": "heart_container",
+    "weak_states": [
+      "stunned"
+    ],
+    "ai": {
+      "start": "shut",
+      "states": {
+        "shut": {
+          "move": "chase",
+          "speed": 0.4,
+          "time": 140,
+          "next": "wind"
+        },
+        "wind": {
+          "move": "none",
+          "time": 30,
+          "telegraph": true,
+          "next": "spit"
+        },
+        "spit": {
+          "move": "shoot",
+          "shot": "shot_rock",
+          "shot_speed": 1.6,
+          "shot_damage": 2,
+          "time": 18,
+          "next": "roam"
+        },
+        "roam": {
+          "move": "wander",
+          "speed": 0.55,
+          "turn": 40,
+          "time": 110,
+          "next": "wind"
+        },
+        "stunned": {
+          "move": "none",
+          "time": 140,
+          "next": "shut"
+        }
+      }
+    },
+    "phases": [
+      {
+        "below": 13,
+        "speed_mul": 1.2,
+        "start": "wind"
+      },
+      {
+        "below": 6,
+        "speed_mul": 1.2,
+        "start": "spit"
+      }
     ]
   }
 }

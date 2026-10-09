@@ -10,7 +10,7 @@ import pygame
 
 from eldermoor.ai import Brain
 from eldermoor.config import DATA, TILE
-from eldermoor.entities import Entity
+from eldermoor.entities import DeathPuff, Entity
 
 if TYPE_CHECKING:
     from eldermoor.assets import Assets
@@ -224,6 +224,56 @@ class Projectile(Entity):
 
     def sprite_name(self) -> str:
         """The shot's sprite."""
+        return self.sprite
+
+
+class Thrown(Entity):
+    """A rock or pot in the air. Breaks on the first thing it meets."""
+
+    team = "hero"
+    body = pygame.Rect(2, 2, 12, 12)
+    layer = 2
+
+    def __init__(self, x: float, y: float, vx: float, vy: float, sprite: str,
+                 drop: str = "rock", damage: int = 2, life: int = 48) -> None:
+        super().__init__(x, y)
+        self.vx = vx
+        self.vy = vy
+        self.sprite = sprite
+        self.drop = drop
+        self.damage = damage
+        self.life = life
+
+    def update(self, world: World) -> None:
+        """Fly until something stops it, then break."""
+        self.frame += 1
+        self.life -= 1
+        self.x += self.vx
+        self.y += self.vy
+        rect = self.body_rect()
+        for ent in world.enemies():
+            if not rect.colliderect(ent.body_rect()):
+                continue
+            # a boss that shrugs off the sword is still knocked open by a rock
+            if getattr(ent, "weak_states", None) and not getattr(ent, "vulnerable", True):
+                ent.stun(world)
+            else:
+                ent.take_damage(world, self.damage, self)
+            self.shatter(world)
+            return
+        if self.life <= 0 or world.room.blocked(rect) or not world.play_rect.colliderect(rect):
+            self.shatter(world)
+
+    def shatter(self, world: World) -> None:
+        """Break into a puff and whatever was inside."""
+        self.alive = False
+        world.audio.play("smash")
+        world.spawn(DeathPuff(self.x, self.y))
+        if self.drop:
+            world.drop_from(self.x, self.y, self.drop)
+
+    def sprite_name(self) -> str:
+        """The thing being thrown."""
         return self.sprite
 
 
