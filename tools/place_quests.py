@@ -70,16 +70,27 @@ SETS: dict[str, tuple[str, str, str, list[str]]] = {
 }
 
 
+#: the doorway lanes. Nothing may stand in them: a screen is entered through
+#: them, and a person standing there is a wall across the road.
+LANE_COLS = (9, 10)
+LANE_ROWS = (6, 7)
+
+
 def free_cells(room: Any, taken: set[tuple[int, int]]) -> list[tuple[int, int]]:
-    """Walkable cells away from the edges, nearest the middle first."""
+    """Walkable cells clear of the doorway lanes and the spawn, outermost first."""
     from eldermoor.tilemap import BLOCKING
+    spawn = (int(room.spawn[0]) // 16, int(room.spawn[1]) // 16)
     out = []
     for row in range(2, 11):
         for col in range(2, 18):
+            if col in LANE_COLS or row in LANE_ROWS:
+                continue
+            if abs(col - spawn[0]) <= 1 and abs(row - spawn[1]) <= 1:
+                continue
             if (col, row) in taken or room.collision_at(col, row) in BLOCKING:
                 continue
             out.append((col, row))
-    out.sort(key=lambda c: abs(c[0] - 9.5) + abs(c[1] - 6))
+    out.sort(key=lambda c: (-(abs(c[0] - 9.5) + abs(c[1] - 6.5)), c[1], c[0]))
     return out
 
 
@@ -106,6 +117,13 @@ class Placer:
                      for o in self.entries(room_id) if "at" in o}
             self.used[room_id] = cells
         return self.used[room_id]
+
+    def forget(self, ids: set[str]) -> None:
+        """Drop earlier copies of the objects this tool owns, so they re-place."""
+        for screen in self.screens.values():
+            objects = screen.get("objects")
+            if objects:
+                screen["objects"] = [o for o in objects if str(o.get("id", "")) not in ids]
 
     def place(self, room_id: str, spec: dict[str, Any]) -> None:
         """Drop one object on a free cell, replacing any earlier copy of it."""
@@ -135,6 +153,9 @@ def main() -> int:
     from eldermoor.quests import Quests
     table = Quests.load()
     placer = Placer()
+    placer.forget(set(GIVERS) | {f"chest_{i}" for i in QUEST_ITEMS}
+                  | {f"token_{n}" for n in TOKENS}
+                  | {f"{n}{i}" for n, spec in SETS.items() for i in range(len(spec[3]))})
     for quest_id, room_id in GIVERS.items():
         quest = table.get(quest_id)
         if quest is None:
