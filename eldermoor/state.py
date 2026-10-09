@@ -10,6 +10,14 @@ MAX_HEARTS_CAP = 20
 PIECES_PER_CONTAINER = 4
 SEASHELLS_TOTAL = 40
 HEART_PIECES_TOTAL = 40
+FIGURINES_TOTAL = 24
+FURNITURE_TOTAL = 12
+QUESTS_TOTAL = 30
+BESTIARY_TOTAL = 24
+RINGS_TOTAL = 12
+ITEMS_TOTAL = 40
+#: how many rings may be worn at once
+RING_SLOTS = 2
 
 
 @dataclass
@@ -80,6 +88,15 @@ class GameState:
     playtime: float = 0.0
     deaths: int = 0
     minutes_of_day: float = 0.0                      # day/night clock
+    rings: list[str] = field(default_factory=list)        # rings found
+    worn: list[str | None] = field(default_factory=lambda: [None, None])
+    figurines: list[str] = field(default_factory=list)
+    furniture: list[str] = field(default_factory=list)
+    placed: dict[str, str] = field(default_factory=dict)  # furniture id -> spot
+    bestiary: dict[str, int] = field(default_factory=dict)  # enemy id -> kills
+    quests: list[str] = field(default_factory=list)       # finished side quests
+    trade: int = 0                                        # step in the trading chain
+    scores: dict[str, int] = field(default_factory=dict)  # minigame -> best
 
     # ----- items ---------------------------------------------------------
     def has(self, item: str) -> bool:
@@ -167,6 +184,52 @@ class GameState:
         if self.dungeon:
             self.progress(self.dungeon).keys = self.keys
 
+    # ----- rings ---------------------------------------------------------
+    def find_ring(self, ring_id: str) -> bool:
+        """Add a ring to the box. False if it was already in there."""
+        if ring_id in self.rings:
+            return False
+        self.rings.append(ring_id)
+        return True
+
+    def wear(self, index: int, ring_id: str | None) -> None:
+        """Put a ring on one of the two fingers, taking it off the other."""
+        if not 0 <= index < len(self.worn):
+            raise IndexError(index)
+        if ring_id is not None:
+            for i, cur in enumerate(self.worn):
+                if cur == ring_id and i != index:
+                    self.worn[i] = None
+        self.worn[index] = ring_id
+
+    # ----- collections ---------------------------------------------------
+    def collect(self, what: str, item_id: str) -> bool:
+        """Add to a named collection ("figurines"/"furniture"). False if a duplicate."""
+        box: list[str] = getattr(self, what)
+        if item_id in box:
+            return False
+        box.append(item_id)
+        return True
+
+    def record_kill(self, enemy_id: str) -> int:
+        """Count one kill in the bestiary and hand back the new total."""
+        self.bestiary[enemy_id] = self.bestiary.get(enemy_id, 0) + 1
+        return self.bestiary[enemy_id]
+
+    def finish_quest(self, quest_id: str) -> bool:
+        """Tick a side quest off. False if it was already done."""
+        if quest_id in self.quests:
+            return False
+        self.quests.append(quest_id)
+        return True
+
+    def best_score(self, game_id: str, score: int) -> bool:
+        """Record a minigame score; True when it beats the stored best."""
+        if score <= self.scores.get(game_id, -1):
+            return False
+        self.scores[game_id] = score
+        return True
+
     # ----- completion ----------------------------------------------------
     def completion(self) -> float:
         """Completion percent over the counters the post-game cares about."""
@@ -175,7 +238,12 @@ class GameState:
             (self.heart_pieces, HEART_PIECES_TOTAL),
             (self.seashells, SEASHELLS_TOTAL),
             (self.max_hearts - 3, MAX_HEARTS_CAP - 3),
-            (len(self.owned), 40),
+            (len(self.owned), ITEMS_TOTAL),
+            (len(self.rings), RINGS_TOTAL),
+            (len(self.figurines), FIGURINES_TOTAL),
+            (len(self.furniture), FURNITURE_TOTAL),
+            (len(self.bestiary), BESTIARY_TOTAL),
+            (len(self.quests), QUESTS_TOTAL),
         ]
         done = sum(min(got, total) / total for got, total in parts)
         return round(100.0 * done / len(parts), 1)

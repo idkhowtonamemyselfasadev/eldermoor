@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 import pygame
 
-from eldermoor import actions, render, rewards
+from eldermoor import actions, quests, render, rewards, transition
 from eldermoor.bosses import Boss
 from eldermoor.config import PLAY_H, PLAY_W, PLAY_Y, TEXT_SPEED_DEFAULT, TILE
 from eldermoor.content import Content
@@ -16,6 +16,7 @@ from eldermoor.entities import Entity
 from eldermoor.hero import Hero
 from eldermoor.objects import Door, build
 from eldermoor.pickups import Pickup, spawn_drop
+from eldermoor.rings import RingBonus
 from eldermoor.script import fire
 from eldermoor.state import GameState
 from eldermoor.textbox import TextBox
@@ -27,7 +28,6 @@ if TYPE_CHECKING:
     from eldermoor.audio import Audio
     from eldermoor.input import Input
 
-EDGE_MARGIN = 6
 LANTERN_FRAMES = 26
 #: eight real minutes from dawn to dawn
 DAY_LENGTH = 8 * 60.0
@@ -57,6 +57,7 @@ class World:
         self.dialogue_after: Any = None
         self.pending_shop: dict[str, Any] | None = None
         self.pending_warp_menu = False
+        self.regen_timer = 0
         self.pending_ending = ""
         self.shake_timer = 0
         self.boss: Boss | None = None
@@ -273,6 +274,39 @@ class World:
         """Living enemies in the room."""
         return [e for e in self.entities if isinstance(e, Enemy) and e.alive]
 
+    @property
+    def ring_bonus(self) -> RingBonus:
+        """The summed bonus of the rings Wren is wearing."""
+        return self.content.rings.bonus(self.state.worn)
+
+    def bomb_cap(self) -> int:
+        """How many bombs fit in the bag right now."""
+        return self.state.max_bombs + (self.ring_bonus.bombs if self.state.max_bombs else 0)
+
+    def arrow_cap(self) -> int:
+        """How many arrows fit in the quiver right now."""
+        return self.state.max_arrows + (self.ring_bonus.arrows if self.state.max_arrows else 0)
+
+    def on_ice(self, entity: Entity) -> bool:
+        """True when something is standing on ice and the ring is not on."""
+        if self.ring_bonus.grip:
+            return False
+        rect = entity.body_rect()
+        return self.room.collision_at(rect.centerx // TILE,
+                                      rect.centery // TILE) is Collision.ICE
+
+    def _tick_regen(self) -> None:
+        """The Mending Ring hands back a half-heart every so often."""
+        every = self.ring_bonus.regen
+        if not every or self.state.health >= self.state.max_hearts * 2:
+            self.regen_timer = 0
+            return
+        self.regen_timer += 1
+        if self.regen_timer >= every:
+            self.regen_timer = 0
+            self.state.heal(1)
+            self.audio.play("heart")
+
     def hero_passable(self) -> frozenset[Collision]:
         """Tile classes Wren can enter, given what he has found.
 
@@ -350,6 +384,27 @@ class World:
             return
         self.audio.play("warp")
         self.pending_warp_menu = True
+
+    def talk_quest(self, quest_id: str) -> bool:
+        """One conversation with a quest giver: ask, wait, pay or reminisce."""
+        quest = self.content.quests.get(quest_id)
+        if quest is None:
+            self.say("npc.hello")
+            return True
+        state = self.state
+        if quest_id in state.quests:
+            self.say(quest.line("done"))
+            return True
+        if not state.flag(quest.start_flag):
+            state.set_flag(quest.start_flag, 1)
+            self.say(quest.line("ask"))
+            return True
+        if quests.satisfied(self, quest):
+            quests.pay(self, quest)
+            self.say(quest.line("thanks"))
+        else:
+            self.say(quest.line("wait"))
+        return True
 
     def request_shop(self, spec: dict[str, Any]) -> None:
         """Ask the game to open a shop screen after this conversation."""
@@ -462,6 +517,7 @@ class World:
                 ent.update(self)
         self.entities = [e for e in self.entities if e.alive]
         self._check_hazards()
+        self._tick_regen()
         if not self.enemies():
             self.trigger("all_enemies_dead")
         self._check_exit()
@@ -484,7 +540,8 @@ class World:
         hero.hurt(self, 1)
 
     def _check_exit(self) -> None:
-        direction = self.exit_direction()
+        """Walk off an edge: scroll to the next screen, or stay put."""
+        direction = transition.exit_direction(self)
         if direction is None:
             return
         if direction in self.room.exits:
@@ -492,71 +549,17 @@ class World:
         else:
             self.hero.clamp_to_room()
 
-    def exit_direction(self) -> str | None:
-        """Which edge the hero has walked past, if any."""
-        cx = self.hero.x + self.hero.width / 2
-        cy = self.hero.y + self.hero.height / 2
-        if cx < -EDGE_MARGIN + 8:
-            return "west"
-        if cx > PLAY_W + EDGE_MARGIN - 8:
-            return "east"
-        if cy < -EDGE_MARGIN + 8:
-            return "north"
-        if cy > PLAY_H + EDGE_MARGIN - 8:
-            return "south"
-        return None
-
     def start_transition(self, direction: str) -> None:
         """Begin a flip-scroll to the room through the given exit."""
         target = self.room.exits[direction]
         old = self.room_surface().copy()
-        self.enter_room(target, *self._entry_position(direction))
-        self._snap_into_doorway(direction)
+        self.enter_room(target, *transition.entry_position(self, direction))
+        transition.snap_into_doorway(self, direction)
         new = self.room_surface().copy()
         for ent in sorted(self.entities, key=lambda e: (e.depth, e.layer)):
             ent.draw(new, self.assets, 0)
         self.transition = FlipScroll(direction, old, new)
         self.save_position()
-
-    def _snap_into_doorway(self, direction: str) -> None:
-        """Line the hero up with the doorway he just stepped through.
-
-        Neighbouring screens do not always put their gap in the same column,
-        so arriving with the old x can drop Wren inside a cliff. Slide him to
-        the nearest opening on the edge he came in through.
-        """
-        from eldermoor.config import PLAY_COLS, PLAY_ROWS
-        from eldermoor.tilemap import BLOCKING
-        hero = self.hero
-        if direction in ("north", "south"):
-            row = 0 if direction == "south" else PLAY_ROWS - 1
-            cols = [c for c in range(PLAY_COLS)
-                    if self.room.collision_at(c, row) not in BLOCKING]
-            if not cols:
-                return
-            centre = (hero.x + hero.width / 2) / TILE - 0.5
-            col = min(cols, key=lambda c: abs(c - centre))
-            hero.x = float(col * TILE + (TILE - hero.width) // 2)
-        else:
-            col = 0 if direction == "east" else PLAY_COLS - 1
-            rows = [r for r in range(PLAY_ROWS)
-                    if self.room.collision_at(col, r) not in BLOCKING]
-            if not rows:
-                return
-            centre = (hero.y + hero.height / 2) / TILE - 0.5
-            row = min(rows, key=lambda r: abs(r - centre))
-            hero.y = float(row * TILE + (TILE - hero.height) // 2)
-        self.last_safe = (hero.x, hero.y)
-
-    def _entry_position(self, direction: str) -> tuple[float, float]:
-        h = self.hero
-        if direction == "east":
-            return 0.0, h.y
-        if direction == "west":
-            return float(PLAY_W - h.width), h.y
-        if direction == "south":
-            return h.x, 0.0
-        return h.x, float(PLAY_H - h.height)
 
     # ----- drawing --------------------------------------------------------
     @property

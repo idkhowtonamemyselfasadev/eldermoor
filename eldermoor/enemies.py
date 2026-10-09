@@ -71,6 +71,10 @@ class EnemyRegistry:
         """Definition or None."""
         return self.defs.get(key)
 
+    def ordered(self) -> list[EnemyDef]:
+        """Every definition in file order: the order the bestiary lists them."""
+        return list(self.defs.values())
+
 
 class Enemy(Entity):
     """An enemy driven by its definition's state machine."""
@@ -209,7 +213,8 @@ class Projectile(Entity):
             return
         hero = world.hero
         if rect.colliderect(hero.body_rect()):
-            if (hero.cloaked or hero.blocks_from(*self.center)) and self.reflectable:
+            mirrored = hero.cloaked or world.ring_bonus.reflect
+            if (mirrored or hero.blocks_from(*self.center)) and self.reflectable:
                 world.audio.play("block")
                 self.vx, self.vy = -self.vx, -self.vy
                 self.team = "hero"

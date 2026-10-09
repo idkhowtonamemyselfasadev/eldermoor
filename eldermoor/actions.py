@@ -137,7 +137,9 @@ def sword_hit(world: World, hero: Hero, rect: pygame.Rect) -> None:
             continue
         if ent.body_rect().colliderect(rect):
             hero.hit_this_swing.add(id(ent))
-            ent.take_damage(world, max(1, world.state.sword_level), hero)
+            ent.take_damage(world,
+                            max(1, world.state.sword_level) + world.ring_bonus.damage,
+                            hero)
 
 
 def hit_tiles(world: World, rect: pygame.Rect, kind: str) -> int:

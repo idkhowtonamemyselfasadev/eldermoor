@@ -1,0 +1,65 @@
+{
+ "_comment": "Furniture for Wren's house: bought, won and given.",
+ "furniture": {
+  "fur_broom": {
+   "name": "fur.broom",
+   "icon": "icon_chair",
+   "spot": "wall"
+  },
+  "fur_desk": {
+   "name": "fur.desk",
+   "icon": "icon_chair",
+   "spot": "floor"
+  },
+  "fur_shelf": {
+   "name": "fur.shelf",
+   "icon": "icon_chair",
+   "spot": "wall"
+  },
+  "fur_lamp": {
+   "name": "fur.lamp",
+   "icon": "icon_chair",
+   "spot": "floor"
+  },
+  "fur_anvil": {
+   "name": "fur.anvil",
+   "icon": "icon_chair",
+   "spot": "wall"
+  },
+  "fur_window": {
+   "name": "fur.window",
+   "icon": "icon_chair",
+   "spot": "floor"
+  },
+  "fur_rug": {
+   "name": "fur.rug",
+   "icon": "icon_chair",
+   "spot": "wall"
+  },
+  "fur_chair": {
+   "name": "fur.chair",
+   "icon": "icon_chair",
+   "spot": "floor"
+  },
+  "fur_table": {
+   "name": "fur.table",
+   "icon": "icon_chair",
+   "spot": "wall"
+  },
+  "fur_bed": {
+   "name": "fur.bed",
+   "icon": "icon_chair",
+   "spot": "floor"
+  },
+  "fur_chest": {
+   "name": "fur.chest",
+   "icon": "icon_chair",
+   "spot": "wall"
+  },
+  "fur_clock": {
+   "name": "fur.clock",
+   "icon": "icon_chair",
+   "spot": "floor"
+  }
+ }
+}

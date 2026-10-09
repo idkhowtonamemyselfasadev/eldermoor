@@ -14,7 +14,7 @@ from eldermoor.debug import DebugOverlay
 from eldermoor.ending import Ending
 from eldermoor.hud import Hud
 from eldermoor.input import Input
-from eldermoor.menu import FileSelect, PauseMenu
+from eldermoor.menu import PAGES, FileSelect, PauseMenu
 from eldermoor.settings import Settings
 from eldermoor.shop import Shop
 from eldermoor.state import GameState
@@ -101,7 +101,7 @@ class Game:
                 self._open_pause(0)
                 return
             if self.input.pressed("select"):
-                self._open_pause(2)
+                self._open_pause(PAGES.index("map"))
                 return
         self.world.update()
         if self.world.pending_shop is not None:
@@ -112,7 +112,7 @@ class Game:
             self.audio.play("menu_select")
         if self.world.pending_warp_menu:
             self.world.pending_warp_menu = False
-            self._open_pause(2)
+            self._open_pause(PAGES.index("map"))
             return
         if self.world.pending_ending:
             self._start_ending(self.world.pending_ending)

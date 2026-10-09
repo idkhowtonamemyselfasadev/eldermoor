@@ -90,5 +90,15 @@
   "crumble":      {"segments": [{"wave": "noise", "f0": 420, "f1": 140, "dur": 0.40, "vol": 0.3, "env": "stab"}]},
   "fall":         {"segments": [{"wave": "square", "f0": 700, "f1": 90, "dur": 0.55, "vol": 0.32, "env": "stab", "duty": 0.25}]},
   "switch":       {"segments": [{"wave": "square", "f0": 880, "f1": 1320, "dur": 0.08, "vol": 0.32, "env": "blip"}]},
-  "beam":         {"segments": [{"wave": "saw", "f0": 1400, "f1": 700, "dur": 0.30, "vol": 0.3, "env": "pad"}]}
+  "beam":         {"segments": [{"wave": "saw", "f0": 1400, "f1": 700, "dur": 0.30, "vol": 0.3, "env": "pad"}]},
+
+  "quest_done":   {"segments": [{"wave": "square", "f0": 1046, "f1": 1046, "dur": 0.07, "vol": 0.33, "env": "blip"},
+                                {"wave": "square", "f0": 1396, "f1": 1396, "dur": 0.07, "vol": 0.33, "env": "blip", "at": 0.07},
+                                {"wave": "square", "f0": 1760, "f1": 1760, "dur": 0.07, "vol": 0.33, "env": "blip", "at": 0.14},
+                                {"wave": "triangle", "f0": 2093, "f1": 2093, "dur": 0.26, "vol": 0.3, "env": "pluck", "at": 0.21}]},
+  "figurine":     {"segments": [{"wave": "triangle", "f0": 1568, "f1": 2093, "dur": 0.18, "vol": 0.3, "env": "pluck"}]},
+  "dig":          {"segments": [{"wave": "noise", "f0": 700, "f1": 260, "dur": 0.14, "vol": 0.3, "env": "hit"}]},
+  "minigame_win": {"segments": [{"wave": "square", "f0": 784, "f1": 784, "dur": 0.08, "vol": 0.33, "env": "blip"},
+                                {"wave": "square", "f0": 1046, "f1": 1046, "dur": 0.08, "vol": 0.33, "env": "blip", "at": 0.08},
+                                {"wave": "square", "f0": 1318, "f1": 1568, "dur": 0.24, "vol": 0.33, "env": "pluck", "at": 0.16}]}
 }

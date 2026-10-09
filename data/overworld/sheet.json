@@ -207,6 +207,31 @@
      "region": "meadow",
      "flag": "warp:meadow",
      "id": "meadow"
+    },
+    {
+     "kind": "npc",
+     "id": "q_cat",
+     "sprite": "npc_child",
+     "quest": "q_cat",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "lamps1",
+     "sprite": "token_lamp",
+     "count": "lamps",
+     "of": 4,
+     "sets": "lamps_lit",
+     "flag": "token:lamps1",
+     "text": "token.lamp",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
     }
    ]
   },
@@ -257,6 +282,31 @@
       4
      ],
      "text": "sign.shop"
+    },
+    {
+     "kind": "npc",
+     "id": "q_bread",
+     "sprite": "npc_woman",
+     "quest": "q_bread",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "lamps2",
+     "sprite": "token_lamp",
+     "count": "lamps",
+     "of": 4,
+     "sets": "lamps_lit",
+     "flag": "token:lamps2",
+     "text": "token.lamp",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
     }
    ]
   },
@@ -282,6 +332,31 @@
      ],
      "what": "heart_piece",
      "flag": "hp:village_pond"
+    },
+    {
+     "kind": "npc",
+     "id": "q_lamp",
+     "sprite": "npc_elder",
+     "quest": "q_lamp",
+     "at": [
+      11,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "lamps0",
+     "sprite": "token_lamp",
+     "count": "lamps",
+     "of": 4,
+     "sets": "lamps_lit",
+     "flag": "token:lamps0",
+     "text": "token.lamp",
+     "vanish": true,
+     "at": [
+      11,
+      5
+     ]
     }
    ]
   },
@@ -314,6 +389,19 @@
       6
      ],
      "text": "sign.north"
+    },
+    {
+     "kind": "token",
+     "id": "token_cat",
+     "sprite": "token_cat",
+     "sets": "cat_found",
+     "flag": "token:cat",
+     "text": "token.cat",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
     }
    ]
   },
@@ -655,6 +743,19 @@
       152,
       160
      ]
+    },
+    {
+     "kind": "token",
+     "id": "token_ice",
+     "sprite": "token_shard",
+     "sets": "ice_crossed",
+     "flag": "token:ice",
+     "text": "token.ice",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
     }
    ]
   },
@@ -733,6 +834,1010 @@
      ],
      "text": "sign.great_lantern_open",
      "if_flag": "flames8"
+    },
+    {
+     "kind": "token",
+     "id": "token_well",
+     "sprite": "token_well",
+     "sets": "well_bottom",
+     "flag": "token:well",
+     "text": "token.well",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1107": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_broom",
+     "sprite": "npc_man",
+     "quest": "q_broom",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "pots0",
+     "sprite": "token_pot",
+     "count": "pots",
+     "of": 5,
+     "sets": "pots_broken",
+     "flag": "token:pots0",
+     "text": "token.pot",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "lamps3",
+     "sprite": "token_lamp",
+     "count": "lamps",
+     "of": 4,
+     "sets": "lamps_lit",
+     "flag": "token:lamps3",
+     "text": "token.lamp",
+     "vanish": true,
+     "at": [
+      9,
+      5
+     ]
+    }
+   ]
+  },
+  "ow_1204": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_letter",
+     "sprite": "npc_woman",
+     "quest": "q_letter",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "pots4",
+     "sprite": "token_pot",
+     "count": "pots",
+     "of": 5,
+     "sets": "pots_broken",
+     "flag": "token:pots4",
+     "text": "token.pot",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1205": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_shells5",
+     "sprite": "npc_child",
+     "quest": "q_shells5",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "pots3",
+     "sprite": "token_pot",
+     "count": "pots",
+     "of": 5,
+     "sets": "pots_broken",
+     "flag": "token:pots3",
+     "text": "token.pot",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1206": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_shells20",
+     "sprite": "npc_child",
+     "quest": "q_shells20",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "pots2",
+     "sprite": "token_pot",
+     "count": "pots",
+     "of": 5,
+     "sets": "pots_broken",
+     "flag": "token:pots2",
+     "text": "token.pot",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1207": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_bestiary",
+     "sprite": "npc_elder",
+     "quest": "q_bestiary",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "pots1",
+     "sprite": "token_pot",
+     "count": "pots",
+     "of": 5,
+     "sets": "pots_broken",
+     "flag": "token:pots1",
+     "text": "token.pot",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1004": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_sheep",
+     "sprite": "npc_man",
+     "quest": "q_sheep",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0805": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_flowers",
+     "sprite": "npc_woman",
+     "quest": "q_flowers",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1008": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_bridge",
+     "sprite": "npc_man",
+     "quest": "q_bridge",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0905": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_well",
+     "sprite": "npc_child",
+     "quest": "q_well",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0304": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_honey",
+     "sprite": "npc_woman",
+     "quest": "q_honey",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "paths2",
+     "sprite": "token_bramble",
+     "count": "paths",
+     "of": 6,
+     "sets": "paths_cut",
+     "flag": "token:paths2",
+     "text": "token.bramble",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0305": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_woodcutter",
+     "sprite": "npc_man",
+     "quest": "q_woodcutter",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "paths3",
+     "sprite": "token_bramble",
+     "count": "paths",
+     "of": 6,
+     "sets": "paths_cut",
+     "flag": "token:paths3",
+     "text": "token.bramble",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0302": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_mushroom",
+     "sprite": "npc_elder",
+     "quest": "q_mushroom",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "paths0",
+     "sprite": "token_bramble",
+     "count": "paths",
+     "of": 6,
+     "sets": "paths_cut",
+     "flag": "token:paths0",
+     "text": "token.bramble",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1212": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_net",
+     "sprite": "npc_man",
+     "quest": "q_net",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1213": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_tide",
+     "sprite": "npc_woman",
+     "quest": "q_tide",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "token_boat",
+     "sprite": "token_boat",
+     "sets": "boat_free",
+     "flag": "token:boat",
+     "text": "token.boat",
+     "vanish": true,
+     "needs": "gauntlet",
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1312": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_crab",
+     "sprite": "npc_child",
+     "quest": "q_crab",
+     "at": [
+      9,
+      4
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "token_net",
+     "sprite": "token_net",
+     "sets": "net_found",
+     "flag": "token:net",
+     "text": "token.net",
+     "vanish": true,
+     "needs": "fins",
+     "at": [
+      10,
+      4
+     ]
+    }
+   ]
+  },
+  "ow_1214": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_gull",
+     "sprite": "npc_man",
+     "quest": "q_gull",
+     "at": [
+      9,
+      4
+     ]
+    }
+   ]
+  },
+  "ow_0513": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_water",
+     "sprite": "npc_man",
+     "quest": "q_water",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0514": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_dig",
+     "sprite": "npc_woman",
+     "quest": "q_dig",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0512": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_glass",
+     "sprite": "npc_elder",
+     "quest": "q_glass",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0112": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_coal",
+     "sprite": "npc_man",
+     "quest": "q_coal",
+     "at": [
+      11,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0113": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_bellows",
+     "sprite": "npc_woman",
+     "quest": "q_bellows",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "token_bellows",
+     "sprite": "token_bellows",
+     "sets": "bellows_fixed",
+     "flag": "token:bellows",
+     "text": "token.bellows",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0106": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_skates",
+     "sprite": "npc_child",
+     "quest": "q_skates",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0108": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_mirror",
+     "sprite": "npc_woman",
+     "quest": "q_mirror",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0408": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_frogs",
+     "sprite": "npc_elder",
+     "quest": "q_frogs",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "frogs3",
+     "sprite": "token_frog",
+     "count": "frogs",
+     "of": 9,
+     "sets": "frogs_counted",
+     "flag": "token:frogs3",
+     "text": "token.frog",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0407": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_oil",
+     "sprite": "npc_man",
+     "quest": "q_oil",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "frogs2",
+     "sprite": "token_frog",
+     "count": "frogs",
+     "of": 9,
+     "sets": "frogs_counted",
+     "flag": "token:frogs2",
+     "text": "token.frog",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0001": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_ghost",
+     "sprite": "npc_ghost",
+     "quest": "q_ghost",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0002": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "q_quiet",
+     "sprite": "npc_ghost",
+     "quest": "q_quiet",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0907": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_wheat",
+     "item": "q_wheat",
+     "flag": "chest:q_wheat",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1203": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_letter",
+     "item": "q_letter",
+     "flag": "chest:q_letter",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0804": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_flowers",
+     "item": "q_flowers",
+     "flag": "chest:q_flowers",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0303": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_wood",
+     "item": "q_wood",
+     "flag": "chest:q_wood",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "paths1",
+     "sprite": "token_bramble",
+     "count": "paths",
+     "of": 6,
+     "sets": "paths_cut",
+     "flag": "token:paths1",
+     "text": "token.bramble",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0301": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_honey",
+     "item": "q_honey",
+     "flag": "chest:q_honey",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0300": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_mushroom",
+     "item": "q_mushroom",
+     "flag": "chest:q_mushroom",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1208": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_bread",
+     "item": "q_bread",
+     "flag": "chest:q_bread",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0006": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_water",
+     "item": "q_water",
+     "flag": "chest:q_water",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0415": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_sand",
+     "item": "q_sand",
+     "flag": "chest:q_sand",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0011": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_coal",
+     "item": "q_coal",
+     "flag": "chest:q_coal",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0007": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_shard",
+     "item": "q_shard",
+     "flag": "chest:q_shard",
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0406": {
+   "objects": [
+    {
+     "kind": "chest",
+     "id": "chest_q_oil",
+     "item": "q_oil",
+     "flag": "chest:q_oil",
+     "at": [
+      9,
+      6
+     ]
+    },
+    {
+     "kind": "token",
+     "id": "frogs1",
+     "sprite": "token_frog",
+     "count": "frogs",
+     "of": 9,
+     "sets": "frogs_counted",
+     "flag": "token:frogs1",
+     "text": "token.frog",
+     "vanish": true,
+     "at": [
+      10,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1003": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "sheep0",
+     "sprite": "token_sheep",
+     "count": "sheep",
+     "of": 3,
+     "sets": "sheep_home",
+     "flag": "token:sheep0",
+     "text": "token.sheep",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0904": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "sheep1",
+     "sprite": "token_sheep",
+     "count": "sheep",
+     "of": 3,
+     "sets": "sheep_home",
+     "flag": "token:sheep1",
+     "text": "token.sheep",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_1006": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "sheep2",
+     "sprite": "token_sheep",
+     "count": "sheep",
+     "of": 3,
+     "sets": "sheep_home",
+     "flag": "token:sheep2",
+     "text": "token.sheep",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0306": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "paths4",
+     "sprite": "token_bramble",
+     "count": "paths",
+     "of": 6,
+     "sets": "paths_cut",
+     "flag": "token:paths4",
+     "text": "token.bramble",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0307": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "paths5",
+     "sprite": "token_bramble",
+     "count": "paths",
+     "of": 6,
+     "sets": "paths_cut",
+     "flag": "token:paths5",
+     "text": "token.bramble",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0405": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "frogs0",
+     "sprite": "token_frog",
+     "count": "frogs",
+     "of": 9,
+     "sets": "frogs_counted",
+     "flag": "token:frogs0",
+     "text": "token.frog",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0409": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "frogs4",
+     "sprite": "token_frog",
+     "count": "frogs",
+     "of": 9,
+     "sets": "frogs_counted",
+     "flag": "token:frogs4",
+     "text": "token.frog",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0505": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "frogs5",
+     "sprite": "token_frog",
+     "count": "frogs",
+     "of": 9,
+     "sets": "frogs_counted",
+     "flag": "token:frogs5",
+     "text": "token.frog",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0506": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "frogs6",
+     "sprite": "token_frog",
+     "count": "frogs",
+     "of": 9,
+     "sets": "frogs_counted",
+     "flag": "token:frogs6",
+     "text": "token.frog",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0507": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "frogs7",
+     "sprite": "token_frog",
+     "count": "frogs",
+     "of": 9,
+     "sets": "frogs_counted",
+     "flag": "token:frogs7",
+     "text": "token.frog",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
+    }
+   ]
+  },
+  "ow_0508": {
+   "objects": [
+    {
+     "kind": "token",
+     "id": "frogs8",
+     "sprite": "token_frog",
+     "count": "frogs",
+     "of": 9,
+     "sets": "frogs_counted",
+     "flag": "token:frogs8",
+     "text": "token.frog",
+     "vanish": true,
+     "at": [
+      9,
+      6
+     ]
     }
    ]
   }

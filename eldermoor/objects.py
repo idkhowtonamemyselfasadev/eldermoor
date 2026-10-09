@@ -115,10 +115,68 @@ class Npc(RoomObject):
                     (round(self.x) + ox, round(self.y) + oy + oys + self.bob))
 
     def interact(self, world: World) -> bool:
-        """Say the line for the current story state, then open a shop if this NPC has one."""
+        """Say the line for the current story state, then quest, shop or nothing."""
+        quest_id = str(self.spec.get("quest", ""))
+        if quest_id:
+            return world.talk_quest(quest_id)
         stock = self.spec.get("shop")
         after = (lambda _r: world.request_shop(self.spec)) if stock else None
         world.say(world.npc_line(self.spec), after=after)
+        return True
+
+
+class Token(RoomObject):
+    """A thing in the world that answers a press by setting a flag.
+
+    One token sets its own flag. A set of them share a ``count`` and an
+    ``of``: poke all five pots, or walk all three sheep home, and the shared
+    flag goes up once the last one is done. ``needs`` holds a token back
+    until an item is in the bag.
+    """
+
+    blocks_movement = True
+
+    def __init__(self, world: World, spec: dict[str, Any]) -> None:
+        super().__init__(world, spec)
+        self.sprite = str(spec.get("sprite", "npc_elder"))
+        self.count = str(spec.get("count", ""))
+        self.of = int(spec.get("of", 1))
+        self.needs = str(spec.get("needs", ""))
+        self.sets = str(spec.get("sets", ""))
+        self.gone = bool(spec.get("vanish", False)) and self.done(world)
+
+    def sprite_name(self) -> str | None:
+        """Its sprite, unless it has been used up."""
+        return None if self.gone else self.sprite
+
+    @property
+    def counter(self) -> str:
+        """Flag that holds how many of a set have been done."""
+        return f"count:{self.count}"
+
+    def interact(self, world: World) -> bool:
+        """Poke it: refuse, repeat, or count it and say the line."""
+        if self.needs and not world.state.has(self.needs):
+            world.say(str(self.spec.get("refuse", "token.refuse")))
+            return True
+        if self.done(world):
+            world.say(str(self.spec.get("again", self.spec.get("text", "token.again"))))
+            return True
+        self.mark(world)
+        world.audio.play(str(self.spec.get("sound", "secret")))
+        if self.count:
+            now = world.state.flag(self.counter) + 1
+            world.state.set_flag(self.counter, now)
+            if now >= self.of and self.sets:
+                world.state.set_flag(self.sets, 1)
+                world.audio.play("puzzle")
+        elif self.sets:
+            world.state.set_flag(self.sets, 1)
+        if bool(self.spec.get("vanish", False)):
+            self.gone = True
+            self.blocks = False
+        world.say(str(self.spec.get("text", "token.found")))
+        world.trigger("token", self.id)
         return True
 
 
@@ -420,6 +478,7 @@ class WarpLantern(RoomObject):
 #: room object kind -> class
 KINDS: dict[str, Callable[[World, dict[str, Any]], RoomObject]] = {
     "chest": Chest, "sign": Sign, "npc": Npc, "door": Door, "torch": Torch,
+    "token": Token,
     "switch": FloorSwitch, "crystal": Crystal, "block": PushBlock,
     "stairs": Stairs, "reward": Reward, "warp": WarpLantern,
 }

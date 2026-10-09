@@ -13,6 +13,7 @@ from eldermoor.config import (
     HERO_KNOCKBACK_SPEED,
     HERO_SPEED,
     HERO_WALK_FRAME_TIME,
+    ICE_SLIP,
     ROLL_COOLDOWN,
     ROLL_FRAMES,
     ROLL_IFRAMES,
@@ -83,6 +84,8 @@ class Hero(Entity):
         self.hooking = False
         self.cloaked = False
         self.swimming = False
+        #: heading kept while sliding on ice
+        self.slide: tuple[float, float] = (0.0, 0.0)
 
     # ----- queries used by the rest of the game --------------------------
     @property
@@ -193,6 +196,8 @@ class Hero(Entity):
                 speed *= SWIM_SPEED_FACTOR
             if self.cloaked:
                 speed *= CLOAK_SPEED_FACTOR
+            speed *= 1.0 + world.ring_bonus.speed
+            dx, dy = self._on_ice(world, dx, dy)
             self.move(world, dx * speed, dy * speed)
             self.anim_timer += 1
             if self.anim_timer >= HERO_WALK_FRAME_TIME:
@@ -202,10 +207,32 @@ class Hero(Entity):
             self.moving = False
             self.anim_frame = 1
             self.anim_timer = 0
+            self._coast_on_ice(world)
             self.idle_timer += 1
             if self.idle_timer >= HERO_IDLE_FRAME_TIME:
                 self.idle_timer = 0
                 self.idle_blink = not self.idle_blink
+
+    def _on_ice(self, world: World, dx: float, dy: float) -> tuple[float, float]:
+        """Blend a new heading into the old one while Wren is on ice."""
+        if not world.on_ice(self):
+            self.slide = (dx, dy)
+            return dx, dy
+        sx, sy = self.slide
+        sx += (dx - sx) * ICE_SLIP
+        sy += (dy - sy) * ICE_SLIP
+        self.slide = (sx, sy)
+        return sx, sy
+
+    def _coast_on_ice(self, world: World) -> None:
+        """Keep going for a moment after the stick is let go, on ice only."""
+        sx, sy = self.slide
+        if not world.on_ice(self) or math.hypot(sx, sy) < 0.05:
+            self.slide = (0.0, 0.0)
+            return
+        self.moving = True
+        self.slide = (sx * (1.0 - ICE_SLIP), sy * (1.0 - ICE_SLIP))
+        self.move(world, self.slide[0] * HERO_SPEED, self.slide[1] * HERO_SPEED)
 
     # ----- sword ---------------------------------------------------------
     def start_swing(self, world: World | None = None) -> None:
@@ -270,7 +297,8 @@ class Hero(Entity):
         self.roll_dir = (dx / length, dy / length)
         self.roll_timer = ROLL_FRAMES
         self.facing = facing_from(dx, dy, self.facing)
-        self.roll_cooldown = ROLL_FRAMES + ROLL_COOLDOWN
+        self.roll_cooldown = max(ROLL_FRAMES + 2,
+                                 ROLL_FRAMES + ROLL_COOLDOWN - world.ring_bonus.roll)
         world.audio.play("roll")
 
     def _update_roll(self, world: World) -> None:
@@ -303,7 +331,7 @@ class Hero(Entity):
                 return False
             self.apply_knockback(sx, sy, HERO_KNOCKBACK_SPEED)
         self.invuln = HERO_INVULN_FRAMES
-        world.state.damage(half_hearts)
+        world.state.damage(max(1, half_hearts - world.ring_bonus.defence))
         world.audio.play("hurt")
         self.swinging = False
         self.spinning = False

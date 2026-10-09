@@ -36,7 +36,7 @@ SWING_FRAME_TIME = 4             # frames per swing frame
 SWING_FRAMES = 3
 SWING_TOTAL = SWING_FRAME_TIME * SWING_FRAMES
 
-SAVE_VERSION = 2
+SAVE_VERSION = 3
 APP_NAME = "eldermoor"
 SAVE_SLOTS = 3
 
@@ -49,6 +49,8 @@ ROLL_FRAMES = 20
 ROLL_IFRAMES = 8
 ROLL_SPEED = 2.75
 ROLL_COOLDOWN = 12
+#: how slowly ice gives up Wren's old heading (0 = not at all)
+ICE_SLIP = 0.09
 SHIELD_SPEED_FACTOR = 0.55
 SWIM_SPEED_FACTOR = 0.72
 CLOAK_SPEED_FACTOR = 0.8

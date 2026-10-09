@@ -36,7 +36,21 @@ def _v1_to_v2(raw: dict[str, Any]) -> dict[str, Any]:
     return raw
 
 
-MIGRATIONS: dict[int, Callable[[dict[str, Any]], dict[str, Any]]] = {1: _v1_to_v2}
+def _v2_to_v3(raw: dict[str, Any]) -> dict[str, Any]:
+    """Milestone-4 saves knew nothing of rings, collections or side quests."""
+    raw.setdefault("rings", [])
+    raw.setdefault("worn", [None, None])
+    for box in ("figurines", "furniture", "quests"):
+        raw.setdefault(box, [])
+    for table in ("placed", "bestiary", "scores"):
+        raw.setdefault(table, {})
+    raw.setdefault("trade", 0)
+    raw["version"] = 3
+    return raw
+
+
+MIGRATIONS: dict[int, Callable[[dict[str, Any]], dict[str, Any]]] = {1: _v1_to_v2,
+                                                                     2: _v2_to_v3}
 
 
 def migrate(raw: dict[str, Any]) -> dict[str, Any]:
@@ -108,7 +122,8 @@ def summary(slot: int) -> dict[str, Any] | None:
     return {"slot": slot, "hearts": state.max_hearts, "health": state.health,
             "flames": len([d for d in state.dungeons.values() if d.flame]),
             "playtime": state.playtime, "completion": state.completion(),
-            "room": state.room, "deaths": state.deaths}
+            "room": state.room, "deaths": state.deaths,
+            "quests": len(state.quests), "shells": state.seashells}
 
 
 def all_summaries() -> list[dict[str, Any] | None]:

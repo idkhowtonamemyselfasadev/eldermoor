@@ -71,11 +71,12 @@ class Pickup(Entity):
             state.keys += 1
             state.sync_keys()
         elif field == "embers":
+            amount += world.ring_bonus.embers
             state.embers = min(999, state.embers + amount)
         elif field == "bombs":
-            state.bombs = min(state.max_bombs, state.bombs + amount)
+            state.bombs = min(world.bomb_cap(), state.bombs + amount)
         elif field == "arrows":
-            state.arrows = min(state.max_arrows, state.arrows + amount)
+            state.arrows = min(world.arrow_cap(), state.arrows + amount)
         elif field == "magic":
             state.magic = min(state.max_magic, state.magic + amount)
         elif field == "seashells":
@@ -104,6 +105,10 @@ class Pickup(Entity):
 def spawn_drop(world: World, x: float, y: float, table: str) -> Pickup | None:
     """Roll a drop table at a position and spawn the pickup, if any."""
     kind = world.drops.roll(table, world.rng)
+    for _ in range(world.ring_bonus.luck):
+        if kind is not None:
+            break
+        kind = world.drops.roll(table, world.rng)   # the Lucky Ring asks again
     if kind is None:
         return None
     pickup = Pickup(x, y, kind)

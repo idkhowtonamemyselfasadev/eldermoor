@@ -1,0 +1,29 @@
+{
+ "_comment": "Rings: passive, two worn at a time. Bonuses add up. Found in caves, won at games, bought and traded for.",
+ "rings": {
+  "ring_power": {"name": "ring.power", "icon": "icon_ring_red", "desc": "ring.power.desc",
+                 "bonus": {"damage": 1}},
+  "ring_guard": {"name": "ring.guard", "icon": "icon_ring_blue", "desc": "ring.guard.desc",
+                 "bonus": {"defence": 1}},
+  "ring_swift": {"name": "ring.swift", "icon": "icon_ring_green", "desc": "ring.swift.desc",
+                 "bonus": {"speed": 0.15}},
+  "ring_pouch": {"name": "ring.pouch", "icon": "icon_ring_brown", "desc": "ring.pouch.desc",
+                 "bonus": {"bombs": 10}},
+  "ring_quiver": {"name": "ring.quiver", "icon": "icon_ring_brown", "desc": "ring.quiver.desc",
+                  "bonus": {"arrows": 15}},
+  "ring_haggle": {"name": "ring.haggle", "icon": "icon_ring_gold", "desc": "ring.haggle.desc",
+                  "bonus": {"price": -25}},
+  "ring_luck": {"name": "ring.luck", "icon": "icon_ring_gold", "desc": "ring.luck.desc",
+                "bonus": {"luck": 1}},
+  "ring_ember": {"name": "ring.ember", "icon": "icon_ring_gold", "desc": "ring.ember.desc",
+                 "bonus": {"embers": 1}},
+  "ring_roll": {"name": "ring.roll", "icon": "icon_ring_green", "desc": "ring.roll.desc",
+                "bonus": {"roll": 6}},
+  "ring_mirror": {"name": "ring.mirror", "icon": "icon_ring_white", "desc": "ring.mirror.desc",
+                  "bonus": {"reflect": 1}},
+  "ring_grip": {"name": "ring.grip", "icon": "icon_ring_blue", "desc": "ring.grip.desc",
+                "bonus": {"grip": 1}},
+  "ring_mend": {"name": "ring.mend", "icon": "icon_ring_red", "desc": "ring.mend.desc",
+                "bonus": {"regen": 900}}
+ }
+}

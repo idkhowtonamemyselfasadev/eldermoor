@@ -1,0 +1,101 @@
+{
+ "_comment": "Figurines: won, bought and traded for. The gallery displays them.",
+ "figurines": {
+  "fig_cat": {
+   "name": "fig.cat",
+   "icon": "icon_figurine"
+  },
+  "fig_scholar": {
+   "name": "fig.scholar",
+   "icon": "icon_figurine"
+  },
+  "fig_flower": {
+   "name": "fig.flower",
+   "icon": "icon_figurine"
+  },
+  "fig_frog": {
+   "name": "fig.frog",
+   "icon": "icon_figurine"
+  },
+  "fig_fish": {
+   "name": "fig.fish",
+   "icon": "icon_figurine"
+  },
+  "fig_gull": {
+   "name": "fig.gull",
+   "icon": "icon_figurine"
+  },
+  "fig_shovel": {
+   "name": "fig.shovel",
+   "icon": "icon_figurine"
+  },
+  "fig_skate": {
+   "name": "fig.skate",
+   "icon": "icon_figurine"
+  },
+  "fig_lantern": {
+   "name": "fig.lantern",
+   "icon": "icon_figurine"
+  },
+  "fig_wren": {
+   "name": "fig.wren",
+   "icon": "icon_figurine"
+  },
+  "fig_elder": {
+   "name": "fig.elder",
+   "icon": "icon_figurine"
+  },
+  "fig_baker": {
+   "name": "fig.baker",
+   "icon": "icon_figurine"
+  },
+  "fig_fisher": {
+   "name": "fig.fisher",
+   "icon": "icon_figurine"
+  },
+  "fig_smith": {
+   "name": "fig.smith",
+   "icon": "icon_figurine"
+  },
+  "fig_digger": {
+   "name": "fig.digger",
+   "icon": "icon_figurine"
+  },
+  "fig_keeper": {
+   "name": "fig.keeper",
+   "icon": "icon_figurine"
+  },
+  "fig_mote": {
+   "name": "fig.mote",
+   "icon": "icon_figurine"
+  },
+  "fig_thistle": {
+   "name": "fig.thistle",
+   "icon": "icon_figurine"
+  },
+  "fig_crag": {
+   "name": "fig.crag",
+   "icon": "icon_figurine"
+  },
+  "fig_wisp": {
+   "name": "fig.wisp",
+   "icon": "icon_figurine"
+  },
+  "fig_sentinel": {
+   "name": "fig.sentinel",
+   "icon": "icon_figurine"
+  },
+  "fig_hollowking": {
+   "name": "fig.hollowking",
+   "icon": "icon_figurine"
+  },
+  "fig_drownking": {
+   "name": "fig.drownking",
+   "icon": "icon_figurine"
+  },
+  "fig_quiet": {
+   "name": "fig.quiet",
+   "icon": "icon_figurine"
+  }
+ }
+}

@@ -40,10 +40,16 @@ class Shop:
             self._buy(self.stock[self.cursor])
         return None
 
+    def price(self, entry: dict[str, Any]) -> int:
+        """What this costs today: the listed price, less whatever a ring shaves off."""
+        cost = int(entry.get("cost", 0))
+        off = self.world.ring_bonus.price
+        return cost if not cost or not off else max(1, round(cost * (100 + off) / 100))
+
     def _buy(self, entry: dict[str, Any]) -> None:
         state = self.world.state
         item = str(entry.get("item", ""))
-        cost = int(entry.get("cost", 0))
+        cost = self.price(entry)
         if self.sold_out(entry):
             self.note = self.world.textdb.get("shop.sold")
             self.world.audio.play("error")
@@ -84,7 +90,7 @@ class Shop:
                 target.blit(assets.icons.get(icon), (20, y))
             label = self.world.textdb.get(item.name) if item else str(entry.get("item", ""))
             font.draw(target, label, 36, y, colour)
-            font.draw(target, f"{int(entry.get('cost', 0)):3d}", CANVAS_W - 56, y, colour)
+            font.draw(target, f"{self.price(entry):3d}", CANVAS_W - 56, y, colour)
         pygame.draw.rect(target, assets.colour("slate"),
                          pygame.Rect(8, TOP - 6, CANVAS_W - 16, len(self.stock) * ROW_H + 8), 1)
         font.draw(target, self.note[:38], 12, CANVAS_H - 20, assets.colour("mist"))

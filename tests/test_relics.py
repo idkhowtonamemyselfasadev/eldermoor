@@ -217,6 +217,11 @@ def test_full_ending_for_a_finished_run(assets, content, silent_audio):
     state.seashells = 999
     state.max_hearts = 99
     state.owned = [f"thing{i}" for i in range(40)]
+    state.rings = [f"ring{i}" for i in range(12)]
+    state.figurines = [f"fig{i}" for i in range(24)]
+    state.furniture = [f"chair{i}" for i in range(12)]
+    state.bestiary = {f"beast{i}": 1 for i in range(24)}
+    state.quests = [f"quest{i}" for i in range(30)]
     for name in (f"temple{i}" for i in range(1, 10)):
         state.progress(name).flame = True
     assert state.completion() >= FULL_ENDING_AT

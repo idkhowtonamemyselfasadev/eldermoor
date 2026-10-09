@@ -1,10 +1,11 @@
-"""Pause menu (items, quest log, map, settings, save) and the file-select screen."""
+"""Pause menu (items, rings, log, finds, map, settings, save) and file select."""
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
 import pygame
 
+from eldermoor import pages
 from eldermoor.config import CANVAS_H, CANVAS_W, SAVE_SLOTS
 from eldermoor.state import GameState
 
@@ -14,7 +15,7 @@ if TYPE_CHECKING:
     from eldermoor.input import Input
     from eldermoor.settings import Settings
 
-PAGES = ("items", "quest", "map", "settings", "save")
+PAGES = ("items", "rings", "quest", "collect", "map", "settings", "save")
 GRID_COLS = 5
 GRID_X = 24
 GRID_Y = 56
@@ -45,6 +46,8 @@ class PauseMenu:
         self.message = ""
         self.want_save = False
         self.want_warp = ""
+        self.tab = 0
+        self.ring_slot = 0
 
     # ----- frame ---------------------------------------------------------
     def update(self, inp: Input) -> str | None:
@@ -86,8 +89,14 @@ class PauseMenu:
                 return i
         return 0
 
+    def _update_rings(self, inp: Input) -> None:
+        pages.update_rings(self, inp)
+
     def _update_quest(self, inp: Input) -> None:
-        pass
+        pages.update_quest(self, inp)
+
+    def _update_collect(self, inp: Input) -> None:
+        pages.update_collect(self, inp)
 
     def _update_map(self, inp: Input) -> None:
         """Flip through the lit warp lanterns; A travels to one."""
@@ -124,6 +133,10 @@ class PauseMenu:
                 self.audio.play("save")
             else:
                 self.audio.play("menu_back")
+
+    def move_cursor(self, inp: Input, count: int, cols: int) -> None:
+        """Move the page cursor within a grid (pages.py calls this too)."""
+        self._move_cursor(inp, count, cols)
 
     def _move_cursor(self, inp: Input, count: int, cols: int) -> None:
         if count <= 0:
@@ -181,21 +194,14 @@ class PauseMenu:
             self.assets.font8.draw(target, self.content.text.get("menu.empty"), 8, 40,
                                    self.assets.colour("mist"))
 
+    def _draw_rings(self, target: pygame.Surface) -> None:
+        pages.draw_rings(self, target)
+
     def _draw_quest(self, target: pygame.Surface) -> None:
-        font = self.assets.font8
-        state = self.state
-        flames = len([d for d in state.dungeons.values() if d.flame])
-        hours, minutes = divmod(int(state.playtime) // 60, 60)
-        lines = [
-            self.content.text.get("quest.flames", n=flames),
-            self.content.text.get("quest.hearts", n=state.max_hearts, p=state.heart_pieces),
-            self.content.text.get("quest.shells", n=state.seashells),
-            self.content.text.get("quest.embers", n=state.embers),
-            self.content.text.get("quest.deaths", n=state.deaths),
-            self.content.text.get("quest.time", h=hours, m=f"{minutes:02d}"),
-            self.content.text.get("quest.completion", p=state.completion()),
-        ]
-        font.draw_lines(target, lines, 12, 32, self.assets.colour("white"), spacing=3)
+        pages.draw_quest(self, target)
+
+    def _draw_collect(self, target: pygame.Surface) -> None:
+        pages.draw_collect(self, target)
 
     def _draw_map(self, target: pygame.Surface) -> None:
         font = self.assets.font8

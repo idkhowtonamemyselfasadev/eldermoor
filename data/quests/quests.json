@@ -1,0 +1,368 @@
+{
+ "_comment": "The thirty side quests. A giver NPC carries the quest id; needs/gives are read by eldermoor/quests.py.",
+ "quests": {
+  "q_cat": {
+   "name": "quest.cat",
+   "hint": "quest.cat.hint",
+   "region": "village",
+   "sprite": "npc_child",
+   "needs": {
+    "flag": "cat_found"
+   },
+   "gives": {
+    "figurine": "fig_cat"
+   }
+  },
+  "q_bread": {
+   "name": "quest.bread",
+   "hint": "quest.bread.hint",
+   "region": "village",
+   "sprite": "npc_woman",
+   "needs": {
+    "item": "q_wheat"
+   },
+   "gives": {
+    "embers": 60
+   }
+  },
+  "q_lamp": {
+   "name": "quest.lamp",
+   "hint": "quest.lamp.hint",
+   "region": "village",
+   "sprite": "npc_elder",
+   "needs": {
+    "flag": "lamps_lit"
+   },
+   "gives": {
+    "heart_piece": "hp:q_lamp"
+   }
+  },
+  "q_broom": {
+   "name": "quest.broom",
+   "hint": "quest.broom.hint",
+   "region": "village",
+   "sprite": "npc_man",
+   "needs": {
+    "flag": "pots_broken"
+   },
+   "gives": {
+    "furniture": "fur_broom"
+   }
+  },
+  "q_letter": {
+   "name": "quest.letter",
+   "hint": "quest.letter.hint",
+   "region": "village",
+   "sprite": "npc_woman",
+   "needs": {
+    "item": "q_letter"
+   },
+   "gives": {
+    "furniture": "fur_desk"
+   }
+  },
+  "q_shells5": {
+   "name": "quest.shells5",
+   "hint": "quest.shells5.hint",
+   "region": "village",
+   "sprite": "npc_child",
+   "needs": {
+    "shells": 5
+   },
+   "gives": {
+    "ring": "ring_luck"
+   }
+  },
+  "q_shells20": {
+   "name": "quest.shells20",
+   "hint": "quest.shells20.hint",
+   "region": "village",
+   "sprite": "npc_child",
+   "needs": {
+    "shells": 20
+   },
+   "gives": {
+    "heart_piece": "hp:q_shells20"
+   }
+  },
+  "q_bestiary": {
+   "name": "quest.bestiary",
+   "hint": "quest.bestiary.hint",
+   "region": "village",
+   "sprite": "npc_elder",
+   "needs": {
+    "bestiary": 10
+   },
+   "gives": {
+    "figurine": "fig_scholar"
+   }
+  },
+  "q_sheep": {
+   "name": "quest.sheep",
+   "hint": "quest.sheep.hint",
+   "region": "meadow",
+   "sprite": "npc_man",
+   "needs": {
+    "flag": "sheep_home"
+   },
+   "gives": {
+    "embers": 40
+   }
+  },
+  "q_flowers": {
+   "name": "quest.flowers",
+   "hint": "quest.flowers.hint",
+   "region": "meadow",
+   "sprite": "npc_woman",
+   "needs": {
+    "item": "q_flowers"
+   },
+   "gives": {
+    "figurine": "fig_flower"
+   }
+  },
+  "q_bridge": {
+   "name": "quest.bridge",
+   "hint": "quest.bridge.hint",
+   "region": "meadow",
+   "sprite": "npc_man",
+   "needs": {
+    "item": "q_wood"
+   },
+   "gives": {
+    "heart_piece": "hp:q_bridge"
+   }
+  },
+  "q_well": {
+   "name": "quest.well",
+   "hint": "quest.well.hint",
+   "region": "meadow",
+   "sprite": "npc_child",
+   "needs": {
+    "flag": "well_bottom"
+   },
+   "gives": {
+    "figurine": "fig_frog"
+   }
+  },
+  "q_honey": {
+   "name": "quest.honey",
+   "hint": "quest.honey.hint",
+   "region": "thornwood",
+   "sprite": "npc_woman",
+   "needs": {
+    "item": "q_honey"
+   },
+   "gives": {
+    "furniture": "fur_shelf"
+   }
+  },
+  "q_woodcutter": {
+   "name": "quest.woodcutter",
+   "hint": "quest.woodcutter.hint",
+   "region": "thornwood",
+   "sprite": "npc_man",
+   "needs": {
+    "flag": "paths_cut"
+   },
+   "gives": {
+    "embers": 50
+   }
+  },
+  "q_mushroom": {
+   "name": "quest.mushroom",
+   "hint": "quest.mushroom.hint",
+   "region": "thornwood",
+   "sprite": "npc_elder",
+   "needs": {
+    "item": "q_mushroom"
+   },
+   "gives": {
+    "item": "bottle2"
+   }
+  },
+  "q_net": {
+   "name": "quest.net",
+   "hint": "quest.net.hint",
+   "region": "saltmarsh",
+   "sprite": "npc_man",
+   "needs": {
+    "flag": "net_found"
+   },
+   "gives": {
+    "figurine": "fig_fish"
+   }
+  },
+  "q_tide": {
+   "name": "quest.tide",
+   "hint": "quest.tide.hint",
+   "region": "saltmarsh",
+   "sprite": "npc_woman",
+   "needs": {
+    "flag": "boat_free"
+   },
+   "gives": {
+    "heart_piece": "hp:q_tide"
+   }
+  },
+  "q_crab": {
+   "name": "quest.crab",
+   "hint": "quest.crab.hint",
+   "region": "saltmarsh",
+   "sprite": "npc_child",
+   "needs": {
+    "bestiary": 14
+   },
+   "gives": {
+    "furniture": "fur_lamp"
+   }
+  },
+  "q_gull": {
+   "name": "quest.gull",
+   "hint": "quest.gull.hint",
+   "region": "saltmarsh",
+   "sprite": "npc_man",
+   "needs": {
+    "item": "q_bread"
+   },
+   "gives": {
+    "figurine": "fig_gull"
+   }
+  },
+  "q_water": {
+   "name": "quest.water",
+   "hint": "quest.water.hint",
+   "region": "desert",
+   "sprite": "npc_man",
+   "needs": {
+    "item": "q_water"
+   },
+   "gives": {
+    "heart_piece": "hp:q_water"
+   }
+  },
+  "q_dig": {
+   "name": "quest.dig",
+   "hint": "quest.dig.hint",
+   "region": "desert",
+   "sprite": "npc_woman",
+   "needs": {
+    "score": [
+     "dig",
+     8
+    ]
+   },
+   "gives": {
+    "figurine": "fig_shovel"
+   }
+  },
+  "q_glass": {
+   "name": "quest.glass",
+   "hint": "quest.glass.hint",
+   "region": "desert",
+   "sprite": "npc_elder",
+   "needs": {
+    "item": "q_sand"
+   },
+   "gives": {
+    "furniture": "fur_window"
+   }
+  },
+  "q_coal": {
+   "name": "quest.coal",
+   "hint": "quest.coal.hint",
+   "region": "cinder",
+   "sprite": "npc_man",
+   "needs": {
+    "item": "q_coal"
+   },
+   "gives": {
+    "ring": "ring_guard"
+   }
+  },
+  "q_bellows": {
+   "name": "quest.bellows",
+   "hint": "quest.bellows.hint",
+   "region": "cinder",
+   "sprite": "npc_woman",
+   "needs": {
+    "flag": "bellows_fixed"
+   },
+   "gives": {
+    "furniture": "fur_anvil"
+   }
+  },
+  "q_skates": {
+   "name": "quest.skates",
+   "hint": "quest.skates.hint",
+   "region": "tarn",
+   "sprite": "npc_child",
+   "needs": {
+    "flag": "ice_crossed"
+   },
+   "gives": {
+    "figurine": "fig_skate"
+   }
+  },
+  "q_mirror": {
+   "name": "quest.mirror",
+   "hint": "quest.mirror.hint",
+   "region": "tarn",
+   "sprite": "npc_woman",
+   "needs": {
+    "item": "q_shard"
+   },
+   "gives": {
+    "ring": "ring_mirror"
+   }
+  },
+  "q_frogs": {
+   "name": "quest.frogs",
+   "hint": "quest.frogs.hint",
+   "region": "fen",
+   "sprite": "npc_elder",
+   "needs": {
+    "flag": "frogs_counted"
+   },
+   "gives": {
+    "figurine": "fig_lantern"
+   }
+  },
+  "q_oil": {
+   "name": "quest.oil",
+   "hint": "quest.oil.hint",
+   "region": "fen",
+   "sprite": "npc_man",
+   "needs": {
+    "item": "q_oil"
+   },
+   "gives": {
+    "heart_piece": "hp:q_oil"
+   }
+  },
+  "q_ghost": {
+   "name": "quest.ghost",
+   "hint": "quest.ghost.hint",
+   "region": "mistlands",
+   "sprite": "npc_ghost",
+   "needs": {
+    "rooms": 180
+   },
+   "gives": {
+    "item": "bottle3"
+   }
+  },
+  "q_quiet": {
+   "name": "quest.quiet",
+   "hint": "quest.quiet.hint",
+   "region": "mistlands",
+   "sprite": "npc_ghost",
+   "needs": {
+    "bestiary": 22
+   },
+   "gives": {
+    "ring": "ring_mend"
+   }
+  }
+ }
+}
