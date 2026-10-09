@@ -1,0 +1,26 @@
+{
+  "id": "t1_30", "name": "The Grand Lock", "tileset": "temple", "dungeon": "temple1", "floor": 2,
+  "map_pos": [4, 1], "spawn": [24, 104],
+  "exits": {"west": "t1_27", "north": "t1_31"},
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..YY..........YY..M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "....................",
+    "....................",
+    "M..................M",
+    "M..YY..........YY..M",
+    "M..................M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "door", "at": [9, 1], "lock": "big", "flag": "t1_door_boss", "id": "bk"},
+    {"kind": "door", "at": [10, 1], "lock": "big", "flag": "t1_door_boss", "id": "bk"},
+    {"kind": "enemy", "at": [6, 6], "type": "wisp"},
+    {"kind": "enemy", "at": [13, 6], "type": "wisp"}
+  ]
+}

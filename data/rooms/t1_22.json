@@ -1,0 +1,136 @@
+{
+  "id": "t1_22",
+  "name": "The Weighed Floor",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 2,
+  "map_pos": [
+    2,
+    2
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_21",
+    "north": "t1_23",
+    "east": "t1_26",
+    "west": "t1_34"
+  },
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..................M",
+    "M...p..........p...M",
+    "M..................M",
+    "M..................M",
+    "....................",
+    "....................",
+    "M..................M",
+    "M...p..........p...M",
+    "M..................M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "door",
+      "at": [
+        9,
+        1
+      ],
+      "lock": "shut",
+      "flag": "t1_door_plates",
+      "id": "p"
+    },
+    {
+      "kind": "door",
+      "at": [
+        10,
+        1
+      ],
+      "lock": "shut",
+      "flag": "t1_door_plates",
+      "id": "p"
+    },
+    {
+      "kind": "switch",
+      "at": [
+        4,
+        3
+      ],
+      "id": "p1"
+    },
+    {
+      "kind": "switch",
+      "at": [
+        15,
+        3
+      ],
+      "id": "p2"
+    },
+    {
+      "kind": "switch",
+      "at": [
+        4,
+        9
+      ],
+      "id": "p3"
+    },
+    {
+      "kind": "switch",
+      "at": [
+        15,
+        9
+      ],
+      "id": "p4"
+    },
+    {
+      "kind": "block",
+      "at": [
+        8,
+        5
+      ],
+      "id": "b1"
+    },
+    {
+      "kind": "block",
+      "at": [
+        11,
+        5
+      ],
+      "id": "b2"
+    },
+    {
+      "kind": "block",
+      "at": [
+        8,
+        8
+      ],
+      "id": "b3"
+    },
+    {
+      "kind": "block",
+      "at": [
+        11,
+        8
+      ],
+      "id": "b4"
+    }
+  ],
+  "triggers": [
+    {
+      "on": "switch",
+      "flag": "t1_door_plates",
+      "do": [
+        {
+          "open": "p"
+        },
+        {
+          "jingle": "puzzle"
+        }
+      ]
+    }
+  ]
+}

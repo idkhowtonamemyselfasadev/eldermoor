@@ -1,0 +1,24 @@
+{
+  "id": "t1_17", "name": "The Slow Burn", "tileset": "temple", "dungeon": "temple1", "floor": 1,
+  "map_pos": [5, 2], "spawn": [152, 24],
+  "exits": {"north": "t1_13"},
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..LLLL....LLLL....M",
+    "M..LLLL....LLLL....M",
+    "M..................M",
+    "M....LLLLLLLLLL....M",
+    "M....LLLLLLLLLL....M",
+    "M..................M",
+    "M..LLLL....LLLL....M",
+    "M..LLLL....LLLL....M",
+    "M..................M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "chest", "at": [16, 6], "item": "key", "flag": "t1_chest_key3"},
+    {"kind": "enemy", "at": [9, 10], "type": "spitter"}
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "id": "t1_04", "name": "Hall of Four Wicks", "tileset": "temple", "dungeon": "temple1", "floor": 1,
+  "map_pos": [1, 3], "spawn": [280, 104],
+  "exits": {"east": "t1_02", "west": "t1_18"},
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..................M",
+    "M...,,,,,,,,,,,,...M",
+    "M...,..........,...M",
+    "M...,..........,...M",
+    "....,..........,....",
+    "....,..........,....",
+    "M...,..........,...M",
+    "M...,,,,,,,,,,,,...M",
+    "M..................M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "torch", "at": [5, 4], "id": "w1"},
+    {"kind": "torch", "at": [14, 4], "id": "w2"},
+    {"kind": "torch", "at": [5, 8], "id": "w3"},
+    {"kind": "torch", "at": [14, 8], "id": "w4"},
+    {"kind": "enemy", "at": [9, 6], "type": "spitter"}
+  ],
+  "triggers": [
+    {"on": "torches_lit", "count": 4, "flag": "t1_wicks", "do": [
+      {"jingle": "puzzle"},
+      {"say": "puzzle.torches"},
+      {"spawn": {"kind": "chest", "at": [9, 2], "item": "key", "flag": "t1_chest_key1"}}
+    ]}
+  ]
+}

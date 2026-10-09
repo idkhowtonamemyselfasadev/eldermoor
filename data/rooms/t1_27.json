@@ -1,0 +1,52 @@
+{
+  "id": "t1_27",
+  "name": "The Antechamber",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 2,
+  "map_pos": [
+    3,
+    1
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_26",
+    "east": "t1_30"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..YY..........YY..M",
+    "M..................M",
+    "M.....,,,,,,,,.....M",
+    "M.....,......,.....M",
+    "M.....,......,......",
+    "M.....,......,......",
+    "M.....,,,,,,,,.....M",
+    "M..................M",
+    "M..YY..........YY..M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "enemy",
+      "at": [
+        9,
+        6
+      ],
+      "type": "crag"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        4,
+        4
+      ],
+      "type": "wisp"
+    }
+  ]
+}

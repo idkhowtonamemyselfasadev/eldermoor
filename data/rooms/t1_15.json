@@ -1,0 +1,62 @@
+{
+  "id": "t1_15",
+  "name": "The Dry Cistern",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    4,
+    2
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_14",
+    "west": "t1_06"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..~~~~~~~~~~~~~~..M",
+    "M..~............~..M",
+    "M..~............~..M",
+    "M..~............~..M",
+    "................~..M",
+    "................~..M",
+    "M..~............~..M",
+    "M..~~~~~~~~~~~~~~..M",
+    "M..................M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "chest",
+      "at": [
+        9,
+        5
+      ],
+      "item": "embers",
+      "amount": 30,
+      "flag": "t1_chest_embers1"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        6,
+        7
+      ],
+      "type": "mote"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        13,
+        4
+      ],
+      "type": "mote"
+    }
+  ]
+}

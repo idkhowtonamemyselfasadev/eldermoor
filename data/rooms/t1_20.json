@@ -1,0 +1,52 @@
+{
+  "id": "t1_20",
+  "name": "The Back Stair",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    1,
+    0
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "east": "t1_09",
+    "south": "t1_08"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M.............ww...M",
+    "M..o..........ww...M",
+    "M.............ww...M",
+    "M.............ww...M",
+    "M.............ww...M",
+    "M.............ww....",
+    "M.............ww....",
+    "M.............ww...M",
+    "M.............ww...M",
+    "M..o..........ww...M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "enemy",
+      "at": [
+        5,
+        6
+      ],
+      "type": "wisp"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        5,
+        2
+      ],
+      "type": "mote"
+    }
+  ]
+}

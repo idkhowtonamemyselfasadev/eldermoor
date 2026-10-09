@@ -1,0 +1,102 @@
+{
+  "id": "t1_09",
+  "name": "The Cracked Floor",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    2,
+    0
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_07",
+    "east": "t1_10",
+    "west": "t1_20"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..RR..........RR..M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "....................",
+    "....................",
+    "M..................M",
+    "M..................M",
+    "M..RR..........RR..M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "enemy",
+      "at": [
+        9,
+        5
+      ],
+      "type": "cinderjaw"
+    },
+    {
+      "kind": "door",
+      "at": [
+        19,
+        6
+      ],
+      "lock": "shut",
+      "flag": "t1_gate_boss",
+      "id": "e"
+    },
+    {
+      "kind": "door",
+      "at": [
+        19,
+        7
+      ],
+      "lock": "shut",
+      "flag": "t1_gate_boss",
+      "id": "e"
+    }
+  ],
+  "triggers": [
+    {
+      "on": "enter",
+      "do": [
+        {
+          "say": "story.temple1.miniboss"
+        }
+      ],
+      "flag": "t1_miniboss_seen"
+    },
+    {
+      "on": "boss_dead",
+      "flag": "t1_miniboss",
+      "do": [
+        {
+          "shake": 24
+        },
+        {
+          "spawn": {
+            "kind": "chest",
+            "at": [
+              9,
+              4
+            ],
+            "item": "lantern",
+            "flag": "t1_chest_lantern"
+          }
+        },
+        {
+          "open": "e"
+        },
+        {
+          "set_flag": "t1_gate_boss"
+        }
+      ]
+    }
+  ]
+}

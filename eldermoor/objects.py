@@ -141,6 +141,11 @@ class Door(RoomObject):
         """Open frame or the lock's own frame."""
         return "door_open" if self.open else LOCK_SPRITES.get(self.lock, "door_closed")
 
+    def update(self, world: World) -> None:
+        """A doorway is two tiles wide, so both halves watch the same flag."""
+        if not self.open and self.done(world):
+            self.open = True
+
     def unlock(self, world: World) -> bool:
         """Spend a key (if the door needs one) and open. False if it cannot be opened."""
         state = world.state
@@ -189,7 +194,11 @@ class Torch(RoomObject):
 
     def __init__(self, world: World, spec: dict[str, Any]) -> None:
         super().__init__(world, spec)
-        self.lit = bool(spec.get("lit", False)) or self.done(world)
+        #: a torch with burn_time goes out again and is never remembered, so a
+        #: puzzle built on it (the boss arena) can be solved more than once
+        self.burn_time = int(spec.get("burn_time", 0))
+        self.lit = bool(spec.get("lit", False)) or (self.done(world) and not self.burn_time)
+        self.timer = 0
 
     def sprite_name(self) -> str:
         """Unlit, or one of the two flame frames."""
@@ -198,17 +207,25 @@ class Torch(RoomObject):
         return f"torch_lit_{(self.frame // 8) % 2}"
 
     def update(self, world: World) -> None:
-        """Just animate."""
+        """Animate and, for a timed torch, burn down."""
         self.frame += 1
+        if self.lit and self.burn_time:
+            self.timer += 1
+            if self.timer >= self.burn_time:
+                self.lit = False
+                self.timer = 0
 
     def light(self, world: World) -> bool:
         """Light the torch. False if it was already burning."""
         if self.lit:
             return False
         self.lit = True
-        self.mark(world)
+        self.timer = 0
+        if not self.burn_time:
+            self.mark(world)
         world.audio.play("torch_light")
         world.trigger("torch_lit", self.id)
+        world.trigger("torches_lit", self.id)
         return True
 
 

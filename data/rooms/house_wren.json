@@ -1,0 +1,71 @@
+{
+  "id": "house_wren",
+  "name": "Wren's House",
+  "tileset": "house",
+  "region": "village",
+  "music": "village",
+  "spawn": [
+    152,
+    160
+  ],
+  "tiles": [
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMNMMMMMMMMNMMMMM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MM::::cccccccc::::MM",
+    "MM::::cccccccc::::MM",
+    "MM::::cccccccc::::MM",
+    "MM::o:::::::::::o:MM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MMMMMMMMMDDMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "chest",
+      "at": [
+        9,
+        4
+      ],
+      "item": "sword",
+      "flag": "chest:wren_sword"
+    },
+    {
+      "kind": "sign",
+      "at": [
+        14,
+        5
+      ],
+      "text": "npc.wren_home"
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        9,
+        11
+      ],
+      "to": "village_00",
+      "spawn": [
+        72,
+        88
+      ],
+      "sound": "door_open"
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        10,
+        11
+      ],
+      "to": "village_00",
+      "spawn": [
+        72,
+        88
+      ],
+      "sound": "door_open"
+    }
+  ]
+}

@@ -59,3 +59,56 @@ Decisions made without asking, with the reason. Newest at the bottom.
     Module limit (600 lines) is enforced by a test.
 17. **README is deferred to milestone 9** where PROMPT.md asks for it; `run.sh`
     and `requirements.txt` are enough to run milestone 1.
+
+## Milestone 2
+
+18. **Commit trailers.** Commits now carry the `Co-Authored-By` and
+    `Claude-Session` lines the harness asks for. Decision 15 (match the
+    existing history, no trailers) is superseded for that reason only; the
+    author identity is unchanged.
+19. **`Entity.update(world)` instead of `update(inp, room)`.** Entities need
+    the state, the audio, the entity list and the spawn helpers, and six more
+    milestones of them are coming. One context object beats threading a new
+    argument through every class each time.
+20. **Cut bushes, smashed pots and burned webs are tile edits, not objects.**
+    Rooms are re-read from JSON on entry, so the edits undo themselves and the
+    room restocks — exactly the behaviour of the games this follows, and no
+    bookkeeping. Chests, doors and switches are objects because they are
+    permanent, and they each own a global flag.
+21. **Both halves of a two-tile doorway are separate `Door` objects sharing a
+    flag.** A door sprite is 16 px; a 32 px doorway is two of them. Each
+    watches the shared flag every frame, so unlocking either opens both.
+22. **Doorways are snapped on entry.** Neighbouring screens do not always put
+    their gap in the same column, and arriving with the old coordinate could
+    drop Wren inside a cliff. `World._snap_into_doorway` slides him to the
+    nearest opening, and `validate_data.py` additionally fails when two
+    neighbours' doorways do not overlap at all.
+23. **Armour means "hit it from behind", not "hit it from the opposite
+    side".** A Cragguard is open when the attacker is *facing the same way it
+    is*, which is what standing at its back means.
+24. **`assets/audio/` is generated, not committed.** The sprite sheets stay in
+    git, but 8 tracks and 63 effects are 25 MB of pure synthesis; PROMPT.md
+    asks for a modest footprint in the same breath as committed assets, and
+    the footprint wins. `main.py` renders them on first run, and `run.sh`
+    builds them up front.
+25. **Bosses are composed, not typed.** A 48x48 pixel-map written one
+    character at a time is a typo farm, so `tools/sketch_bosses.py` draws the
+    big bosses from discs and spikes. The output is still a plain text
+    pixel-map in `assets_src/` and stays the editable source.
+26. **`move_circle` walks instead of teleporting.** Placing a 48x48 boss
+    straight onto its orbit parked it half inside the wall, where nothing
+    could reach it. Orbiting entities now move with collision.
+27. **Cragguards were pulled out of the first key room and the gate before the
+    mini-boss.** Two shielded knights with three hearts and no shield was a
+    difficulty cliff in the wrong place; they now guard optional rooms and the
+    later floors.
+28. **The playthrough bot is a measuring tape, not a player.** It reports what
+    the save actually contains rather than which goals it gave up on, and the
+    test suite holds it to leaving the village, reaching the temple and taking
+    the map and compass. Automating the boss fights belongs to milestone 8's
+    balance pass, which is where PROMPT.md asks for the 90-hour measurement.
+29. **The shield answers its button during knockback.** Reading it inside the
+    action handler meant a blocked hit froze the shield up permanently,
+    because every blocked frame re-armed the knockback timer.
+30. **Milestone-2 saves are version 2**, with a migration from the (never
+    shipped) version 1 shape so the migration path itself is exercised.

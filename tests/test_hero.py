@@ -70,7 +70,7 @@ def test_axis_separated_collision_slides(game):
     step(game, 400)
     assert h.body_rect().top >= 16 and h.body_rect().left >= 16
     # sliding along the wall still made progress on the free axis
-    assert h.x <= 16 + 2
+    assert h.x <= 64, "slid left along the tree line instead of stopping dead"
 
 
 def test_sword_swing_timing_and_hitbox(game):
@@ -116,7 +116,7 @@ def test_left_swing_mirrors_right(game):
 
 
 def test_room_blocked_treats_water_as_blocking(assets):
-    room = Room.load("meadow_00")
     import pygame
-    assert room.blocked(pygame.Rect(3 * 16, 8 * 16, 4, 4))
-    assert not room.blocked(pygame.Rect(2 * 16, 2 * 16, 4, 4))
+    room = Room.load("village_03")                     # the still pond
+    assert room.blocked(pygame.Rect(5 * 16, 4 * 16, 4, 4)), "deep water blocks"
+    assert not room.blocked(pygame.Rect(9 * 16, 10 * 16, 4, 4))

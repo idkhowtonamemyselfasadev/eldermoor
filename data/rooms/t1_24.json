@@ -1,0 +1,72 @@
+{
+  "id": "t1_24",
+  "name": "The Last Lock",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 2,
+  "map_pos": [
+    2,
+    0
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_23",
+    "east": "t1_25"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..YY..........PP..M",
+    "M..................M",
+    "M..o...........o...M",
+    "M..................M",
+    "M...................",
+    "M...................",
+    "M..o...........o...M",
+    "M..................M",
+    "M..YY..........PP..M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "door",
+      "at": [
+        19,
+        6
+      ],
+      "lock": "small",
+      "flag": "t1_door_d",
+      "id": "d"
+    },
+    {
+      "kind": "door",
+      "at": [
+        19,
+        7
+      ],
+      "lock": "small",
+      "flag": "t1_door_d",
+      "id": "d"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        9,
+        5
+      ],
+      "type": "crag"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        6,
+        8
+      ],
+      "type": "spitter"
+    }
+  ]
+}

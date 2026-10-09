@@ -1,22 +1,25 @@
 {
-  "id": "meadow_01",
-  "name": "Thornwood Edge",
-  "tileset": "meadow",
-  "spawn": [32, 112],
-  "exits": {"west": "meadow_00"},
+  "id": "meadow_01", "name": "The Meadow Road", "tileset": "meadow", "region": "meadow",
+  "music": "overworld_day", "spawn": [152, 176],
+  "exits": {"west": "meadow_00", "east": "meadow_02", "north": "meadow_04", "south": "village_02"},
   "tiles": [
-    "TTTTTTTTTTTTTTTTTTTT",
-    "T.......,....TTTTTTT",
-    "T...*.........TTTTTT",
-    "T........r.....TTTTT",
-    "T.............b.TTTT",
-    "T##..###........TTTT",
-    "======....*......TTT",
-    "=....=...........TTT",
-    "T.......CCCC.....TTT",
-    "T,......C~~C...,.TTT",
-    "T...*...C~~C....TTTT",
-    "T.......CCCC....TTTT",
-    "TTTTTTTTTTTTTTTTTTTT"
+    "TTTTTTTT.==.TTTTTTTT",
+    "T.........==.......T",
+    "T...b.....==....b..T",
+    "T.........==.......T",
+    "T..,......==......,T",
+    "T.........==.......T",
+    "..=================.",
+    "..=================.",
+    "T...\"\"....==....\"\".T",
+    "T..\"\"\"....==...\"\"\"\"T",
+    "T...\"\"....==....\"\".T",
+    "T.........==.......T",
+    "TTTTTTTT.==.TTTTTTTT"
+  ],
+  "objects": [
+    {"kind": "enemy", "at": [5, 4], "type": "mote"},
+    {"kind": "enemy", "at": [14, 10], "type": "thistle"},
+    {"kind": "sign", "at": [8, 5], "text": "sign.north"}
   ]
 }

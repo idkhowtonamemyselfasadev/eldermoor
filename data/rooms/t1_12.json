@@ -1,0 +1,26 @@
+{
+  "id": "t1_12", "name": "The Long Ember", "tileset": "temple", "dungeon": "temple1", "floor": 1,
+  "map_pos": [4, 1], "spawn": [24, 104],
+  "exits": {"west": "t1_11", "east": "t1_13"},
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..................M",
+    "M...LLLLLLLLLLLL...M",
+    "M...L..........L...M",
+    "M...L..........L...M",
+    "....L..........L....",
+    "....L..........L....",
+    "M...L..........L...M",
+    "M...LLLLLLLLLLLL...M",
+    "M..................M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "door", "at": [0, 6], "lock": "small", "flag": "t1_door_b", "id": "b"},
+    {"kind": "door", "at": [0, 7], "lock": "small", "flag": "t1_door_b", "id": "b"},
+    {"kind": "enemy", "at": [9, 6], "type": "spitter"},
+    {"kind": "enemy", "at": [9, 2], "type": "mote"}
+  ]
+}

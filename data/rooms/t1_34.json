@@ -1,0 +1,45 @@
+{
+  "id": "t1_34",
+  "name": "The Thread Maze",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 2,
+  "map_pos": [
+    1,
+    2
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_32",
+    "east": "t1_22",
+    "west": "t1_35"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..w.w.w.w.w.w.w...M",
+    "M..w.w.w.w.w.w.w...M",
+    "M..................M",
+    "M..w.w.w.w.w.w.w...M",
+    "...w.w.w.w.w.w.w....",
+    "...w.w.w.w.w.w.w....",
+    "M..................M",
+    "M..w.w.w.w.w.w.w...M",
+    "M..................M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "enemy",
+      "at": [
+        9,
+        4
+      ],
+      "type": "wisp"
+    }
+  ]
+}

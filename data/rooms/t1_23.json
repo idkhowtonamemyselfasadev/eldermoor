@@ -1,0 +1,53 @@
+{
+  "id": "t1_23",
+  "name": "The Open Floor",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 2,
+  "map_pos": [
+    2,
+    1
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_22",
+    "north": "t1_24",
+    "west": "t1_28"
+  },
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..000......000....M",
+    "M..000......000....M",
+    "M..................M",
+    "M.....000000.......M",
+    "......000000.......M",
+    "......000000.......M",
+    "M.....000000.......M",
+    "M..................M",
+    "M..000......000....M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "enemy",
+      "at": [
+        16,
+        6
+      ],
+      "type": "wisp"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        3,
+        9
+      ],
+      "type": "burrow"
+    }
+  ]
+}

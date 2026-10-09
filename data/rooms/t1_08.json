@@ -1,0 +1,25 @@
+{
+  "id": "t1_08", "name": "The Needle Room", "tileset": "temple", "dungeon": "temple1", "floor": 1,
+  "map_pos": [1, 1], "spawn": [280, 104],
+  "exits": {"east": "t1_07", "west": "t1_16", "north": "t1_20"},
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..000........000..M",
+    "M..000........000..M",
+    "M..................M",
+    "M..................M",
+    "....................",
+    "....................",
+    "M..................M",
+    "M..000........000..M",
+    "M..000........000..M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "chest", "at": [9, 4], "item": "compass", "flag": "t1_chest_compass"},
+    {"kind": "enemy", "at": [6, 6], "type": "wisp"},
+    {"kind": "enemy", "at": [13, 6], "type": "spitter"}
+  ]
+}

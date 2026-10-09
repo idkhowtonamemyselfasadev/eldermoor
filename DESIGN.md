@@ -114,7 +114,16 @@ Lantern, and takes the first Flame home. Everything is saved.
 `map_pos`. Milestone-1 rooms stay valid: every new key is optional.
 
 ### 2.4 Definition of done for milestone 2
-`pytest` green, `ruff` clean, `tools/validate_data.py` proves the Ember
-Temple is completable (no key can be wasted, every door reachable), and a
-scripted bot in `tools/sim_playthrough.py` walks village → temple → boss →
-home headlessly.
+`pytest` green, `ruff` clean, and `tools/validate_data.py` proves the Ember
+Temple is completable: a flood fill that respects webs, pits, locked doors
+and the key count reaches the boss room and the Flame, and the temple holds
+as many small keys as it has small-key doors, so no key can be wasted.
+
+`tools/sim_playthrough.py` drives the real game with a tile-level
+breadth-first bot. It leaves the village, crosses the meadow, enters the
+Ember Temple and takes the map and the compass; that is what the test suite
+holds it to. Fighting the mini-boss and the Ashen Maw unattended is a
+different problem — one for milestone 8, where PROMPT.md asks for the
+balance pass and the 90-hour measurement. The tool already reports what it
+achieved from the save state rather than from goals it gave up on, so the
+number never flatters itself.

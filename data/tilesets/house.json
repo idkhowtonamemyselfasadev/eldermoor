@@ -1,0 +1,15 @@
+{
+  "name": "house",
+  "region": "village",
+  "tiles": {
+    "0":  {"char": ".", "sprite": "floor_wood",  "collision": "floor"},
+    "1":  {"char": ":", "sprite": "floor_stone", "collision": "floor"},
+    "2":  {"char": "c", "sprite": "carpet",      "collision": "floor"},
+    "3":  {"char": "K", "sprite": "counter",     "collision": "solid"},
+    "4":  {"char": "M", "sprite": "wall_stone",  "collision": "solid"},
+    "5":  {"char": "N", "sprite": "window",      "collision": "solid"},
+    "6":  {"char": "D", "sprite": "door_wood",   "collision": "floor"},
+    "7":  {"char": ">", "sprite": "stairs_down", "collision": "floor"},
+    "8":  {"char": "o", "sprite": "t_pot",       "collision": "solid",  "interact": "cut", "becomes": ".", "drop": "pot"}
+  }
+}

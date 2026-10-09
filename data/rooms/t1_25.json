@@ -1,0 +1,72 @@
+{
+  "id": "t1_25",
+  "name": "The Great Key",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 2,
+  "map_pos": [
+    3,
+    0
+  ],
+  "spawn": [
+    24,
+    104
+  ],
+  "exits": {
+    "west": "t1_24"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M...PPPPPPPPPPPP...M",
+    "M...P..........P...M",
+    "M...P..........P...M",
+    "M...P..........P...M",
+    "...............P...M",
+    "...............P...M",
+    "M...P..........P...M",
+    "M...PPPPPPPPPPPP...M",
+    "M..................M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "door",
+      "at": [
+        0,
+        6
+      ],
+      "lock": "small",
+      "flag": "t1_door_d",
+      "id": "d"
+    },
+    {
+      "kind": "door",
+      "at": [
+        0,
+        7
+      ],
+      "lock": "small",
+      "flag": "t1_door_d",
+      "id": "d"
+    },
+    {
+      "kind": "chest",
+      "at": [
+        9,
+        5
+      ],
+      "item": "bigkey",
+      "flag": "t1_chest_bigkey"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        13,
+        7
+      ],
+      "type": "crag"
+    }
+  ]
+}

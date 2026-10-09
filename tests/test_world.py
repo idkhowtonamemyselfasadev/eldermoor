@@ -49,7 +49,7 @@ def test_bad_room_rejected(tmp_path):
 def test_flip_scroll_east_then_back(game):
     w = game.world
     h = w.hero
-    h.y = 98  # the east path row in meadow_00
+    h.y = 98  # the row the east doorway sits on
     game.input.press("right")
     frames = 0
     while w.transition is None:
@@ -58,7 +58,8 @@ def test_flip_scroll_east_then_back(game):
         assert frames < 500, "never reached the exit"
     assert w.room.id == "meadow_01"
     assert w.transition.direction == "east" and w.transition.frame == 0
-    assert h.x == 0 and h.y == 98
+    assert h.x == 0
+    assert h.y == 96, "the hero is lined up with the doorway he came through"
     x_during = h.x
     step(game, FLIP_SCROLL_FRAMES - 1)
     assert w.transition is not None and h.x == x_during, "logic pauses during the scroll"

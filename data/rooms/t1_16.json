@@ -1,0 +1,26 @@
+{
+  "id": "t1_16", "name": "The Quiet Spring", "tileset": "temple", "dungeon": "temple1", "floor": 1,
+  "map_pos": [0, 1], "spawn": [280, 104],
+  "exits": {"east": "t1_08"},
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M.....PPPPPPPP.....M",
+    "M.....P~~~~~~P.....M",
+    "M.....P~~~~~~P.....M",
+    "M.....P~~~~~~P.....M",
+    "M.....P~~~~~~P......",
+    "M.....P~~~~~~P......",
+    "M.....PPPPPPPP.....M",
+    "M..................M",
+    "M..................M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "reward", "at": [9, 9], "what": "shell", "flag": "shell:t1_16"}
+  ],
+  "triggers": [
+    {"on": "enter", "do": [{"jingle": "fairy"}]}
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "id": "t1_13",
+  "name": "The Upward Stair",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    5,
+    1
+  ],
+  "spawn": [
+    24,
+    104
+  ],
+  "exits": {
+    "west": "t1_12",
+    "north": "t1_19",
+    "south": "t1_17"
+  },
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..YY..........YY..M",
+    "M..................M",
+    "M......,,,,,,......M",
+    "M......,....,......M",
+    ".......,.uu.,......M",
+    ".......,....,......M",
+    "M......,,,,,,......M",
+    "M..................M",
+    "M..YY..........YY..M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "door",
+      "at": [
+        9,
+        1
+      ],
+      "lock": "small",
+      "flag": "t1_door_c",
+      "id": "c"
+    },
+    {
+      "kind": "door",
+      "at": [
+        10,
+        1
+      ],
+      "lock": "small",
+      "flag": "t1_door_c",
+      "id": "c"
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        9,
+        6
+      ],
+      "to": "t1_21",
+      "spawn": [
+        152,
+        160
+      ]
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        10,
+        6
+      ],
+      "to": "t1_21",
+      "spawn": [
+        152,
+        160
+      ]
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        4,
+        9
+      ],
+      "type": "crag"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "t1_33", "name": "The Dusty Shelf", "tileset": "temple", "dungeon": "temple1", "floor": 2,
+  "map_pos": [0, 3], "spawn": [280, 104],
+  "exits": {"east": "t1_32"},
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..RRRRRRRRRRRRRR..M",
+    "M..R............R..M",
+    "M..R............R..M",
+    "M..R............R..M",
+    "M..R............R...",
+    "M..R............R...",
+    "M..R............R..M",
+    "M..RRRRRRRRRRRRRR..M",
+    "M..................M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "reward", "at": [9, 5], "what": "shell", "flag": "shell:t1_33"},
+    {"kind": "enemy", "at": [12, 7], "type": "burrow"}
+  ]
+}

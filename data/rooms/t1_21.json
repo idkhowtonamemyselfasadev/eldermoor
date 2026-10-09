@@ -1,0 +1,26 @@
+{
+  "id": "t1_21", "name": "Upper Landing", "tileset": "temple", "dungeon": "temple1", "floor": 2,
+  "map_pos": [2, 3], "spawn": [152, 160],
+  "exits": {"north": "t1_22", "west": "t1_32"},
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..PP..........PP..M",
+    "M..................M",
+    "M......,,,,,,......M",
+    "M......,....,......M",
+    ".......,.>>.,......M",
+    ".......,....,......M",
+    "M......,,,,,,......M",
+    "M..................M",
+    "M..PP..........PP..M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "stairs", "at": [9, 6], "to": "t1_13", "spawn": [152, 112]},
+    {"kind": "stairs", "at": [10, 6], "to": "t1_13", "spawn": [152, 112]},
+    {"kind": "enemy", "at": [4, 9], "type": "mote"},
+    {"kind": "enemy", "at": [15, 3], "type": "mote"}
+  ]
+}

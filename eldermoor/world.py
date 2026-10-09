@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 import pygame
 
+from eldermoor import rewards
 from eldermoor.bosses import Boss
 from eldermoor.config import PLAY_H, PLAY_W, PLAY_Y, TEXT_SPEED_DEFAULT, TILE
 from eldermoor.content import Content
@@ -100,6 +101,8 @@ class World:
         self._room_surface = None
         self.entities = [self.hero]
         self.boss = None
+        self.dialogue = None
+        self.dialogue_after = None
         if x is not None:
             self.hero.x = x
         elif self.room.spawn:
@@ -117,6 +120,23 @@ class World:
     def _build_objects(self) -> None:
         for spec in self.room.objects:
             self.spawn_from_spec(spec)
+        self._respawn_triggered_objects()
+
+    def _respawn_triggered_objects(self) -> None:
+        """Re-place objects a one-shot trigger created on an earlier visit.
+
+        A chest that appears when a room is cleared must still be there when
+        the player comes back for it; the trigger itself has already fired, so
+        the object is rebuilt here and reads its own flag to know whether it
+        was opened.
+        """
+        for trigger in self.room.triggers:
+            flag = trigger.get("flag")
+            if not flag or not self.state.flag(str(flag)):
+                continue
+            for action in trigger.get("do", []):
+                if "spawn" in action:
+                    self.spawn_from_spec(dict(action["spawn"]))
 
     def spawn_from_spec(self, spec: dict[str, Any]) -> Entity | None:
         """Create one entity from a room-object entry (``kind`` picks the class)."""
@@ -150,9 +170,16 @@ class World:
             progress = self.state.progress(self.room.dungeon)
             if self.room.id not in progress.rooms:
                 progress.rooms.append(self.room.id)
+            dungeon = self.content.dungeons.get(self.room.dungeon)
+            if dungeon is not None:
+                self.state.respawn_room = dungeon.entrance
+                self.state.respawn_x, self.state.respawn_y = dungeon.entrance_spawn
         elif self.state.dungeon:
             self.state.sync_keys()
             self.state.enter_dungeon("")
+        if not self.room.dungeon and not self.room.id.startswith("house"):
+            self.state.respawn_room = self.room.id
+            self.state.respawn_x, self.state.respawn_y = self.room.spawn
         self.state.room = self.room.id
 
     def update_music(self) -> None:
@@ -278,73 +305,17 @@ class World:
     # ----- items and rewards ---------------------------------------------
     def grant(self, item: str, amount: int = 1) -> None:
         """Give an item, key, currency or dungeon find, with the right fanfare."""
-        state = self.state
-        if not item:
-            return
-        if item == "key":
-            state.keys += amount
-            state.sync_keys()
-            self.audio.play("key")
-            return
-        if item in ("bigkey", "map", "compass"):
-            progress = self.dungeon_progress()
-            if progress is not None:
-                setattr(progress, "big_key" if item == "bigkey" else item, True)
-            self.audio.play("bigkey" if item == "bigkey" else "item_get")
-            self.say(f"get.{item}")
-            return
-        if item == "embers":
-            state.embers = min(999, state.embers + amount)
-            self.audio.play("ember_big")
-            return
-        if item == "heart":
-            state.heal(amount * 2)
-            self.audio.play("heart")
-            return
-        self.give_item(item)
+        rewards.grant(self, item, amount)
 
     def give_item(self, item: str) -> None:
-        """Add a real inventory item, auto-assigning the first active one to B."""
-        state = self.state
-        definition = self.items.get(item)
-        state.give(item)
-        if item == "sword":
-            state.sword_level = max(1, state.sword_level)
-        elif item == "shield":
-            state.shield_level = max(1, state.shield_level)
-        if definition is not None and definition.assignable and item not in state.slots:
-            for index in range(3):
-                if state.slots[index] is None:
-                    state.assign(index, item)
-                    break
-        self.audio.play("item_get")
-        self.say(f"get.{item}")
+        """Add a real inventory item and announce it."""
+        rewards.give_item(self, item)
 
     def take_reward(self, what: str, spec: dict[str, Any]) -> None:
         """Pick up a heart piece, heart container, seashell or Flame."""
-        state = self.state
-        if what == "heart_piece":
-            made = state.add_heart_piece()
-            self.audio.play("heart_container" if made else "secret")
-            self.say("get.heart_piece_full" if made else "get.heart_piece")
-        elif what == "heart_container":
-            state.add_heart_container()
-            self.audio.play("heart_container")
-            self.say("get.heart_container")
-        elif what == "shell":
-            state.seashells += 1
-            self.audio.play("shell")
-            self.say("get.shell")
-        elif what == "flame":
-            dungeon_id = str(spec.get("dungeon", self.room.dungeon))
-            progress = state.progress(dungeon_id)
-            progress.flame = True
-            progress.cleared = True
-            state.give(str(spec.get("item", "flame_ember")))
-            self.audio.play("flame_get")
-            self.say(f"get.flame.{dungeon_id}", after=self._leave_dungeon)
+        rewards.take_reward(self, what, spec)
 
-    def _leave_dungeon(self, _result: int | None = None) -> None:
+    def leave_dungeon(self, _result: int | None = None) -> None:
         """After taking a Flame, step back outside to the dungeon's return room."""
         dungeon = self.content.dungeons.get(self.room.dungeon)
         if dungeon is not None and dungeon.return_room:
@@ -355,8 +326,8 @@ class World:
         self.shake(30)
         self.state.set_flag(f"boss:{boss.definition.id}", 1)
         if boss.reward:
-            self.spawn_from_spec({"kind": "reward", "what": boss.reward,
-                                  "at": [boss.col_row()[0], boss.col_row()[1]],
+            col, row = boss.col_row()
+            self.spawn_from_spec({"kind": "reward", "what": boss.reward, "at": [col, row],
                                   "flag": f"reward:{boss.definition.id}"})
         self.boss = None
         self.trigger("boss_dead", boss.definition.id)
@@ -444,7 +415,7 @@ class World:
         """Zelda rules: back to the dungeon entrance or the village, items kept."""
         state = self.state
         state.deaths += 1
-        state.health = max(2, state.max_hearts)
+        state.health = state.max_hearts * 2
         self.audio.stop_music(200)
         self.warp(state.respawn_room, state.respawn_x, state.respawn_y)
 
@@ -512,11 +483,42 @@ class World:
         target = self.room.exits[direction]
         old = self.room_surface().copy()
         self.enter_room(target, *self._entry_position(direction))
+        self._snap_into_doorway(direction)
         new = self.room_surface().copy()
         for ent in sorted(self.entities, key=lambda e: (e.depth, e.layer)):
             ent.draw(new, self.assets, 0)
         self.transition = FlipScroll(direction, old, new)
         self.save_position()
+
+    def _snap_into_doorway(self, direction: str) -> None:
+        """Line the hero up with the doorway he just stepped through.
+
+        Neighbouring screens do not always put their gap in the same column,
+        so arriving with the old x can drop Wren inside a cliff. Slide him to
+        the nearest opening on the edge he came in through.
+        """
+        from eldermoor.config import PLAY_COLS, PLAY_ROWS
+        from eldermoor.tilemap import BLOCKING
+        hero = self.hero
+        if direction in ("north", "south"):
+            row = 0 if direction == "south" else PLAY_ROWS - 1
+            cols = [c for c in range(PLAY_COLS)
+                    if self.room.collision_at(c, row) not in BLOCKING]
+            if not cols:
+                return
+            centre = (hero.x + hero.width / 2) / TILE - 0.5
+            col = min(cols, key=lambda c: abs(c - centre))
+            hero.x = float(col * TILE + (TILE - hero.width) // 2)
+        else:
+            col = 0 if direction == "east" else PLAY_COLS - 1
+            rows = [r for r in range(PLAY_ROWS)
+                    if self.room.collision_at(col, r) not in BLOCKING]
+            if not rows:
+                return
+            centre = (hero.y + hero.height / 2) / TILE - 0.5
+            row = min(rows, key=lambda r: abs(r - centre))
+            hero.y = float(row * TILE + (TILE - hero.height) // 2)
+        self.last_safe = (hero.x, hero.y)
 
     def _entry_position(self, direction: str) -> tuple[float, float]:
         h = self.hero
@@ -545,7 +547,29 @@ class World:
         target.blit(self.room_surface(), (sx, oy + sy))
         for ent in sorted(self.entities, key=lambda e: (e.depth, e.layer)):
             ent.draw(target, self.assets, oy + sy)
+        if self.room.dark:
+            self._draw_darkness(target, oy + sy)
         if self.boss is not None and self.boss.alive:
             self.boss.draw_bar(target, self.assets, self.textdb.get(self.boss.name_key))
         if self.dialogue is not None:
             self.dialogue.draw(target, self.assets)
+
+    def _draw_darkness(self, target: pygame.Surface, oy: int) -> None:
+        """A dark room: black except a circle around Wren, wider with the Lantern lit.
+
+        Lighting the room's torch clears it for good, which is what the
+        Lantern is for.
+        """
+        if any(isinstance(e, Torch) and e.lit for e in self.entities):
+            return
+        radius = 30
+        if self.state.has("lantern"):
+            radius = 76 if self.hero.lantern_timer > 0 else 62
+        shade = pygame.Surface((PLAY_W, PLAY_H), pygame.SRCALPHA)
+        shade.fill((2, 2, 8, 248))
+        cx, cy = self.hero.center
+        for i in range(6):
+            r = radius - i * radius // 7
+            alpha = 248 - round(248 * (1.0 - i / 6.0) ** 0.6)
+            pygame.draw.circle(shade, (2, 2, 8, alpha), (round(cx), round(cy)), r)
+        target.blit(shade, (0, oy))

@@ -10,7 +10,7 @@ import pygame
 
 from eldermoor.ai import Brain
 from eldermoor.config import DATA, TILE
-from eldermoor.entities import FLIP_FACING, Entity
+from eldermoor.entities import Entity
 
 if TYPE_CHECKING:
     from eldermoor.assets import Assets
@@ -91,14 +91,14 @@ class Enemy(Entity):
         self.heading: tuple[float, float] = (0.0, 0.0)
         self.hop = 0
         self.anim = 0
-        self.stun = 0
+        self.stun_timer = 0
 
     # ----- frame ---------------------------------------------------------
     def update(self, world: World) -> None:
         """Knockback, then the state machine, then contact damage."""
         self.tick_timers()
-        if self.stun > 0:
-            self.stun -= 1
+        if self.stun_timer > 0:
+            self.stun_timer -= 1
             return
         if self.step_knockback(world):
             return
@@ -116,16 +116,20 @@ class Enemy(Entity):
 
     # ----- damage --------------------------------------------------------
     def vulnerable_from(self, attacker: Entity) -> bool:
-        """False when armour covers the side the hit came from."""
+        """False when armour covers the side the hit came from.
+
+        A shielded knight is only open from behind: the attacker has to be
+        looking the same way the knight is, which means standing at its back.
+        """
         if self.definition.armour != "front":
             return True
-        return attacker.facing == FLIP_FACING.get(self.facing, "down")
+        return attacker.facing == self.facing
 
     def take_damage(self, world: World, amount: int, source: Entity | None = None) -> bool:
         """Sword and projectile damage, respecting armour."""
         if source is not None and not self.vulnerable_from(source):
             world.audio.play("block")
-            self.stun = 6
+            self.stun_timer = 6
             return False
         world.audio.play("enemy_hit")
         return super().take_damage(world, amount, source)

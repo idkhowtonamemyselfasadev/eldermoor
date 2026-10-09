@@ -42,6 +42,7 @@ class Dungeon:
     tileset: str = ""
     miniboss_room: str = ""
     return_room: str = ""
+    entrance_spawn: tuple[int, int] = (152, 160)
 
     @classmethod
     def load(cls, dungeon_id: str, root: Path = DATA) -> Dungeon:
@@ -56,7 +57,8 @@ class Dungeon:
                    flame=raw.get("flame", ""), small_keys=int(raw.get("small_keys", 0)),
                    floors=floors, tileset=raw.get("tileset", ""),
                    miniboss_room=raw.get("miniboss_room", ""),
-                   return_room=raw.get("return_room", ""))
+                   return_room=raw.get("return_room", ""),
+                   entrance_spawn=tuple(raw.get("entrance_spawn", (152, 160))))
 
     def floor(self, number: int) -> Floor | None:
         """Floor by number."""

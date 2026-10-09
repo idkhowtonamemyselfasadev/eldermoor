@@ -1,0 +1,72 @@
+{
+  "_comment": "Enemy definitions. 'ai' is the state machine run by eldermoor/ai.py; a state with 'telegraph' must last at least ENEMY_TELEGRAPH_MIN frames (tools/validate_data.py checks this).",
+
+  "mote": {
+    "name": "enemy.mote", "bestiary": "bestiary.mote",
+    "sprite": "mote", "frames": 2, "frame_time": 12,
+    "hp": 2, "damage": 1, "speed": 0.55, "drop": "enemy",
+    "body": [2, 8, 12, 8],
+    "ai": {"start": "hop", "states": {
+      "hop": {"move": "hop", "period": 46, "height": 7, "speed": 0.75, "time": 0}
+    }}
+  },
+
+  "thistle": {
+    "name": "enemy.thistle", "bestiary": "bestiary.thistle",
+    "sprite": "thistle", "frames": 2, "frame_time": 10,
+    "hp": 2, "damage": 1, "speed": 0.5, "drop": "enemy",
+    "ai": {"start": "lurk", "states": {
+      "lurk":  {"move": "wander", "speed": 0.35, "turn": 50, "time": 70, "next": "lurk",
+                "if_near": {"dist": 56, "go": "tense"}},
+      "tense": {"move": "none", "time": 24, "telegraph": true, "next": "leap"},
+      "leap":  {"move": "dash", "speed": 2.0, "time": 22, "next": "rest"},
+      "rest":  {"move": "none", "time": 34, "next": "lurk"}
+    }}
+  },
+
+  "crag": {
+    "name": "enemy.crag", "bestiary": "bestiary.crag",
+    "sprite": "crag", "frames": 2, "frame_time": 12, "directional": true,
+    "hp": 4, "damage": 1, "speed": 0.45, "drop": "enemy", "armour": "front",
+    "ai": {"start": "patrol", "states": {
+      "patrol": {"move": "patrol", "speed": 0.45, "time": 110, "next": "patrol",
+                 "if_near": {"dist": 46, "go": "ready"}},
+      "ready":  {"move": "none", "time": 26, "telegraph": true, "next": "charge"},
+      "charge": {"move": "dash", "speed": 1.7, "time": 28, "next": "patrol"}
+    }}
+  },
+
+  "wisp": {
+    "name": "enemy.wisp", "bestiary": "bestiary.wisp",
+    "sprite": "wisp", "frames": 2, "frame_time": 16,
+    "hp": 2, "damage": 1, "speed": 0.45, "drop": "enemy", "flying": true,
+    "ai": {"start": "drift", "states": {
+      "drift": {"move": "float", "speed": 0.45, "wobble": 0.5, "time": 180, "next": "ring"},
+      "ring":  {"move": "circle", "radius": 44, "spin": 0.045, "time": 120, "next": "drift"}
+    }}
+  },
+
+  "spitter": {
+    "name": "enemy.spitter", "bestiary": "bestiary.spitter",
+    "sprite": "spitter", "frames": 2, "frame_time": 18,
+    "hp": 3, "damage": 1, "speed": 0.0, "drop": "enemy",
+    "ai": {"start": "wait", "states": {
+      "wait": {"move": "none", "time": 80, "next": "wait", "if_near": {"dist": 108, "go": "aim"}},
+      "aim":  {"move": "none", "time": 26, "telegraph": true, "next": "fire"},
+      "fire": {"move": "shoot", "shot": "shot_ember", "shot_speed": 1.35, "time": 12, "next": "cool"},
+      "cool": {"move": "none", "time": 50, "next": "wait"}
+    }}
+  },
+
+  "burrow": {
+    "name": "enemy.burrow", "bestiary": "bestiary.burrow",
+    "sprite": "burrow", "frames": 3, "frame_time": 14,
+    "hp": 3, "damage": 1, "speed": 0.8, "drop": "enemy",
+    "ai": {"start": "under", "states": {
+      "under":   {"move": "chase", "speed": 0.85, "time": 100, "next": "surface"},
+      "surface": {"move": "none", "time": 28, "telegraph": true, "next": "attack"},
+      "attack":  {"move": "dash", "speed": 1.6, "time": 30, "next": "dive"},
+      "dive":    {"move": "none", "time": 22, "next": "under"}
+    }}
+  }
+}

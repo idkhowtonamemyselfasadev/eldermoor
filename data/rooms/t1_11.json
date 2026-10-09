@@ -1,0 +1,25 @@
+{
+  "id": "t1_11", "name": "The Web Gallery", "tileset": "temple", "dungeon": "temple1", "floor": 1,
+  "map_pos": [3, 1], "spawn": [152, 24],
+  "exits": {"north": "t1_10", "east": "t1_12"},
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..................M",
+    "M..wwwww..wwwww....M",
+    "M..w...w..w...w....M",
+    "M..w...w..w...w....M",
+    "M..w...w..w...w.....",
+    "M..w...w..w...w.....",
+    "M..wwwww..wwwww....M",
+    "M..................M",
+    "M..o...........o...M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "door", "at": [19, 6], "lock": "small", "flag": "t1_door_b", "id": "b"},
+    {"kind": "door", "at": [19, 7], "lock": "small", "flag": "t1_door_b", "id": "b"},
+    {"kind": "enemy", "at": [9, 9], "type": "thistle"}
+  ]
+}

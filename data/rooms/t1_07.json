@@ -1,0 +1,95 @@
+{
+  "id": "t1_07",
+  "name": "The Watchfloor",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    2,
+    1
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_05",
+    "north": "t1_09",
+    "west": "t1_08"
+  },
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M...P..........P...M",
+    "M..................M",
+    "M..................M",
+    "M.......,,,,.......M",
+    "........,..,.......M",
+    "........,..,.......M",
+    "M.......,,,,.......M",
+    "M..................M",
+    "M...P..........P...M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "door",
+      "at": [
+        9,
+        1
+      ],
+      "lock": "shut",
+      "flag": "t1_gate_watch",
+      "id": "g"
+    },
+    {
+      "kind": "door",
+      "at": [
+        10,
+        1
+      ],
+      "lock": "shut",
+      "flag": "t1_gate_watch",
+      "id": "g"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        4,
+        3
+      ],
+      "type": "burrow"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        15,
+        3
+      ],
+      "type": "mote"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        9,
+        9
+      ],
+      "type": "thistle"
+    }
+  ],
+  "triggers": [
+    {
+      "on": "all_enemies_dead",
+      "flag": "t1_gate_watch",
+      "do": [
+        {
+          "open": "g"
+        },
+        {
+          "jingle": "puzzle"
+        }
+      ]
+    }
+  ]
+}

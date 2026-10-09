@@ -1,0 +1,74 @@
+{
+  "id": "t1_02",
+  "name": "The Crossing",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    2,
+    3
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_01",
+    "north": "t1_05",
+    "east": "t1_03",
+    "west": "t1_04"
+  },
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M...P..........P...M",
+    "M..................M",
+    "M.....,,,,,,,,.....M",
+    "M.....,......,.....M",
+    "......,......,......",
+    "......,......,......",
+    "M.....,,,,,,,,.....M",
+    "M..................M",
+    "M...P..o....o..P...M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "door",
+      "at": [
+        9,
+        1
+      ],
+      "lock": "small",
+      "flag": "t1_door_a",
+      "id": "a"
+    },
+    {
+      "kind": "door",
+      "at": [
+        10,
+        1
+      ],
+      "lock": "small",
+      "flag": "t1_door_a",
+      "id": "a"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        6,
+        3
+      ],
+      "type": "mote"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        13,
+        9
+      ],
+      "type": "mote"
+    }
+  ]
+}

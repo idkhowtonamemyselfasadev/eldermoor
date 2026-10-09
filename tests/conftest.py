@@ -1,8 +1,9 @@
-"""Headless pytest setup: dummy SDL drivers, built assets, shared fixtures."""
+"""Headless pytest setup: dummy SDL drivers, a throwaway config dir, shared fixtures."""
 from __future__ import annotations
 
 import os
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -13,6 +14,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 os.environ["SDL_VIDEODRIVER"] = "dummy"
 os.environ["SDL_AUDIODRIVER"] = "dummy"
 os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
+# saves and settings must never touch the real ~/.config during a test run
+os.environ["ELDERMOOR_CONFIG_DIR"] = tempfile.mkdtemp(prefix="eldermoor-test-")
 
 import pygame  # noqa: E402
 
@@ -35,12 +38,43 @@ def assets():
     return Assets()
 
 
+@pytest.fixture(scope="session")
+def content():
+    """Loaded data/ tables (session-wide: the JSON only needs reading once)."""
+    from eldermoor.content import Content
+    return Content()
+
+
 @pytest.fixture
-def game(assets):
-    """A fresh Game with a scriptable Input."""
+def silent_audio():
+    """An Audio that records what was asked for without opening a device."""
+    from eldermoor.audio import Audio
+    audio = Audio(root=Path(tempfile.mkdtemp(prefix="eldermoor-audio-")))
+    audio.enabled = False
+    return audio
+
+
+def make_game(assets, content, audio, room: str = "meadow_00", sword: bool = True):
+    """A Game in a given room, optionally already holding the sword."""
     from eldermoor.game import Game
     from eldermoor.input import Input
-    return Game(assets=assets, inp=Input())
+    game = Game(assets=assets, inp=Input(), content=content, audio=audio, start_room=room)
+    if sword:
+        game.state.give("sword")
+        game.state.sword_level = 1
+    return game
+
+
+@pytest.fixture
+def game(assets, content, silent_audio):
+    """A fresh Game on the meadow screen with a scriptable Input."""
+    return make_game(assets, content, silent_audio)
+
+
+@pytest.fixture
+def village(assets, content, silent_audio):
+    """A fresh Game standing in Lamplight Village."""
+    return make_game(assets, content, silent_audio, room="village_00")
 
 
 def step(game, n: int = 1) -> None:
@@ -56,3 +90,12 @@ def tap(game, button: str) -> None:
     game.input.press(button)
     game.update()
     game.input.release(button)
+
+
+def run_until(game, predicate, limit: int = 1200) -> bool:
+    """Step until the predicate holds or the limit runs out."""
+    for _ in range(limit):
+        if predicate():
+            return True
+        step(game)
+    return predicate()

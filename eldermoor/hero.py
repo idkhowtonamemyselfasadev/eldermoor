@@ -75,6 +75,7 @@ class Hero(Entity):
         self.hop_timer = 0
         self.lantern_timer = 0
         self.hit_this_swing: set[int] = set()
+        self.block_cooldown = 0
 
     # ----- queries used by the rest of the game --------------------------
     @property
@@ -84,8 +85,8 @@ class Hero(Entity):
 
     @property
     def invulnerable(self) -> bool:
-        """True while mercy frames or roll i-frames are running."""
-        return self.invuln > 0 or 0 < self.roll_timer <= ROLL_IFRAMES
+        """True while mercy frames or the opening frames of a roll are running."""
+        return self.invuln > 0 or self.roll_timer > ROLL_FRAMES - ROLL_IFRAMES
 
     @property
     def airborne(self) -> bool:
@@ -115,6 +116,10 @@ class Hero(Entity):
             self.lantern_timer -= 1
         if self.hop_timer > 0:
             self.hop_timer -= 1
+        if self.block_cooldown > 0:
+            self.block_cooldown -= 1
+        # the shield answers the button even while being shoved around
+        self.shielding = world.input.is_held("l") and world.state.shield_level > 0
         if self.step_knockback(world):
             return
         if self.roll_timer > 0:
@@ -132,7 +137,6 @@ class Hero(Entity):
 
     def _read_actions(self, world: World) -> None:
         inp = world.input
-        self.shielding = inp.is_held("l") and world.state.shield_level > 0
         if inp.pressed("r") and self.roll_cooldown == 0:
             self._start_roll(world)
             return
@@ -265,8 +269,10 @@ class Hero(Entity):
         if source is not None:
             sx, sy = source.center
             if self.blocks_from(sx, sy):
-                world.audio.play("block")
-                self.apply_knockback(sx, sy, 1.5)
+                if self.block_cooldown == 0:
+                    world.audio.play("block")
+                    self.apply_knockback(sx, sy, 1.5)
+                    self.block_cooldown = 16
                 return False
             self.apply_knockback(sx, sy, HERO_KNOCKBACK_SPEED)
         self.invuln = HERO_INVULN_FRAMES

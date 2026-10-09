@@ -1,0 +1,27 @@
+{
+  "id": "village_02", "name": "The North Gate", "tileset": "village", "region": "village",
+  "music": "village", "spawn": [152, 176],
+  "exits": {"south": "village_00", "north": "meadow_01"},
+  "tiles": [
+    "TTTTTTTT.==.TTTTTTTT",
+    "T...,.....==......,T",
+    "T.........==.......T",
+    "T..b......==.....b.T",
+    "T####.....==....####",
+    "T.........==.......T",
+    "T...*.....==...*...T",
+    "T.........==.......T",
+    "T..L......==......LT",
+    "T.........==.......T",
+    "T...,.....==....,..T",
+    "T.........==.......T",
+    "TTTTTTTT.==.TTTTTTTT"
+  ],
+  "objects": [
+    {"kind": "npc", "at": [6, 5], "sprite": "npc_guard", "face": "right", "lines": [
+      {"text": "npc.guard.1"},
+      {"if_flag": "flame:temple1", "text": "npc.guard.2"}
+    ]},
+    {"kind": "sign", "at": [12, 5], "text": "sign.north"}
+  ]
+}

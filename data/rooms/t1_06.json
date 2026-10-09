@@ -1,0 +1,62 @@
+{
+  "id": "t1_06",
+  "name": "The Reading Room",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    3,
+    2
+  ],
+  "spawn": [
+    24,
+    104
+  ],
+  "exits": {
+    "west": "t1_05",
+    "south": "t1_03",
+    "east": "t1_15"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..YPPPPPPPPPPPPY..M",
+    "M..................M",
+    "M..................M",
+    "M.......,,,,.......M",
+    ".......,....,.......",
+    ".......,....,.......",
+    "M.......,,,,.......M",
+    "M..................M",
+    "M..o............o..M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "chest",
+      "at": [
+        9,
+        4
+      ],
+      "item": "map",
+      "flag": "t1_chest_map"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        5,
+        9
+      ],
+      "type": "mote"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        14,
+        9
+      ],
+      "type": "mote"
+    }
+  ]
+}

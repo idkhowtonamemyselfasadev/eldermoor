@@ -1,0 +1,42 @@
+{
+  "_comment": "Mini-boss and boss of the Ember Temple. 'weak_states' are the only states in which damage lands, so the temple item is what opens the window.",
+
+  "cinderjaw": {
+    "name": "boss.cinderjaw", "bestiary": "bestiary.cinderjaw",
+    "boss": true, "mini": true,
+    "sprite": "cinderjaw", "frames": 2, "frame_time": 14, "size": 32,
+    "body": [4, 10, 24, 20],
+    "hp": 12, "damage": 2, "speed": 0.7, "drop": "enemy_tough",
+    "weak_states": ["stunned"],
+    "ai": {"start": "roam", "states": {
+      "roam":    {"move": "chase", "speed": 0.62, "time": 110, "next": "ready",
+                  "if_near": {"dist": 44, "go": "ready"}},
+      "ready":   {"move": "none", "time": 28, "telegraph": true, "next": "slam"},
+      "slam":    {"move": "dash", "speed": 2.4, "time": 34, "next": "stunned"},
+      "stunned": {"move": "none", "time": 96, "next": "roam"}
+    }},
+    "phases": [{"below": 6, "speed_mul": 1.4, "start": "ready"}]
+  },
+
+  "ashmaw": {
+    "name": "boss.ashmaw", "bestiary": "bestiary.ashmaw",
+    "boss": true,
+    "sprite": "ashmaw", "frames": 2, "frame_time": 22, "size": 48,
+    "body": [6, 14, 36, 28],
+    "hp": 18, "damage": 2, "speed": 0.4, "drop": "none",
+    "reward": "heart_container",
+    "weak_states": ["stunned"],
+    "ai": {"start": "shut", "states": {
+      "shut":    {"move": "chase", "speed": 0.34, "time": 150, "next": "wind"},
+      "wind":    {"move": "none", "time": 30, "telegraph": true, "next": "spit"},
+      "spit":    {"move": "shoot", "shot": "shot_ember", "shot_speed": 1.5, "shot_damage": 2,
+                  "time": 18, "next": "roam"},
+      "roam":    {"move": "wander", "speed": 0.5, "turn": 40, "time": 110, "next": "wind"},
+      "stunned": {"move": "none", "time": 150, "next": "shut"}
+    }},
+    "phases": [
+      {"below": 12, "speed_mul": 1.25, "start": "wind"},
+      {"below": 6, "speed_mul": 1.25, "start": "spit"}
+    ]
+  }
+}

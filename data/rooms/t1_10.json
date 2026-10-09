@@ -1,0 +1,90 @@
+{
+  "id": "t1_10",
+  "name": "The Unlit Store",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    3,
+    0
+  ],
+  "spawn": [
+    24,
+    104
+  ],
+  "dark": true,
+  "exits": {
+    "west": "t1_09",
+    "south": "t1_11"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..o.o.o.o.o.o.o...M",
+    "M..................M",
+    "M...PPPP....PPPP...M",
+    "M..................M",
+    "....................",
+    "...................M",
+    "M...PPPP....PPPP...M",
+    "M..................M",
+    "M..o.o.o.o.o.o.o...M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "torch",
+      "at": [
+        9,
+        6
+      ],
+      "id": "d1"
+    },
+    {
+      "kind": "chest",
+      "at": [
+        14,
+        6
+      ],
+      "item": "key",
+      "flag": "t1_chest_key2"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        5,
+        3
+      ],
+      "type": "wisp"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        14,
+        9
+      ],
+      "type": "wisp"
+    },
+    {
+      "kind": "door",
+      "at": [
+        0,
+        6
+      ],
+      "lock": "shut",
+      "flag": "t1_gate_boss",
+      "id": "e"
+    },
+    {
+      "kind": "door",
+      "at": [
+        0,
+        7
+      ],
+      "lock": "shut",
+      "flag": "t1_gate_boss",
+      "id": "e"
+    }
+  ]
+}

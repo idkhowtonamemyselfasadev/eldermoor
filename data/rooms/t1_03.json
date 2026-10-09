@@ -1,0 +1,25 @@
+{
+  "id": "t1_03", "name": "The Jar Walk", "tileset": "temple", "dungeon": "temple1", "floor": 1,
+  "map_pos": [3, 3], "spawn": [24, 104],
+  "exits": {"west": "t1_02", "north": "t1_06", "east": "t1_14"},
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..o.o.o....o.o.o..M",
+    "M..................M",
+    "M..PP..........PP..M",
+    "M..................M",
+    "....................",
+    "....................",
+    "M..................M",
+    "M..PP..........PP..M",
+    "M..o.o.o....o.o.o..M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "enemy", "at": [9, 3], "type": "mote"},
+    {"kind": "enemy", "at": [6, 9], "type": "thistle"},
+    {"kind": "enemy", "at": [13, 9], "type": "mote"}
+  ]
+}

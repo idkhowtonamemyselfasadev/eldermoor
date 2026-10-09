@@ -1,0 +1,73 @@
+{
+  "id": "t1_05",
+  "name": "Behind the Bolt",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    2,
+    2
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_02",
+    "north": "t1_07",
+    "east": "t1_06"
+  },
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..YY..........PP..M",
+    "M..................M",
+    "M......LLLLLL......M",
+    "M......LLLLLL......M",
+    "M......LLLLLL.......",
+    "M......LLLLLL.......",
+    "M..................M",
+    "M..PP..........YY..M",
+    "M..................M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "door",
+      "at": [
+        9,
+        11
+      ],
+      "lock": "small",
+      "flag": "t1_door_a",
+      "id": "a"
+    },
+    {
+      "kind": "door",
+      "at": [
+        10,
+        11
+      ],
+      "lock": "small",
+      "flag": "t1_door_a",
+      "id": "a"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        4,
+        6
+      ],
+      "type": "wisp"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        15,
+        6
+      ],
+      "type": "wisp"
+    }
+  ]
+}

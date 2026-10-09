@@ -115,13 +115,20 @@ def move_float(ent: Entity, world: World, params: dict[str, Any]) -> None:
 
 
 def move_circle(ent: Entity, world: World, params: dict[str, Any]) -> None:
-    """Orbit the hero at a set radius."""
+    """Orbit the hero at a set radius, walking rather than teleporting.
+
+    Moving with collision matters: a 48x48 boss placed straight onto its
+    orbit ends up half inside the wall, where nothing can reach it.
+    """
     ax, ay = ent.center
     bx, by = world.hero.center
     angle = math.atan2(ay - by, ax - bx) + float(params.get("spin", 0.05))
     radius = float(params.get("radius", 48))
-    ent.x = bx + math.cos(angle) * radius - ent.width / 2
-    ent.y = by + math.sin(angle) * radius - ent.height / 2
+    want_x = bx + math.cos(angle) * radius - ent.width / 2
+    want_y = by + math.sin(angle) * radius - ent.height / 2
+    speed = float(params.get("speed", 2.0))
+    ent.move(world, max(-speed, min(speed, want_x - ent.x)),
+             max(-speed, min(speed, want_y - ent.y)))
     ent.clamp_to_room()
 
 

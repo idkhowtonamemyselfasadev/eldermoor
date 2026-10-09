@@ -1,0 +1,24 @@
+{
+  "id": "t1_14", "name": "The Tucked Alcove", "tileset": "temple", "dungeon": "temple1", "floor": 1,
+  "map_pos": [4, 3], "spawn": [24, 104],
+  "exits": {"west": "t1_03", "north": "t1_15"},
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..................M",
+    "M...PPPPPPPPPPPP...M",
+    "M...P..........P...M",
+    "M...P..........P...M",
+    "....P..........P...M",
+    "....P..........P...M",
+    "M...P..........P...M",
+    "M...PPPPPP.PPPPP...M",
+    "M..................M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "reward", "at": [9, 6], "what": "heart_piece", "flag": "hp:t1_14"},
+    {"kind": "enemy", "at": [9, 10], "type": "burrow"}
+  ]
+}

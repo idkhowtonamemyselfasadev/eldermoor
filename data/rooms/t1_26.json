@@ -1,0 +1,60 @@
+{
+  "id": "t1_26",
+  "name": "The Kiln Room",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 2,
+  "map_pos": [
+    3,
+    2
+  ],
+  "spawn": [
+    24,
+    104
+  ],
+  "exits": {
+    "west": "t1_22",
+    "north": "t1_27"
+  },
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..o.o.o....o.o.o..M",
+    "M..................M",
+    "M....LL......LL....M",
+    "M....LL......LL....M",
+    "....................",
+    ".....LL......LL....M",
+    "M....LL......LL....M",
+    "M..................M",
+    "M..o.o.o....o.o.o..M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "enemy",
+      "at": [
+        9,
+        3
+      ],
+      "type": "mote"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        9,
+        9
+      ],
+      "type": "thistle"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        16,
+        6
+      ],
+      "type": "spitter"
+    }
+  ]
+}

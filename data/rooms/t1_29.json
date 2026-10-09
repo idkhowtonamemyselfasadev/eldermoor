@@ -1,0 +1,23 @@
+{
+  "id": "t1_29", "name": "The Sealed Niche", "tileset": "temple", "dungeon": "temple1", "floor": 2,
+  "map_pos": [0, 1], "spawn": [280, 104],
+  "exits": {"east": "t1_28"},
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..wwwwwwwwwwww....M",
+    "M..w..........w....M",
+    "M..w..........w....M",
+    "M..w..........w....M",
+    "M..w..........w.....",
+    "M..w..........w.....",
+    "M..w..........w....M",
+    "M..wwwwwwwwwwww....M",
+    "M..................M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "reward", "at": [9, 5], "what": "heart_piece", "flag": "hp:t1_29"}
+  ]
+}

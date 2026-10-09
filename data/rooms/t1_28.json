@@ -1,0 +1,24 @@
+{
+  "id": "t1_28", "name": "The Narrow Shelf", "tileset": "temple", "dungeon": "temple1", "floor": 2,
+  "map_pos": [1, 1], "spawn": [280, 104],
+  "exits": {"east": "t1_23", "west": "t1_29"},
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..LLLLLLLLLLLLLL..M",
+    "M..LLLLLLLLLLLLLL..M",
+    "M..................M",
+    "M..................M",
+    "....................",
+    "....................",
+    "M..................M",
+    "M..LLLLLLLLLLLLLL..M",
+    "M..LLLLLLLLLLLLLL..M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "enemy", "at": [6, 6], "type": "mote"},
+    {"kind": "enemy", "at": [13, 7], "type": "mote"}
+  ]
+}

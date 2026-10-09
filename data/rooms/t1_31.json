@@ -1,0 +1,128 @@
+{
+  "id": "t1_31",
+  "name": "The Ashen Maw",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 2,
+  "map_pos": [
+    4,
+    0
+  ],
+  "spawn": [
+    152,
+    176
+  ],
+  "music": "boss",
+  "exits": {
+    "south": "t1_30"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "torch",
+      "at": [
+        2,
+        2
+      ],
+      "id": "a1",
+      "burn_time": 900
+    },
+    {
+      "kind": "torch",
+      "at": [
+        17,
+        2
+      ],
+      "id": "a2",
+      "burn_time": 900
+    },
+    {
+      "kind": "torch",
+      "at": [
+        2,
+        10
+      ],
+      "id": "a3",
+      "burn_time": 900
+    },
+    {
+      "kind": "torch",
+      "at": [
+        17,
+        10
+      ],
+      "id": "a4",
+      "burn_time": 900
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        8,
+        4
+      ],
+      "type": "ashmaw"
+    }
+  ],
+  "triggers": [
+    {
+      "on": "enter",
+      "do": [
+        {
+          "say": "story.temple1.boss"
+        }
+      ],
+      "flag": "t1_boss_seen"
+    },
+    {
+      "on": "torches_lit",
+      "count": 4,
+      "do": [
+        {
+          "stun_boss": "stunned"
+        },
+        {
+          "jingle": "puzzle"
+        }
+      ]
+    },
+    {
+      "on": "boss_dead",
+      "flag": "t1_boss",
+      "do": [
+        {
+          "shake": 40
+        },
+        {
+          "open": "*"
+        },
+        {
+          "spawn": {
+            "kind": "reward",
+            "at": [
+              9,
+              6
+            ],
+            "what": "flame",
+            "dungeon": "temple1",
+            "item": "flame_ember",
+            "flag": "flame:temple1"
+          }
+        }
+      ]
+    }
+  ]
+}

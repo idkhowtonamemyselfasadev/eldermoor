@@ -1,0 +1,82 @@
+{
+  "id": "house_shop",
+  "name": "Wares by Lanternlight",
+  "tileset": "house",
+  "region": "village",
+  "music": "shop",
+  "spawn": [
+    152,
+    160
+  ],
+  "tiles": [
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMNMMMMMMMMNMMMMM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MM:KKKKKKKKKKKKKK:MM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MM::o::::::::::o::MM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MMMMMMMMMDDMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "npc",
+      "at": [
+        9,
+        4
+      ],
+      "sprite": "npc_shop",
+      "face": "down",
+      "text": "npc.shop.1",
+      "greeting": "shop.hello",
+      "shop": [
+        {
+          "item": "shield",
+          "cost": 60,
+          "once": true
+        },
+        {
+          "item": "heart",
+          "cost": 10,
+          "amount": 1
+        },
+        {
+          "item": "bottle1",
+          "cost": 100,
+          "once": true
+        }
+      ]
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        9,
+        11
+      ],
+      "to": "village_01",
+      "spawn": [
+        88,
+        88
+      ],
+      "sound": "door_open"
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        10,
+        11
+      ],
+      "to": "village_01",
+      "spawn": [
+        88,
+        88
+      ],
+      "sound": "door_open"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "village",
+  "region": "village",
+  "tiles": {
+    "0":  {"char": ".", "sprite": "grass",       "collision": "floor"},
+    "1":  {"char": ",", "sprite": "grass_tuft",  "collision": "floor"},
+    "2":  {"char": "*", "sprite": "flowers",     "collision": "floor"},
+    "3":  {"char": "=", "sprite": "path",        "collision": "floor"},
+    "4":  {"char": "T", "sprite": "tree",        "collision": "solid"},
+    "5":  {"char": "b", "sprite": "bush",        "collision": "liftable", "interact": "cut",  "becomes": ".", "drop": "grass"},
+    "6":  {"char": "r", "sprite": "rock",        "collision": "liftable", "interact": "lift", "becomes": ".", "drop": "rock"},
+    "7":  {"char": "#", "sprite": "fence",       "collision": "solid"},
+    "8":  {"char": "~", "sprite": "water",       "collision": "water"},
+    "9":  {"char": "C", "sprite": "cliff",       "collision": "solid"},
+    "10": {"char": "S", "sprite": "sign",        "collision": "solid"},
+    "11": {"char": "d", "sprite": "dirt",        "collision": "floor"},
+    "12": {"char": "\"", "sprite": "tall_grass", "collision": "grass",    "interact": "cut",  "becomes": ".", "drop": "grass"},
+    "13": {"char": "W", "sprite": "water_deep",  "collision": "water"},
+    "14": {"char": "B", "sprite": "bridge",      "collision": "floor"},
+    "15": {"char": "L", "sprite": "lamp_post",   "collision": "solid"},
+    "16": {"char": "O", "sprite": "cave_mouth",  "collision": "floor"},
+    "17": {"char": ">", "sprite": "stairs_down", "collision": "floor"},
+    "18": {"char": "Q", "sprite": "well",        "collision": "solid"},
+    "19": {"char": "M", "sprite": "wall_stone",  "collision": "solid"},
+    "20": {"char": "R", "sprite": "roof",        "collision": "solid"},
+    "21": {"char": "(", "sprite": "roof_left",   "collision": "solid"},
+    "22": {"char": ")", "sprite": "roof_right",  "collision": "solid"},
+    "23": {"char": "D", "sprite": "door_wood",   "collision": "floor"},
+    "24": {"char": "N", "sprite": "window",      "collision": "solid"},
+    "25": {"char": "G", "sprite": "shop_sign",   "collision": "solid"}
+  }
+}

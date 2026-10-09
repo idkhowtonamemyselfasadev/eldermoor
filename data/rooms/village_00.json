@@ -1,0 +1,103 @@
+{
+  "id": "village_00",
+  "name": "Lamplight Village",
+  "tileset": "village",
+  "region": "village",
+  "music": "village",
+  "spawn": [
+    152,
+    112
+  ],
+  "exits": {
+    "north": "village_02",
+    "east": "village_01",
+    "west": "village_03"
+  },
+  "tiles": [
+    "TTTTTTTT.==.TTTTTTTT",
+    "T.........==.......T",
+    "T.(RRR)...==.......T",
+    "T.MMNMM...==.......T",
+    "T.MMDDM...==.......T",
+    "T.........==.......T",
+    "...========Q=======.",
+    "...=======..........",
+    "T....,....=....*...T",
+    "T..L......=......L.T",
+    "T....b....=....b...T",
+    "T.........=........T",
+    "TTTTTTTTTTTTTTTTTTTT"
+  ],
+  "objects": [
+    {
+      "kind": "stairs",
+      "at": [
+        4,
+        4
+      ],
+      "to": "house_wren",
+      "spawn": [
+        144,
+        160
+      ],
+      "sound": "door_open"
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        5,
+        4
+      ],
+      "to": "house_wren",
+      "spawn": [
+        160,
+        160
+      ],
+      "sound": "door_open"
+    },
+    {
+      "kind": "npc",
+      "at": [
+        13,
+        8
+      ],
+      "sprite": "npc_elder",
+      "face": "down",
+      "lines": [
+        {
+          "text": "npc.elder.1"
+        },
+        {
+          "if_flag": "flame:temple1",
+          "text": "npc.elder.2"
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "at": [
+        6,
+        10
+      ],
+      "sprite": "npc_kid",
+      "face": "down",
+      "lines": [
+        {
+          "text": "npc.kid.1"
+        },
+        {
+          "if_flag": "boss:cinderjaw",
+          "text": "npc.kid.2"
+        }
+      ]
+    },
+    {
+      "kind": "sign",
+      "at": [
+        8,
+        6
+      ],
+      "text": "sign.village"
+    }
+  ]
+}

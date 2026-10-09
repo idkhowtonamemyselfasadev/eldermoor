@@ -25,3 +25,67 @@
   `SDL_VIDEODRIVER=dummy`.
 - `run.sh`, `requirements.txt`, `pyproject.toml` (ruff + pytest config),
   DESIGN.md, DECISIONS.md.
+
+## 0.2.0 — Milestone 2: vertical slice
+
+A playable slice with one of everything: Lamplight Village, six meadow
+screens and the whole 35-room Ember Temple, from its door to the Flame.
+
+### Systems
+- `GameState` holds everything a save contains: items, B/X/Y slots, global
+  flags, per-dungeon keys/map/compass/Great Key/Flame, play-time, deaths and
+  a completion percentage.
+- Three save slots in the OS config dir (`$ELDERMOOR_CONFIG_DIR` overrides),
+  written temp-then-rename with a `.bak` of the last good file, a versioned
+  schema with migrations, and a crash slot written by a top-level handler
+  that also appends to `crash.log`.
+- Settings file: volumes, text speed, screen shake, low-health beep, hints,
+  stretch — all editable from the pause menu and saved on close.
+- Audio: `tools/build_audio.py` synthesises 63 sound effects and 8 music
+  tracks from square/triangle/saw/sine/noise oscillators with ADSR, driven by
+  a `.song` tracker format with `C4:4` hold shorthand. `eldermoor/audio.py`
+  degrades to silence when there is no device.
+- `Entity.update(world)`: the world is the one context object. The hero moved
+  into `hero.py` and gained the shield (blocks from the facing side), the
+  dodge-roll with opening i-frames, the hold-and-release spin attack, mercy
+  frames, knockback and item use.
+- Data-defined enemy state machines (`data/enemies/*.json` → `ai.py`): ten
+  movement modes, distance transitions, and telegraphs that validation keeps
+  at 20+ frames. Six enemy kinds, one mini-boss and one boss with phases and
+  a weakness that needs the temple item.
+- Room objects: chests, signs, NPCs with flag-driven lines, locked/barred/
+  great doors, torches, floor switches, crystal switches, pushable blocks,
+  stairs and rewards — each remembering itself in a global flag.
+- Room scripting: `triggers` turn `enter`, `all_enemies_dead`, `switch`,
+  `torches_lit`, `crystal`, `block_moved`, `chest_opened` and `boss_dead`
+  into `open`, `spawn`, `reveal`, `say`, `give`, `jingle`, `shake`,
+  `stun_boss` and `warp`. Objects a one-shot trigger created come back when
+  you re-enter the room.
+- Tile interactions: bushes and tall grass cut, pots smash, webs burn — all
+  data-driven, all rolling a drop table, all transient so the room restocks.
+- Dialogue box with word wrap, pagination and a typewriter at the chosen
+  speed; `data/text/en.json` holds every line. Shop, pause menu (items,
+  quest log, dungeon map, options, save) and a three-slot file select.
+- Dark rooms, lit by the Lantern or by lighting the room's torch.
+- Death follows Zelda rules: back to the temple door or the last overworld
+  screen, hearts refilled, everything found still in the bag.
+
+### Content
+- 47 rooms: village centre, east row, north gate, pond, two interiors, six
+  meadow screens, and the Ember Temple's 35 rooms over two floors.
+- The temple's key graph: four small keys, four small-key doors, a Great Key
+  behind the last of them, a mini-boss that drops the Lantern, webs and a
+  dark room that need it, and the Ashen Maw, which only opens when all four
+  arena torches are lit.
+- 371 hand-authored pixel-map blocks: item icons, pickups, objects, six
+  enemies, six villagers, two bosses, village and temple tilesets.
+
+### Tools
+- `tools/validate_data.py`: structure, references, telegraphs, text fitting,
+  doorway alignment and a dungeon flood fill that proves completability.
+- `tools/sim_playthrough.py`: a breadth-first bot that plays the real game
+  and reports what it actually achieved.
+- `tools/check_art.py`, `tools/sketch_bosses.py`.
+
+### Tests
+113 pytest cases, headless, `ruff` clean.

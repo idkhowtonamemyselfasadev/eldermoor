@@ -1,0 +1,101 @@
+{
+  "id": "t1_19",
+  "name": "The Guard Hall",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    5,
+    0
+  ],
+  "spawn": [
+    152,
+    160
+  ],
+  "exits": {
+    "south": "t1_13"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..PP..........PP..M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..................M",
+    "M..PP..........PP..M",
+    "M..................M",
+    "MMMMMMMMM..MMMMMMMMM",
+    "MMMMMMMMM..MMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "door",
+      "at": [
+        9,
+        11
+      ],
+      "lock": "small",
+      "flag": "t1_door_c",
+      "id": "c"
+    },
+    {
+      "kind": "door",
+      "at": [
+        10,
+        11
+      ],
+      "lock": "small",
+      "flag": "t1_door_c",
+      "id": "c"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        5,
+        4
+      ],
+      "type": "crag"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        14,
+        4
+      ],
+      "type": "crag"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        9,
+        7
+      ],
+      "type": "burrow"
+    }
+  ],
+  "triggers": [
+    {
+      "on": "all_enemies_dead",
+      "flag": "t1_guards",
+      "do": [
+        {
+          "jingle": "secret"
+        },
+        {
+          "spawn": {
+            "kind": "reward",
+            "at": [
+              9,
+              5
+            ],
+            "what": "heart_piece",
+            "flag": "hp:t1_19"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "village_03", "name": "The Still Pond", "tileset": "village", "region": "village",
+  "music": "village", "spawn": [280, 104],
+  "exits": {"east": "village_00"},
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "T,................,T",
+    "T...~~~~~~~~......bT",
+    "T..~WWWWWWWW~......T",
+    "T..~WWWWWWWW~......T",
+    "T..~WWWWWWWW~......T",
+    "T..~WWWWWWWW~.......",
+    "T..~~~~~~~~~~.......",
+    "T.....,.....,......T",
+    "T..b.........L.....T",
+    "T......*...........T",
+    "T,........,.......,T",
+    "TTTTTTTTTTTTTTTTTTTT"
+  ],
+  "objects": [
+    {"kind": "npc", "at": [8, 8], "sprite": "npc_fisher", "face": "up", "text": "npc.fisher.1"},
+    {"kind": "reward", "at": [17, 2], "what": "heart_piece", "flag": "hp:village_pond"}
+  ]
+}

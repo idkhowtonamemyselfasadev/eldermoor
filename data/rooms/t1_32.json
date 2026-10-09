@@ -1,0 +1,25 @@
+{
+  "id": "t1_32", "name": "The Side Gallery", "tileset": "temple", "dungeon": "temple1", "floor": 2,
+  "map_pos": [1, 3], "spawn": [280, 104],
+  "exits": {"east": "t1_21", "west": "t1_33", "north": "t1_34"},
+  "tiles": [
+    "TTTTTTTTT..TTTTTTTTT",
+    "M..................M",
+    "M..o.o.o.o.o.o.o...M",
+    "M..................M",
+    "M..PP..........PP..M",
+    "M..................M",
+    "....................",
+    "....................",
+    "M..................M",
+    "M..PP..........PP..M",
+    "M..................M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {"kind": "enemy", "at": [6, 6], "type": "thistle"},
+    {"kind": "enemy", "at": [13, 6], "type": "thistle"},
+    {"kind": "chest", "at": [9, 9], "item": "embers", "amount": 50, "flag": "t1_chest_embers2"}
+  ]
+}

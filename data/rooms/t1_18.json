@@ -1,0 +1,97 @@
+{
+  "id": "t1_18",
+  "name": "The Listening Statues",
+  "tileset": "temple",
+  "dungeon": "temple1",
+  "floor": 1,
+  "map_pos": [
+    0,
+    3
+  ],
+  "spawn": [
+    280,
+    104
+  ],
+  "exits": {
+    "east": "t1_04"
+  },
+  "tiles": [
+    "TTTTTTTTTTTTTTTTTTTT",
+    "M..................M",
+    "M..Y.Y.Y.Y.Y.Y.Y...M",
+    "M..................M",
+    "M..................M",
+    "M.......p..p.......M",
+    "M...................",
+    "M...................",
+    "M..................M",
+    "M..................M",
+    "M..Y.Y.Y.Y.Y.Y.Y...M",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "switch",
+      "at": [
+        8,
+        5
+      ],
+      "id": "s1"
+    },
+    {
+      "kind": "switch",
+      "at": [
+        11,
+        5
+      ],
+      "id": "s2"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        5,
+        8
+      ],
+      "type": "mote"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        14,
+        8
+      ],
+      "type": "mote"
+    },
+    {
+      "kind": "enemy",
+      "at": [
+        9,
+        3
+      ],
+      "type": "thistle"
+    }
+  ],
+  "triggers": [
+    {
+      "on": "all_enemies_dead",
+      "flag": "t1_statues",
+      "do": [
+        {
+          "jingle": "secret"
+        },
+        {
+          "spawn": {
+            "kind": "chest",
+            "at": [
+              9,
+              8
+            ],
+            "item": "key",
+            "flag": "t1_chest_key4"
+          }
+        }
+      ]
+    }
+  ]
+}

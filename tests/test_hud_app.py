@@ -28,6 +28,8 @@ def test_heart_icons_half_heart_maths():
 
 def test_hud_draws_hearts_counters_and_slots(game, assets):
     canvas = pygame.Surface((CANVAS_W, CANVAS_H))
+    game.state.give("lantern")
+    game.state.assign(0, "lantern")
     game.state.health = 5
     game.state.embers = 42
     game.state.keys = 3
