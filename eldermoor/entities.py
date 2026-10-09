@@ -1,60 +1,71 @@
-"""Entities: the base class and Wren, the hero (walk, idle, sword swing, tile collision)."""
+"""Entity base class, shared movement and hit reactions, and the death puff."""
 from __future__ import annotations
 
-import math
 from typing import TYPE_CHECKING
 
 import pygame
 
 from eldermoor.config import (
-    HERO_IDLE_FRAME_TIME,
-    HERO_SPEED,
-    HERO_WALK_FRAME_TIME,
+    DEATH_PUFF_FRAMES,
+    HIT_FLASH_FRAMES,
+    KNOCKBACK_FRAMES,
     PLAY_H,
     PLAY_W,
-    SWING_FRAME_TIME,
-    SWING_FRAMES,
-    SWING_TOTAL,
+    TILE,
 )
 
 if TYPE_CHECKING:
     from eldermoor.assets import Assets
-    from eldermoor.input import Input
-    from eldermoor.tilemap import Room
+    from eldermoor.world import World
 
 Facing = str  # "down" | "up" | "left" | "right"
-DIAG = math.sqrt(0.5)
 
-# Sword sprite + offset (relative to hero top-left) for each facing and swing frame.
-# "left" mirrors "right": the sprite is flipped and the x offset negated.
-SWORD_FRAMES: dict[Facing, list[tuple[str, tuple[int, int]]]] = {
-    "down": [("sword_h", (8, 2)), ("sword_diag_dr", (12, 9)), ("sword_v_down", (5, 11))],
-    "up": [("sword_h", (8, 1)), ("sword_diag_ur", (12, -11)), ("sword_v_up", (4, -8))],
-    "right": [("sword_v_up", (5, -6)), ("sword_diag_ur", (12, -4)), ("sword_h", (12, 2))],
+DIRS: dict[Facing, tuple[int, int]] = {
+    "down": (0, 1), "up": (0, -1), "left": (-1, 0), "right": (1, 0),
 }
-SWORD_HITBOX: dict[Facing, tuple[int, int, int, int]] = {
-    "down": (4, 12, 12, 14),
-    "up": (2, -10, 12, 14),
-    "right": (12, 2, 14, 12),
-    "left": (-10, 2, 14, 12),
-}
+FLIP_FACING = {"down": "up", "up": "down", "left": "right", "right": "left"}
+
+
+def facing_from(dx: float, dy: float, current: Facing = "down") -> Facing:
+    """Turn a movement vector into one of the four facings, keeping ``current`` on a tie."""
+    if dx and dy:
+        horizontal = "right" if dx > 0 else "left"
+        vertical = "down" if dy > 0 else "up"
+        return current if current in (horizontal, vertical) else horizontal
+    if dx:
+        return "right" if dx > 0 else "left"
+    if dy:
+        return "down" if dy > 0 else "up"
+    return current
 
 
 class Entity:
-    """Anything with a position and a sprite. Coordinates are play-area pixels (top-left)."""
+    """Anything in a room. Coordinates are play-area pixels of the sprite's top-left."""
 
     width = 16
     height = 16
-    body = pygame.Rect(2, 6, 12, 10)  # collider offset within the sprite
+    body = pygame.Rect(2, 6, 12, 10)       # collider inside the sprite cell
+    sprite_offset = (0, 0)                 # drawing offset for cells taller than the body
+    blocks_movement = False                # other entities cannot walk through it
+    team = "neutral"                       # "hero" | "enemy" | "neutral"
+    contact_damage = 0                     # half-hearts dealt by touching the hero
+    layer = 0                              # draw tiebreak within the same y
 
     def __init__(self, x: float, y: float) -> None:
         self.x = float(x)
         self.y = float(y)
         self.alive = True
+        self.facing: Facing = "down"
+        self.hp = 1
+        self.flash = 0
+        self.knock = (0.0, 0.0)
+        self.knock_timer = 0
+        self.frame = 0                     # free-running animation counter
 
+    # ----- geometry ------------------------------------------------------
     @property
     def rect(self) -> pygame.Rect:
-        """Sprite rect (integer pixels)."""
+        """Sprite cell rect in whole pixels."""
         return pygame.Rect(round(self.x), round(self.y), self.width, self.height)
 
     def body_rect(self, x: float | None = None, y: float | None = None) -> pygame.Rect:
@@ -63,176 +74,156 @@ class Entity:
         by = round(self.y if y is None else y)
         return pygame.Rect(bx + self.body.x, by + self.body.y, self.body.w, self.body.h)
 
-    def update(self, inp: Input, room: Room) -> None:
-        """Advance one logic frame."""
-
-    def draw(self, target: pygame.Surface, assets: Assets, oy: int = 0) -> None:
-        """Draw to the target surface with a vertical offset (the HUD height)."""
-
-
-class Hero(Entity):
-    """Wren. 8-direction walking, 4-direction facing, 3-frame sword swing."""
-
-    def __init__(self, x: float, y: float) -> None:
-        super().__init__(x, y)
-        self.facing: Facing = "down"
-        self.moving = False
-        self.anim_frame = 1          # 0, 1, 2 for the walk cycle (1 = standing)
-        self.anim_timer = 0
-        self.idle_timer = 0
-        self.idle_blink = False
-        self.swing_timer = 0         # counts up while swinging, 0 when idle
-        self.swinging = False
-
-    # ----- logic ---------------------------------------------------------
-    def update(self, inp: Input, room: Room) -> None:
-        """Read input, swing or move, animate."""
-        if self.swinging:
-            self._update_swing()
-            return
-        if inp.pressed("a"):
-            self.start_swing()
-            return
-        dx, dy = inp.axis()
-        self._face(dx, dy)
-        if dx or dy:
-            self.moving = True
-            self.idle_timer = 0
-            self.idle_blink = False
-            speed = HERO_SPEED * (DIAG if dx and dy else 1.0)
-            self._move(dx * speed, dy * speed, room)
-            self.anim_timer += 1
-            if self.anim_timer >= HERO_WALK_FRAME_TIME:
-                self.anim_timer = 0
-                self.anim_frame = (self.anim_frame + 1) % 3
-        else:
-            self.moving = False
-            self.anim_frame = 1
-            self.anim_timer = 0
-            self.idle_timer += 1
-            if self.idle_timer >= HERO_IDLE_FRAME_TIME:
-                self.idle_timer = 0
-                self.idle_blink = not self.idle_blink
-
-    def start_swing(self) -> None:
-        """Begin a sword swing (ignored if one is in progress)."""
-        if not self.swinging:
-            self.swinging = True
-            self.swing_timer = 0
-            self.moving = False
-            self.anim_frame = 1
-
-    def _update_swing(self) -> None:
-        self.swing_timer += 1
-        if self.swing_timer >= SWING_TOTAL:
-            self.swinging = False
-            self.swing_timer = 0
+    @property
+    def center(self) -> tuple[float, float]:
+        """Centre of the collider."""
+        r = self.body_rect()
+        return r.centerx, r.centery
 
     @property
-    def swing_frame(self) -> int:
-        """Current swing frame 0..2 (or -1 when not swinging)."""
-        if not self.swinging:
-            return -1
-        return min(self.swing_timer // SWING_FRAME_TIME, SWING_FRAMES - 1)
+    def depth(self) -> float:
+        """Sort key for drawing: the bottom of the collider."""
+        return self.y + self.body.bottom
 
-    def sword_hitbox(self) -> pygame.Rect | None:
-        """Active sword rect during frames 1 and 2 of the swing, else None."""
-        f = self.swing_frame
-        if f < 1:
-            return None
-        hx, hy, hw, hh = SWORD_HITBOX[self.facing]
-        return pygame.Rect(round(self.x) + hx, round(self.y) + hy, hw, hh)
+    def col_row(self) -> tuple[int, int]:
+        """Grid cell the collider's centre sits in."""
+        r = self.body_rect()
+        return r.centerx // TILE, r.centery // TILE
 
-    def _face(self, dx: int, dy: int) -> None:
-        if dx and dy:
-            horizontal = "right" if dx > 0 else "left"
-            vertical = "down" if dy > 0 else "up"
-            if self.facing not in (horizontal, vertical):
-                self.facing = horizontal
-        elif dx:
-            self.facing = "right" if dx > 0 else "left"
-        elif dy:
-            self.facing = "down" if dy > 0 else "up"
+    def distance_to(self, other: Entity) -> float:
+        """Straight-line distance between the two colliders' centres."""
+        ax, ay = self.center
+        bx, by = other.center
+        return ((ax - bx) ** 2 + (ay - by) ** 2) ** 0.5
 
-    def _move(self, vx: float, vy: float, room: Room) -> None:
-        """Axis-separated movement against the room's blocking tiles."""
+    # ----- movement ------------------------------------------------------
+    def blocked_at(self, world: World, x: float, y: float) -> bool:
+        """True if the collider would overlap a blocking tile or a solid entity."""
+        return world.blocked(self.body_rect(x, y), ignore=self)
+
+    def move(self, world: World, vx: float, vy: float) -> tuple[bool, bool]:
+        """Axis-separated movement. Returns (blocked_x, blocked_y)."""
+        hit_x = hit_y = False
         if vx:
             nx = self.x + vx
-            if room.blocked(self.body_rect(nx, self.y)):
-                nx = self._slide_x(vx, room)
+            if self.blocked_at(world, nx, self.y):
+                nx = self._slide(world, vx, horizontal=True)
+                hit_x = True
             self.x = nx
         if vy:
             ny = self.y + vy
-            if room.blocked(self.body_rect(self.x, ny)):
-                ny = self._slide_y(vy, room)
+            if self.blocked_at(world, self.x, ny):
+                ny = self._slide(world, vy, horizontal=False)
+                hit_y = True
             self.y = ny
+        return hit_x, hit_y
 
-    def _slide_x(self, vx: float, room: Room) -> float:
-        """Move x as far as possible in whole pixels toward vx."""
-        step = 1 if vx > 0 else -1
-        x = round(self.x)
-        for _ in range(int(abs(vx)) + 1):
-            if room.blocked(self.body_rect(x + step, self.y)):
+    def _slide(self, world: World, v: float, horizontal: bool) -> float:
+        step = 1 if v > 0 else -1
+        pos = round(self.x if horizontal else self.y)
+        for _ in range(int(abs(v)) + 1):
+            nxt = pos + step
+            blocked = (self.blocked_at(world, nxt, self.y) if horizontal
+                       else self.blocked_at(world, self.x, nxt))
+            if blocked:
                 break
-            x += step
-        return float(x)
-
-    def _slide_y(self, vy: float, room: Room) -> float:
-        step = 1 if vy > 0 else -1
-        y = round(self.y)
-        for _ in range(int(abs(vy)) + 1):
-            if room.blocked(self.body_rect(self.x, y + step)):
-                break
-            y += step
-        return float(y)
+            pos = nxt
+        return float(pos)
 
     def clamp_to_room(self) -> None:
-        """Keep the hero inside the play area (used on edges without an exit)."""
+        """Keep the sprite inside the play area."""
         self.x = min(max(self.x, 0.0), float(PLAY_W - self.width))
         self.y = min(max(self.y, 0.0), float(PLAY_H - self.height))
 
-    # ----- drawing -------------------------------------------------------
-    @property
-    def side(self) -> str:
-        """Sprite direction key: 'down', 'up' or 'side'."""
-        return "side" if self.facing in ("left", "right") else self.facing
+    # ----- reactions -----------------------------------------------------
+    def apply_knockback(self, from_x: float, from_y: float, speed: float) -> None:
+        """Push away from a point for KNOCKBACK_FRAMES frames."""
+        cx, cy = self.center
+        dx, dy = cx - from_x, cy - from_y
+        length = (dx * dx + dy * dy) ** 0.5 or 1.0
+        self.knock = (dx / length * speed, dy / length * speed)
+        self.knock_timer = KNOCKBACK_FRAMES
+
+    def step_knockback(self, world: World) -> bool:
+        """Move along the knockback vector; True while it is still running."""
+        if self.knock_timer <= 0:
+            return False
+        self.knock_timer -= 1
+        self.move(world, self.knock[0], self.knock[1])
+        return True
+
+    def take_damage(self, world: World, amount: int, source: Entity | None = None) -> bool:
+        """Lose hp, flash, get knocked back. True if this killed the entity."""
+        if not self.alive:
+            return False
+        self.hp -= amount
+        self.flash = HIT_FLASH_FRAMES
+        if source is not None:
+            sx, sy = source.center
+            self.apply_knockback(sx, sy, 2.0)
+        if self.hp <= 0:
+            self.die(world)
+            return True
+        return False
+
+    def die(self, world: World) -> None:
+        """Remove the entity and leave a puff."""
+        self.alive = False
+        world.spawn(DeathPuff(self.x, self.y))
+
+    # ----- hooks ---------------------------------------------------------
+    def update(self, world: World) -> None:
+        """One logic frame."""
+        self.frame += 1
+
+    def interact(self, world: World) -> bool:
+        """Called when the hero presses A facing this entity. True if it handled the press."""
+        return False
+
+    def sprite_name(self) -> str | None:
+        """Atlas block name for the current pose, or None to draw nothing."""
+        return None
 
     @property
     def flip(self) -> bool:
-        """True when the side sprite must be mirrored (facing left)."""
-        return self.facing == "left"
-
-    def sprite_name(self) -> str:
-        """Atlas block name for the current pose."""
-        if self.swinging:
-            return f"wren_swing_{self.side}_{self.swing_frame}"
-        if self.moving:
-            return f"wren_{self.side}_{self.anim_frame}"
-        return f"wren_{self.side}_idle" if self.idle_blink else f"wren_{self.side}_1"
-
-    def sword_sprite(self) -> tuple[str, int, int, bool] | None:
-        """(block name, x, y, flip) for the sword in play-area pixels, or None."""
-        f = self.swing_frame
-        if f < 0:
-            return None
-        key = "right" if self.facing in ("left", "right") else self.facing
-        name, (ox, oy) = SWORD_FRAMES[key][f]
-        if self.flip:
-            ox = -ox
-        return name, round(self.x) + ox, round(self.y) + oy, self.flip
+        """True when the sprite must be mirrored horizontally."""
+        return False
 
     def draw(self, target: pygame.Surface, assets: Assets, oy: int = 0) -> None:
-        """Draw hero and sword. The sword goes behind the hero when facing up."""
-        sword = self.sword_sprite()
-        hero = assets.sprites.get(self.sprite_name(), self.flip)
-        if sword and self.facing == "up":
-            self._draw_sword(target, assets, sword, oy)
-        target.blit(hero, (round(self.x), round(self.y) + oy))
-        if sword and self.facing != "up":
-            self._draw_sword(target, assets, sword, oy)
+        """Blit the current sprite, white-flashing while ``flash`` is counting down."""
+        name = self.sprite_name()
+        if name is None:
+            return
+        surf = assets.sprites.get(name, self.flip)
+        if self.flash > 0 and (self.flash // 2) % 2 == 0:
+            surf = surf.copy()
+            surf.fill((180, 180, 180), special_flags=pygame.BLEND_RGB_ADD)
+        ox, oys = self.sprite_offset
+        target.blit(surf, (round(self.x) + ox, round(self.y) + oy + oys))
 
-    @staticmethod
-    def _draw_sword(target: pygame.Surface, assets: Assets,
-                    sword: tuple[str, int, int, bool], oy: int) -> None:
-        name, sx, sy, flip = sword
-        target.blit(assets.sprites.get(name, flip), (sx, sy + oy))
+    def tick_timers(self) -> None:
+        """Advance the generic per-frame counters."""
+        self.frame += 1
+        if self.flash > 0:
+            self.flash -= 1
+
+
+class DeathPuff(Entity):
+    """The four-frame puff every small enemy leaves behind."""
+
+    blocks_movement = False
+    layer = 2
+
+    def __init__(self, x: float, y: float) -> None:
+        super().__init__(x, y)
+        self.timer = 0
+
+    def update(self, world: World) -> None:
+        """Count up and vanish."""
+        self.timer += 1
+        if self.timer >= DEATH_PUFF_FRAMES:
+            self.alive = False
+
+    def sprite_name(self) -> str | None:
+        """One of puff_0..puff_3."""
+        return f"puff_{min(self.timer // 4, 3)}"

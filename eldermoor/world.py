@@ -1,92 +1,497 @@
-"""The world: the current room, the hero, and flip-scroll transitions between rooms."""
+"""The world: the current room, its entities, transitions, dialogue and the services
+every entity calls into."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import random
+from typing import TYPE_CHECKING, Any
 
 import pygame
 
-from eldermoor.config import FLIP_SCROLL_FRAMES, PLAY_H, PLAY_W, PLAY_Y
-from eldermoor.entities import Entity, Hero
-from eldermoor.tilemap import OPPOSITE, Room, Tileset
+from eldermoor.bosses import Boss
+from eldermoor.config import PLAY_H, PLAY_W, PLAY_Y, TEXT_SPEED_DEFAULT, TILE
+from eldermoor.content import Content
+from eldermoor.enemies import Enemy, Projectile
+from eldermoor.entities import DIRS, Entity
+from eldermoor.hero import Hero
+from eldermoor.objects import Door, PushBlock, Torch, build
+from eldermoor.pickups import Pickup, spawn_drop
+from eldermoor.script import fire
+from eldermoor.state import GameState
+from eldermoor.textbox import TextBox
+from eldermoor.tilemap import HOPPABLE, Collision, Room, Tileset
+from eldermoor.transition import FlipScroll
 
 if TYPE_CHECKING:
     from eldermoor.assets import Assets
+    from eldermoor.audio import Audio
     from eldermoor.input import Input
 
-EDGE_MARGIN = 6  # how far past the edge the hero's centre must go to trigger an exit
-
-
-class FlipScroll:
-    """A 12-frame screen flip: the old room slides out while the new one slides in."""
-
-    def __init__(self, direction: str, old: pygame.Surface, new: pygame.Surface,
-                 frames: int = FLIP_SCROLL_FRAMES) -> None:
-        self.direction = direction
-        self.old = old
-        self.new = new
-        self.frames = frames
-        self.frame = 0
-
-    @property
-    def done(self) -> bool:
-        """True once the scroll has run its full length."""
-        return self.frame >= self.frames
-
-    def update(self) -> None:
-        """Advance one frame."""
-        self.frame += 1
-
-    def draw(self, target: pygame.Surface, oy: int = PLAY_Y) -> None:
-        """Blit both rooms at their interpolated positions."""
-        t = min(self.frame, self.frames) / self.frames
-        if self.direction == "east":
-            dx = -round(PLAY_W * t)
-            target.blit(self.old, (dx, oy))
-            target.blit(self.new, (dx + PLAY_W, oy))
-        elif self.direction == "west":
-            dx = round(PLAY_W * t)
-            target.blit(self.old, (dx, oy))
-            target.blit(self.new, (dx - PLAY_W, oy))
-        elif self.direction == "south":
-            dy = -round(PLAY_H * t)
-            target.blit(self.old, (0, oy + dy))
-            target.blit(self.new, (0, oy + dy + PLAY_H))
-        else:  # north
-            dy = round(PLAY_H * t)
-            target.blit(self.old, (0, oy + dy))
-            target.blit(self.new, (0, oy + dy - PLAY_H))
+EDGE_MARGIN = 6
+LANTERN_FRAMES = 26
 
 
 class World:
-    """Owns the rooms, the hero and the active transition."""
+    """Owns the room, the entities and the services they call."""
 
-    def __init__(self, assets: Assets, start_room: str = "meadow_00") -> None:
+    def __init__(self, assets: Assets, state: GameState | None = None,
+                 inp: Input | None = None, audio: Audio | None = None,
+                 content: Content | None = None, start_room: str | None = None) -> None:
+        from eldermoor.audio import Audio as RealAudio
+        from eldermoor.input import Input as RealInput
         self.assets = assets
+        self.state = state or GameState()
+        self.input = inp or RealInput()
+        self.audio = audio or RealAudio()
+        self.content = content or Content()
+        self.rng = random.Random(20260420)
         self.tilesets: dict[str, Tileset] = {}
-        self.room = Room.load(start_room, tilesets=self.tilesets)
-        self.hero = Hero(*self.room.spawn)
-        self.entities: list[Entity] = [self.hero]
+        self.entities: list[Entity] = []
+        self.hero = Hero(0, 0)
         self.transition: FlipScroll | None = None
+        self.dialogue: TextBox | None = None
+        self.dialogue_after: Any = None
+        self.pending_shop: dict[str, Any] | None = None
+        self.shake_timer = 0
+        self.boss: Boss | None = None
         self._room_surface: pygame.Surface | None = None
-        self.rooms_visited: list[str] = [start_room]
+        self.play_rect = pygame.Rect(0, 0, PLAY_W, PLAY_H)
+        self.text_speed = TEXT_SPEED_DEFAULT
+        self.god_mode = False
+        self.last_safe = (0.0, 0.0)
+        self.room = Room.load(start_room or self.state.room, tilesets=self.tilesets)
+        self.enter_room(self.room.id, *self.state_position(start_room))
+
+    # ----- short-hands entities use --------------------------------------
+    @property
+    def items(self) -> Any:
+        """The item registry."""
+        return self.content.items
+
+    @property
+    def textdb(self) -> Any:
+        """The string table."""
+        return self.content.text
+
+    @property
+    def drops(self) -> Any:
+        """The drop tables."""
+        return self.content.drops
+
+    @property
+    def enemy_defs(self) -> Any:
+        """The enemy registry."""
+        return self.content.enemies
+
+    @property
+    def rooms_visited(self) -> list[str]:
+        """Rooms seen so far (kept in the save)."""
+        return self.state.rooms_visited
+
+    def state_position(self, start_room: str | None) -> tuple[float | None, float | None]:
+        """Where to place the hero on construction."""
+        if start_room is not None and start_room != self.state.room:
+            return None, None
+        return self.state.x, self.state.y
 
     # ----- rooms ---------------------------------------------------------
+    def enter_room(self, room_id: str, x: float | None = None, y: float | None = None) -> None:
+        """Load a room, place the hero and build its objects."""
+        self.room = Room.load(room_id, tilesets=self.tilesets)
+        self._room_surface = None
+        self.entities = [self.hero]
+        self.boss = None
+        if x is not None:
+            self.hero.x = x
+        elif self.room.spawn:
+            self.hero.x = self.room.spawn[0]
+        if y is not None:
+            self.hero.y = y
+        elif self.room.spawn:
+            self.hero.y = self.room.spawn[1]
+        self.last_safe = (self.hero.x, self.hero.y)
+        self._build_objects()
+        self._remember_room()
+        self.update_music()
+        fire(self, "enter")
+
+    def _build_objects(self) -> None:
+        for spec in self.room.objects:
+            self.spawn_from_spec(spec)
+
+    def spawn_from_spec(self, spec: dict[str, Any]) -> Entity | None:
+        """Create one entity from a room-object entry (``kind`` picks the class)."""
+        kind = str(spec.get("kind", ""))
+        if kind == "enemy":
+            return self._spawn_enemy(spec)
+        obj = build(self, spec)
+        if obj is None or not obj.alive:
+            return None
+        self.spawn(obj)
+        return obj
+
+    def _spawn_enemy(self, spec: dict[str, Any]) -> Entity | None:
+        definition = self.enemy_defs.get(str(spec.get("type", "")))
+        if definition is None:
+            return None
+        col, row = spec.get("at", (0, 0))
+        cls = Boss if definition.raw.get("boss") else Enemy
+        enemy = cls(definition, col * TILE, row * TILE, self.rng)
+        if isinstance(enemy, Boss):
+            self.boss = enemy
+        self.spawn(enemy)
+        return enemy
+
+    def _remember_room(self) -> None:
+        if self.room.id not in self.state.rooms_visited:
+            self.state.rooms_visited.append(self.room.id)
+        if self.room.dungeon:
+            if self.state.dungeon != self.room.dungeon:
+                self.state.enter_dungeon(self.room.dungeon)
+            progress = self.state.progress(self.room.dungeon)
+            if self.room.id not in progress.rooms:
+                progress.rooms.append(self.room.id)
+        elif self.state.dungeon:
+            self.state.sync_keys()
+            self.state.enter_dungeon("")
+        self.state.room = self.room.id
+
+    def update_music(self) -> None:
+        """Pick the track for the current room."""
+        track = self.room.music
+        if not track and self.room.dungeon:
+            dungeon = self.content.dungeons.get(self.room.dungeon)
+            track = dungeon.music if dungeon else ""
+        if not track:
+            track = "village" if self.room.id.startswith("village") else "overworld_day"
+        self.audio.play_music(track)
+
     def room_surface(self) -> pygame.Surface:
         """The current room's tile layer, rendered once and cached."""
         if self._room_surface is None:
             self._room_surface = self.room.render(self.assets)
         return self._room_surface
 
+    def set_tile(self, col: int, row: int, char: str) -> None:
+        """Change a tile and repaint it on the cached room surface."""
+        self.room.set_tile(col, row, char)
+        self.room.draw_tile(self.room_surface(), self.assets, col, row)
+
     def warp(self, room_id: str, x: float | None = None, y: float | None = None) -> None:
-        """Jump straight to a room (debug / later: stairs, save load)."""
-        self.room = Room.load(room_id, tilesets=self.tilesets)
-        self._room_surface = None
+        """Jump straight to a room (stairs, debug, loading a save)."""
         self.transition = None
-        self.hero.x = self.room.spawn[0] if x is None else x
-        self.hero.y = self.room.spawn[1] if y is None else y
-        self.entities = [self.hero]
-        if room_id not in self.rooms_visited:
-            self.rooms_visited.append(room_id)
+        self.enter_room(room_id, x, y)
+        self.save_position()
+
+    def save_position(self) -> None:
+        """Record where the hero is, for autosave and respawn."""
+        self.state.room = self.room.id
+        self.state.x, self.state.y = self.hero.x, self.hero.y
+        self.state.facing = self.hero.facing
+
+    # ----- entity services -----------------------------------------------
+    def spawn(self, entity: Entity) -> Entity:
+        """Add an entity to the room."""
+        self.entities.append(entity)
+        return entity
+
+    def enemies(self) -> list[Enemy]:
+        """Living enemies in the room."""
+        return [e for e in self.entities if isinstance(e, Enemy) and e.alive]
+
+    def blocked(self, rect: pygame.Rect, ignore: Entity | None = None) -> bool:
+        """True if a rect hits a blocking tile or a solid entity."""
+        passable = HOPPABLE if (ignore is self.hero and self.hero.airborne) else frozenset()
+        if self.room.blocked(rect, passable):
+            return True
+        for ent in self.entities:
+            if ent is ignore or not ent.alive or not ent.blocks_movement:
+                continue
+            if isinstance(ent, Door) and not ent.blocks:
+                continue
+            if ent.body_rect().colliderect(rect):
+                return True
+        return False
+
+    def drop_from(self, x: float, y: float, table: str) -> Pickup | None:
+        """Roll a drop table at a position."""
+        return spawn_drop(self, x, y, table)
+
+    def spawn_projectile(self, source: Entity, dx: float, dy: float,
+                         params: dict[str, Any]) -> Projectile:
+        """Fire a shot from an enemy."""
+        speed = float(params.get("shot_speed", 1.4))
+        cx, cy = source.center
+        shot = Projectile(cx - 4, cy - 4, dx * speed, dy * speed,
+                          str(params.get("shot", "shot_ember")),
+                          int(params.get("shot_damage", 1)))
+        self.audio.play("shoot")
+        return self.spawn(shot)
+
+    def shake(self, frames: int = 12) -> None:
+        """Shake the screen for a few frames."""
+        self.shake_timer = max(self.shake_timer, frames)
+
+    def trigger(self, event: str, value: Any = None) -> int:
+        """Fire the room's triggers for an event."""
+        return fire(self, event, value)
+
+    def dungeon_progress(self) -> Any:
+        """Progress record for the dungeon the hero is in, or None."""
+        return self.state.progress(self.room.dungeon) if self.room.dungeon else None
+
+    # ----- dialogue ------------------------------------------------------
+    def say(self, key: str, choice: tuple[str, str] | None = None, after: Any = None) -> TextBox:
+        """Open the dialogue box on a text key (or a literal string)."""
+        pages = self.textdb.pages(key) if self.textdb.has(key) else [key]
+        self.dialogue = TextBox(pages, self.text_speed, choice)
+        self.dialogue_after = after
+        return self.dialogue
+
+    def request_shop(self, spec: dict[str, Any]) -> None:
+        """Ask the game to open a shop screen after this conversation."""
+        self.pending_shop = spec
+
+    def npc_line(self, spec: dict[str, Any]) -> str:
+        """Pick an NPC's line for the current story state: later flags win."""
+        lines = spec.get("lines")
+        if isinstance(lines, list):
+            for entry in reversed(lines):
+                flag = entry.get("if_flag")
+                if flag is None or self.state.flag(str(flag)):
+                    return str(entry.get("text", ""))
+        return str(spec.get("text", "npc.hello"))
+
+    def _update_dialogue(self) -> None:
+        box = self.dialogue
+        if box is None:
+            return
+        result = box.update(self.input)
+        if result == "typed":
+            self.audio.play("text")
+        if box.done:
+            self.dialogue = None
+            after, self.dialogue_after = self.dialogue_after, None
+            self.audio.play("text_end")
+            if after is not None:
+                after(box.result)
+
+    # ----- items and rewards ---------------------------------------------
+    def grant(self, item: str, amount: int = 1) -> None:
+        """Give an item, key, currency or dungeon find, with the right fanfare."""
+        state = self.state
+        if not item:
+            return
+        if item == "key":
+            state.keys += amount
+            state.sync_keys()
+            self.audio.play("key")
+            return
+        if item in ("bigkey", "map", "compass"):
+            progress = self.dungeon_progress()
+            if progress is not None:
+                setattr(progress, "big_key" if item == "bigkey" else item, True)
+            self.audio.play("bigkey" if item == "bigkey" else "item_get")
+            self.say(f"get.{item}")
+            return
+        if item == "embers":
+            state.embers = min(999, state.embers + amount)
+            self.audio.play("ember_big")
+            return
+        if item == "heart":
+            state.heal(amount * 2)
+            self.audio.play("heart")
+            return
+        self.give_item(item)
+
+    def give_item(self, item: str) -> None:
+        """Add a real inventory item, auto-assigning the first active one to B."""
+        state = self.state
+        definition = self.items.get(item)
+        state.give(item)
+        if item == "sword":
+            state.sword_level = max(1, state.sword_level)
+        elif item == "shield":
+            state.shield_level = max(1, state.shield_level)
+        if definition is not None and definition.assignable and item not in state.slots:
+            for index in range(3):
+                if state.slots[index] is None:
+                    state.assign(index, item)
+                    break
+        self.audio.play("item_get")
+        self.say(f"get.{item}")
+
+    def take_reward(self, what: str, spec: dict[str, Any]) -> None:
+        """Pick up a heart piece, heart container, seashell or Flame."""
+        state = self.state
+        if what == "heart_piece":
+            made = state.add_heart_piece()
+            self.audio.play("heart_container" if made else "secret")
+            self.say("get.heart_piece_full" if made else "get.heart_piece")
+        elif what == "heart_container":
+            state.add_heart_container()
+            self.audio.play("heart_container")
+            self.say("get.heart_container")
+        elif what == "shell":
+            state.seashells += 1
+            self.audio.play("shell")
+            self.say("get.shell")
+        elif what == "flame":
+            dungeon_id = str(spec.get("dungeon", self.room.dungeon))
+            progress = state.progress(dungeon_id)
+            progress.flame = True
+            progress.cleared = True
+            state.give(str(spec.get("item", "flame_ember")))
+            self.audio.play("flame_get")
+            self.say(f"get.flame.{dungeon_id}", after=self._leave_dungeon)
+
+    def _leave_dungeon(self, _result: int | None = None) -> None:
+        """After taking a Flame, step back outside to the dungeon's return room."""
+        dungeon = self.content.dungeons.get(self.room.dungeon)
+        if dungeon is not None and dungeon.return_room:
+            self.warp(dungeon.return_room)
+
+    def boss_defeated(self, boss: Boss) -> None:
+        """A boss died: shake, leave its reward and tell the room."""
+        self.shake(30)
+        self.state.set_flag(f"boss:{boss.definition.id}", 1)
+        if boss.reward:
+            self.spawn_from_spec({"kind": "reward", "what": boss.reward,
+                                  "at": [boss.col_row()[0], boss.col_row()[1]],
+                                  "flag": f"reward:{boss.definition.id}"})
+        self.boss = None
+        self.trigger("boss_dead", boss.definition.id)
+
+    # ----- hero actions ---------------------------------------------------
+    def try_interact(self, hero: Hero) -> bool:
+        """A press in front of the hero: talk, read, open, unlock or push."""
+        front = hero.front_rect()
+        for ent in self.entities:
+            if ent is hero or not ent.alive:
+                continue
+            if ent.body_rect().colliderect(front):
+                if isinstance(ent, PushBlock):
+                    dx, dy = DIRS[hero.facing]
+                    return ent.push(self, dx, dy)
+                if ent.interact(self):
+                    return True
+        return False
+
+    def use_item(self, hero: Hero, item: str | None) -> None:
+        """Use whatever is in a B/X/Y slot."""
+        if item is None or not self.state.has(item):
+            return
+        if item == "lantern":
+            self._use_lantern(hero)
+        elif item == "feather":
+            hero.hop()
+            self.audio.play("jump")
+        elif item.startswith("bottle"):
+            self._use_bottle(item)
+        else:
+            self.audio.play("error")
+        self.trigger("item_used", item)
+
+    def _use_lantern(self, hero: Hero) -> None:
+        if hero.lantern_timer > 0:
+            return
+        hero.lantern_timer = LANTERN_FRAMES
+        self.audio.play("burn")
+        front = hero.front_rect()
+        self.hit_tiles(front, "burn")
+        for ent in self.entities:
+            if isinstance(ent, Torch) and ent.body_rect().colliderect(front):
+                ent.light(self)
+
+    def _use_bottle(self, item: str) -> None:
+        content = self.state.flag(f"bottle:{item}")
+        if not content:
+            self.audio.play("error")
+            return
+        self.state.set_flag(f"bottle:{item}", 0)
+        self.state.heal(99)
+        self.audio.play("fairy")
+
+    def sword_hit(self, hero: Hero, rect: pygame.Rect) -> None:
+        """Apply a sword rect to enemies, crystals and cuttable tiles."""
+        self.hit_tiles(rect, "cut")
+        for ent in list(self.entities):
+            if ent is hero or not ent.alive or ent.team != "enemy":
+                continue
+            if id(ent) in hero.hit_this_swing:
+                continue
+            if ent.body_rect().colliderect(rect):
+                hero.hit_this_swing.add(id(ent))
+                ent.take_damage(self, max(1, self.state.sword_level), hero)
+
+    def hit_tiles(self, rect: pygame.Rect, kind: str) -> int:
+        """Clear every tile under ``rect`` that this tool removes. Returns the count."""
+        cleared = 0
+        for col, row, td in self.room.interactive_cells(rect, kind):
+            self.set_tile(col, row, td.becomes or ".")
+            self.audio.play({"cut": "cut", "burn": "burn", "smash": "smash"}.get(kind, "cut"))
+            if td.drop:
+                self.drop_from(col * TILE, row * TILE, td.drop)
+            cleared += 1
+            self.trigger("tile_cleared", td.sprite)
+        return cleared
+
+    def stun_boss(self, state: str = "stunned") -> None:
+        """Put the room's boss into a vulnerable state."""
+        if self.boss is not None:
+            self.boss.stun(self, state)
+
+    def on_hero_death(self) -> None:
+        """Zelda rules: back to the dungeon entrance or the village, items kept."""
+        state = self.state
+        state.deaths += 1
+        state.health = max(2, state.max_hearts)
+        self.audio.stop_music(200)
+        self.warp(state.respawn_room, state.respawn_x, state.respawn_y)
+
+    # ----- frame ----------------------------------------------------------
+    def update(self) -> None:
+        """One logic frame."""
+        self.audio.tick()
+        if self.shake_timer > 0:
+            self.shake_timer -= 1
+        if self.dialogue is not None:
+            self._update_dialogue()
+            return
+        if self.transition is not None:
+            self.transition.update()
+            if self.transition.done:
+                self.transition = None
+            return
+        for ent in list(self.entities):
+            if ent.alive:
+                ent.update(self)
+        self.entities = [e for e in self.entities if e.alive]
+        self._check_hazards()
+        if not self.enemies():
+            self.trigger("all_enemies_dead")
+        self._check_exit()
+
+    def _check_hazards(self) -> None:
+        hero = self.hero
+        if hero.airborne or hero.invulnerable:
+            return
+        hazard = self.room.hazard_at(hero.body_rect())
+        if hazard is None:
+            if not self.room.blocked(hero.body_rect()):
+                self.last_safe = (hero.x, hero.y)
+            return
+        self.audio.play("fall" if hazard is Collision.PIT else "lava")
+        hero.x, hero.y = self.last_safe
+        hero.hurt(self, 1)
+
+    def _check_exit(self) -> None:
+        direction = self.exit_direction()
+        if direction is None:
+            return
+        if direction in self.room.exits:
+            self.start_transition(direction)
+        else:
+            self.hero.clamp_to_room()
 
     def exit_direction(self) -> str | None:
         """Which edge the hero has walked past, if any."""
@@ -106,57 +511,41 @@ class World:
         """Begin a flip-scroll to the room through the given exit."""
         target = self.room.exits[direction]
         old = self.room_surface().copy()
-        new_room = Room.load(target, tilesets=self.tilesets)
-        self.room = new_room
-        self._room_surface = None
-        self._place_hero_on_entry(direction)
+        self.enter_room(target, *self._entry_position(direction))
         new = self.room_surface().copy()
-        self.hero.draw(new, self.assets, 0)
+        for ent in sorted(self.entities, key=lambda e: (e.depth, e.layer)):
+            ent.draw(new, self.assets, 0)
         self.transition = FlipScroll(direction, old, new)
-        if target not in self.rooms_visited:
-            self.rooms_visited.append(target)
+        self.save_position()
 
-    def _place_hero_on_entry(self, direction: str) -> None:
+    def _entry_position(self, direction: str) -> tuple[float, float]:
         h = self.hero
         if direction == "east":
-            h.x = 0
-        elif direction == "west":
-            h.x = PLAY_W - h.width
-        elif direction == "south":
-            h.y = 0
-        else:
-            h.y = PLAY_H - h.height
-        h.moving = False
-        h.anim_frame = 1
+            return 0.0, h.y
+        if direction == "west":
+            return float(PLAY_W - h.width), h.y
+        if direction == "south":
+            return h.x, 0.0
+        return h.x, float(PLAY_H - h.height)
 
-    # ----- frame ---------------------------------------------------------
-    def update(self, inp: Input) -> None:
-        """One logic frame: run the transition, or entities + exit checks."""
-        if self.transition is not None:
-            self.transition.update()
-            if self.transition.done:
-                self.transition = None
-            return
-        for e in self.entities:
-            e.update(inp, self.room)
-        direction = self.exit_direction()
-        if direction is None:
-            return
-        if direction in self.room.exits:
-            self.start_transition(direction)
-        else:
-            self.hero.clamp_to_room()
+    # ----- drawing --------------------------------------------------------
+    @property
+    def shake_offset(self) -> tuple[int, int]:
+        """Screen-shake offset for this frame."""
+        if self.shake_timer <= 0:
+            return 0, 0
+        return (self.shake_timer % 3) - 1, (self.shake_timer % 2)
 
     def draw(self, target: pygame.Surface, oy: int = PLAY_Y) -> None:
         """Draw the play area at vertical offset ``oy``."""
         if self.transition is not None:
             self.transition.draw(target, oy)
             return
-        target.blit(self.room_surface(), (0, oy))
-        for e in sorted(self.entities, key=lambda e: e.y):
-            e.draw(target, self.assets, oy)
-
-    @property
-    def opposite(self) -> dict[str, str]:
-        """Exit direction -> opposite, exposed for tools."""
-        return OPPOSITE
+        sx, sy = self.shake_offset
+        target.blit(self.room_surface(), (sx, oy + sy))
+        for ent in sorted(self.entities, key=lambda e: (e.depth, e.layer)):
+            ent.draw(target, self.assets, oy + sy)
+        if self.boss is not None and self.boss.alive:
+            self.boss.draw_bar(target, self.assets, self.textdb.get(self.boss.name_key))
+        if self.dialogue is not None:
+            self.dialogue.draw(target, self.assets)

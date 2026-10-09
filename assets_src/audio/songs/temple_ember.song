@@ -1,0 +1,12 @@
+{
+  "name": "Temple of the First Flame",
+  "bpm": 112, "rows_per_beat": 4, "loop": true,
+  "channels": [
+    {"wave": "square", "duty": 0.25, "vol": 0.24, "env": "stab",
+     "pattern": "E4:2 E4:2 G4:2 E4:2 A4:4 G4:4 E4:2 E4:2 D4:2 E4:2 F4:4 E4:4 C5:2 B4:2 A4:2 G4:2 E4:4 D4:4 E4:8 r:8 E4:2 E4:2 G4:2 A4:2 B4:4 A4:4 G4:2 F4:2 E4:2 D4:2 E4:8 r:8"},
+    {"wave": "triangle", "vol": 0.32, "env": "pad", "gate": 0.7,
+     "pattern": "E2:4 E2:4 E2:4 E2:4 C2:4 C2:4 D2:4 D2:4 E2:4 E2:4 E2:4 E2:4 A1:4 A1:4 B1:4 B1:4 E2:4 E2:4 E2:4 E2:4 C2:4 C2:4 D2:4 D2:4 E2:8 B1:8 E2:16"},
+    {"wave": "noise", "vol": 0.11, "env": "hit",
+     "pattern": "C5:4 C5:4 C5:2 C5:2 C5:4 C5:4 C5:4 C5:2 C5:2 C5:4 C5:4 C5:4 C5:2 C5:2 C5:4 C5:4 C5:4 C5:2 C5:2 C5:4 C5:4 C5:4 C5:2 C5:2 C5:4 C5:4 C5:4 C5:2 C5:2 C5:4 C5:4 C5:4 C5:2 C5:2 C5:4"}
+  ]
+}

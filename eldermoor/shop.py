@@ -1,0 +1,90 @@
+"""The village shop: a list of wares bought with embers, driven by the 12 buttons."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
+import pygame
+
+from eldermoor.config import CANVAS_H, CANVAS_W
+
+if TYPE_CHECKING:
+    from eldermoor.world import World
+
+ROW_H = 14
+TOP = 40
+
+
+class Shop:
+    """One shop visit. ``stock`` entries are ``{"item": id, "cost": n, "amount": n}``."""
+
+    def __init__(self, world: World, stock: list[dict[str, Any]], greeting: str = "shop.hello") -> None:
+        self.world = world
+        self.stock = [dict(s) for s in stock]
+        self.cursor = 0
+        self.done = False
+        self.note = world.textdb.get(greeting)
+
+    # ----- frame ---------------------------------------------------------
+    def update(self, inp: Any) -> str | None:
+        """One frame. Returns "close" when the shop should go away."""
+        if inp.pressed("b") or inp.pressed("start"):
+            self.world.audio.play("menu_back")
+            return "close"
+        if inp.pressed("down"):
+            self.cursor = (self.cursor + 1) % max(1, len(self.stock))
+            self.world.audio.play("select_cursor")
+        if inp.pressed("up"):
+            self.cursor = (self.cursor - 1) % max(1, len(self.stock))
+            self.world.audio.play("select_cursor")
+        if inp.pressed("a") and self.stock:
+            self._buy(self.stock[self.cursor])
+        return None
+
+    def _buy(self, entry: dict[str, Any]) -> None:
+        state = self.world.state
+        item = str(entry.get("item", ""))
+        cost = int(entry.get("cost", 0))
+        if self.sold_out(entry):
+            self.note = self.world.textdb.get("shop.sold")
+            self.world.audio.play("error")
+            return
+        if state.embers < cost:
+            self.note = self.world.textdb.get("shop.poor")
+            self.world.audio.play("error")
+            return
+        state.embers -= cost
+        self.world.grant(item, int(entry.get("amount", 1)))
+        self.world.dialogue = None          # the shop prints its own note instead
+        self.note = self.world.textdb.get("shop.thanks")
+
+    def sold_out(self, entry: dict[str, Any]) -> bool:
+        """True for a one-off item the player already owns."""
+        item = str(entry.get("item", ""))
+        return bool(entry.get("once")) and self.world.state.has(item)
+
+    # ----- drawing -------------------------------------------------------
+    def draw(self, target: pygame.Surface) -> None:
+        """The counter, the wares and the ember purse."""
+        assets = self.world.assets
+        target.fill(assets.colour("ink"))
+        font = assets.font8
+        font.draw(target, self.world.textdb.get("shop.title"), 12, 12, assets.colour("gold"))
+        font.draw(target, f"{self.world.state.embers:03d}", CANVAS_W - 40, 12,
+                  assets.colour("white"))
+        target.blit(assets.icons.get("ember"), (CANVAS_W - 52, 12))
+        for i, entry in enumerate(self.stock):
+            y = TOP + i * ROW_H
+            selected = i == self.cursor
+            colour = assets.colour("gold") if selected else assets.colour("white")
+            if self.sold_out(entry):
+                colour = assets.colour("stone")
+            item = self.world.items.get(str(entry.get("item", "")))
+            icon = item.icon if item else "icon_empty"
+            if assets.icons.has(icon):
+                target.blit(assets.icons.get(icon), (20, y))
+            label = self.world.textdb.get(item.name) if item else str(entry.get("item", ""))
+            font.draw(target, label, 36, y, colour)
+            font.draw(target, f"{int(entry.get('cost', 0)):3d}", CANVAS_W - 56, y, colour)
+        pygame.draw.rect(target, assets.colour("slate"),
+                         pygame.Rect(8, TOP - 6, CANVAS_W - 16, len(self.stock) * ROW_H + 8), 1)
+        font.draw(target, self.note[:38], 12, CANVAS_H - 20, assets.colour("mist"))

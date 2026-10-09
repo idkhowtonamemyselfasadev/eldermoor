@@ -1,0 +1,12 @@
+{
+  "name": "Lantern of Eldermoor",
+  "bpm": 86, "rows_per_beat": 4, "loop": true,
+  "channels": [
+    {"wave": "square", "duty": 0.5, "vol": 0.26, "env": "pad", "gate": 0.95,
+     "pattern": "C4:8 E4:8 G4:8 C5:12 B4:4 A4:8 G4:8 F4:8 E4:8 D4:8 G4:8 C4:16"},
+    {"wave": "triangle", "vol": 0.30, "env": "pad", "gate": 0.98,
+     "pattern": "C2:16 A2:16 F2:16 G2:16 C2:16 F2:16 G2:16 C2:16"},
+    {"wave": "square", "duty": 0.25, "vol": 0.12, "env": "pluck",
+     "pattern": "E3:4 G3:4 E3:4 G3:4 C3:4 E3:4 C3:4 E3:4 A2:4 C3:4 A2:4 C3:4 G2:4 B2:4 G2:4 B2:4 E3:4 G3:4 E3:4 G3:4 F3:4 A3:4 F3:4 A3:4 G3:4 B3:4 G3:4 B3:4 C3:8 E3:8"}
+  ]
+}

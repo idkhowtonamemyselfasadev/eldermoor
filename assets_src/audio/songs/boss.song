@@ -1,0 +1,12 @@
+{
+  "name": "The Ashen Maw",
+  "bpm": 162, "rows_per_beat": 4, "loop": true,
+  "channels": [
+    {"wave": "square", "duty": 0.125, "vol": 0.27, "env": "stab",
+     "pattern": "D4:2 Eb4:2 D4:2 C4:2 D4:4 A3:4 D4:2 Eb4:2 F4:2 G4:2 A4:4 F4:4 Bb4:2 A4:2 G4:2 F4:2 E4:4 D4:4 A4:2 G4:2 F4:2 E4:2 D4:8"},
+    {"wave": "saw", "vol": 0.24, "env": "stab", "gate": 0.55,
+     "pattern": "D1:2 D1:2 D1:2 D1:2 D1:2 D1:2 D1:2 D1:2 Bb1:2 Bb1:2 Bb1:2 Bb1:2 C2:2 C2:2 C2:2 C2:2 D1:2 D1:2 D1:2 D1:2 D1:2 D1:2 D1:2 D1:2 A1:2 A1:2 A1:2 A1:2 D1:2 D1:2 D1:2 D1:2"},
+    {"wave": "noise", "vol": 0.14, "env": "hit",
+     "pattern": "C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2"}
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Cinderjaw",
+  "bpm": 150, "rows_per_beat": 4, "loop": true,
+  "channels": [
+    {"wave": "square", "duty": 0.125, "vol": 0.26, "env": "stab",
+     "pattern": "A3:2 A3:2 C4:2 A3:2 D4:2 A3:2 E4:4 A3:2 A3:2 C4:2 A3:2 F4:2 E4:2 D4:4 A3:2 A3:2 C4:2 A3:2 G4:2 F4:2 E4:4 D4:2 C4:2 B3:2 A3:2 A3:8"},
+    {"wave": "saw", "vol": 0.22, "env": "stab", "gate": 0.6,
+     "pattern": "A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 F1:2 F1:2 F1:2 F1:2 G1:2 G1:2 G1:2 G1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2 A1:2"},
+    {"wave": "noise", "vol": 0.13, "env": "hit",
+     "pattern": "C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2 C5:2"}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "_comment": "Weighted drop tables. 'nothing' is a real outcome. Tuned so the player is rarely completely out of hearts, as PROMPT.md 4.4 asks.",
+  "grass":   [{"kind": "nothing", "weight": 58}, {"kind": "heart", "weight": 16}, {"kind": "ember", "weight": 22}, {"kind": "ember5", "weight": 4}],
+  "pot":     [{"kind": "nothing", "weight": 30}, {"kind": "heart", "weight": 30}, {"kind": "ember", "weight": 28}, {"kind": "ember5", "weight": 10}, {"kind": "fairy", "weight": 2}],
+  "enemy":   [{"kind": "nothing", "weight": 34}, {"kind": "heart", "weight": 30}, {"kind": "ember", "weight": 30}, {"kind": "ember5", "weight": 6}],
+  "enemy_tough": [{"kind": "heart", "weight": 40}, {"kind": "ember5", "weight": 40}, {"kind": "ember20", "weight": 15}, {"kind": "fairy", "weight": 5}],
+  "rock":    [{"kind": "nothing", "weight": 70}, {"kind": "ember", "weight": 25}, {"kind": "heart", "weight": 5}],
+  "web":     [{"kind": "nothing", "weight": 80}, {"kind": "ember", "weight": 20}],
+  "none":    [{"kind": "nothing", "weight": 1}]
+}

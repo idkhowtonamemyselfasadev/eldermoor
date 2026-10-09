@@ -24,6 +24,8 @@ class Options:
     frames: int = 60
     save_slot: int = 1
     stretch: bool = False
+    no_menu: bool = False
+    start_room: str | None = None
 
 
 class App:
@@ -42,7 +44,7 @@ class App:
         self.canvas = pygame.Surface((CANVAS_W, CANVAS_H))
         self.input = Input()
         self.input.init_controllers()
-        self.game = Game(inp=self.input)
+        self.game = Game(inp=self.input, file_select=not opts.headless and not opts.no_menu)
         self.clock = pygame.time.Clock()
         self.accumulator = 0.0
         self.running = True
@@ -86,6 +88,8 @@ class App:
         """Exactly one logic frame: poll events, update the game."""
         self.input.begin_frame()
         for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and self.game.debug.handle_key(self.game, event.key):
+                continue
             self.input.handle_event(event)
         if self.input.quit_requested:
             self.running = False
@@ -96,6 +100,31 @@ class App:
                 self.toggle_fullscreen()
 
     def run(self) -> int:
+        """Main loop with the crash guard. No crash may lose progress."""
+        try:
+            return self._run()
+        except Exception:
+            self._on_crash()
+            raise
+
+    def _on_crash(self) -> None:
+        """Autosave to the crash slot and append the traceback to crash.log."""
+        import traceback
+
+        from eldermoor.settings import crash_log_path, ensure_config_dir
+        try:
+            self.game.crash_save()
+        except Exception:
+            pass
+        try:
+            ensure_config_dir()
+            with crash_log_path().open("a", encoding="utf-8") as fh:
+                fh.write(traceback.format_exc())
+                fh.write("\n")
+        except OSError:
+            pass
+
+    def _run(self) -> int:
         """Main loop. Headless: run ``frames`` steps as fast as possible and return 0."""
         if self.opts.headless:
             for _ in range(self.opts.frames):

@@ -1,0 +1,12 @@
+{
+  "name": "The Meadow Road",
+  "bpm": 132, "rows_per_beat": 4, "loop": true,
+  "channels": [
+    {"wave": "square", "duty": 0.5, "vol": 0.25, "env": "pluck",
+     "pattern": "D4:2 F#4:2 A4:4 D5:4 A4:4 B4:2 A4:2 G4:4 F#4:4 D4:4 E4:2 F#4:2 G4:4 A4:4 F#4:4 D5:8 A4:4 F#4:4 G4:2 A4:2 B4:4 D5:4 B4:4 A4:2 G4:2 F#4:4 E4:4 D4:4 D4:16"},
+    {"wave": "triangle", "vol": 0.32, "env": "pad", "gate": 0.85,
+     "pattern": "D2:8 D2:8 A2:8 A2:8 G2:8 G2:8 D2:8 D2:8 B2:8 B2:8 G2:8 G2:8 A2:8 A2:8 D2:16"},
+    {"wave": "noise", "vol": 0.10, "env": "hit",
+     "pattern": "C5:4 r:4 C5:4 r:4 C5:4 r:4 C5:2 C5:2 r:4 C5:4 r:4 C5:4 r:4 C5:4 r:4 C5:2 C5:2 r:4 C5:4 r:4 C5:4 r:4 C5:4 r:4 C5:2 C5:2 r:4 C5:4 r:4 C5:4 r:4 C5:4 r:4 C5:2 C5:2 r:4"}
+  ]
+}
