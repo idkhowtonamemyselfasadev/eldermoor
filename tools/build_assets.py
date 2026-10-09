@@ -20,7 +20,6 @@ assets/palette.json                    the master palette
 from __future__ import annotations
 
 import json
-import math
 import sys
 from pathlib import Path
 
@@ -114,11 +113,11 @@ def pack(blocks: list[tuple[str, int, int, list[str]]], sheet_w: int = 512
 
 def render_sheet(blocks, atlas, sheet_w: int, sheet_h: int, pal, swap: dict[int, int] | None = None):
     """Rasterise blocks onto an RGBA pygame Surface using the palette (+ optional swap)."""
-    import pygame  # noqa: PLC0415  (imported here so --help works without SDL)
+    import pygame
     surf = pygame.Surface((sheet_w, max(sheet_h, 1)), pygame.SRCALPHA)
     swap = swap or {}
-    for name, w, h, rows in blocks:
-        ox, oy, _w, _h = atlas[name]
+    for name, _w, _h, rows in blocks:
+        ox, oy, _, _ = atlas[name]
         for yy, row in enumerate(rows):
             for xx, c in enumerate(row):
                 if c == ".":
@@ -131,7 +130,7 @@ def render_sheet(blocks, atlas, sheet_w: int, sheet_h: int, pal, swap: dict[int,
 
 def build_category(name: str, folder: Path, pal, variants: dict[str, dict[int, int]] | None = None) -> int:
     """Build one sheet (or one per palette variant) for a category. Returns block count."""
-    import pygame  # noqa: PLC0415
+    import pygame
     blocks = collect(folder)
     if not blocks:
         print(f"  {name}: no blocks")
@@ -152,7 +151,7 @@ def build_category(name: str, folder: Path, pal, variants: dict[str, dict[int, i
 
 def build_fonts(pal) -> None:
     """Fonts are stored per file: font8.txt → font8.png/json, font6.txt → font6.png/json."""
-    import pygame  # noqa: PLC0415
+    import pygame
     for p in sorted((SRC / "fonts").glob("*.txt")):
         blocks = parse_blocks(p)
         atlas, sheet_h = pack(blocks, 256)

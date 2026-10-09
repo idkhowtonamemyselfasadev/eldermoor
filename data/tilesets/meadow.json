@@ -1,0 +1,17 @@
+{
+  "name": "meadow",
+  "region": "meadow",
+  "tiles": {
+    "0": {"char": ".", "sprite": "grass", "collision": "floor"},
+    "1": {"char": ",", "sprite": "grass_tuft", "collision": "floor"},
+    "2": {"char": "*", "sprite": "flowers", "collision": "floor"},
+    "3": {"char": "=", "sprite": "path", "collision": "floor"},
+    "4": {"char": "T", "sprite": "tree", "collision": "solid"},
+    "5": {"char": "b", "sprite": "bush", "collision": "liftable"},
+    "6": {"char": "r", "sprite": "rock", "collision": "liftable"},
+    "7": {"char": "#", "sprite": "fence", "collision": "solid"},
+    "8": {"char": "~", "sprite": "water", "collision": "water"},
+    "9": {"char": "C", "sprite": "cliff", "collision": "solid"},
+    "10": {"char": "S", "sprite": "sign", "collision": "solid"}
+  }
+}

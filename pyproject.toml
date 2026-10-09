@@ -1,0 +1,14 @@
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+extend-exclude = [".venv", "assets", "build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "RUF100"]
+ignore = ["B008"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["eldermoor"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

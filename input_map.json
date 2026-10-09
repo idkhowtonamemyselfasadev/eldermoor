@@ -1,0 +1,34 @@
+{
+  "_comment": "12 logical buttons + system keys. Keyboard names are pygame key names; gamepad names are SDL GameController button names.",
+  "keyboard": {
+    "up": ["up", "w"],
+    "down": ["down", "s"],
+    "left": ["left", "a"],
+    "right": ["right", "d"],
+    "a": ["z", "j"],
+    "b": ["x", "k"],
+    "x": ["c", "l"],
+    "y": ["v", ";"],
+    "l": ["left shift", "right shift"],
+    "r": ["space"],
+    "start": ["return", "escape"],
+    "select": ["tab"],
+    "fullscreen": ["f11"],
+    "debug": ["f1"]
+  },
+  "gamepad": {
+    "up": ["dpup"],
+    "down": ["dpdown"],
+    "left": ["dpleft"],
+    "right": ["dpright"],
+    "a": ["a"],
+    "b": ["b"],
+    "x": ["x"],
+    "y": ["y"],
+    "l": ["leftshoulder"],
+    "r": ["rightshoulder"],
+    "start": ["start"],
+    "select": ["back"]
+  },
+  "gamepad_stick_deadzone": 0.4
+}
