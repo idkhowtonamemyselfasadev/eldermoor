@@ -1,7 +1,7 @@
 """The Bow: arrows that hit switches, eyes and things that will not come down."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pygame
 
@@ -44,18 +44,22 @@ class Arrow(Entity):
             self.alive = False
             return
         for ent in list(world.entities):
-            if ent is world.hero or not ent.alive:
+            if ent in world.heroes or not ent.alive:
                 continue
             if not rect.colliderect(ent.body_rect()):
                 continue
             if isinstance(ent, Crystal):
-                ent.take_damage(world, 1, world.hero)
+                ent.take_damage(world, 1, self.owner(world))
                 self.alive = False
                 return
             if ent.team == "enemy":
-                ent.take_damage(world, ARROW_DAMAGE, world.hero)
+                ent.take_damage(world, ARROW_DAMAGE, self.owner(world))
                 self.alive = False
                 return
+
+    def owner(self, world: World) -> Any:
+        """Whoever loosed it; the nearer lamplighter is a good enough guess."""
+        return world.nearest_hero(self)
 
     @property
     def flip(self) -> bool:

@@ -25,6 +25,9 @@ SLOT_X = (202, 240, 278)
 SLOT_Y = 7
 SLOT_SIZE = 18
 SLOT_LABELS = ("B", "X", "Y")
+#: in two-player games the slot boxes halve and stack: player one over player two
+CO_SLOT_SIZE = 12
+CO_ROW_Y = (4, 18)
 BEEP_PERIOD = 45
 
 
@@ -59,13 +62,17 @@ class Hud:
             if audio is not None:
                 audio.play("low_health")           # type: ignore[attr-defined]
 
-    def draw(self, target: pygame.Surface, state: GameState) -> None:
+    def draw(self, target: pygame.Surface, state: GameState,
+             two_player: bool = False) -> None:
         """Render the HUD onto the canvas at y = 0."""
         target.fill(self.bg, pygame.Rect(0, 0, CANVAS_W, HUD_H))
         pygame.draw.line(target, self.line, (0, HUD_H - 1), (CANVAS_W, HUD_H - 1))
         self._draw_hearts(target, state)
         self._draw_counters(target, state)
-        self._draw_slots(target, state)
+        if two_player:
+            self._draw_both_slots(target, state)
+        else:
+            self._draw_slots(target, state)
 
     def _draw_hearts(self, target: pygame.Surface, state: GameState) -> None:
         icons = self.assets.icons
@@ -92,6 +99,22 @@ class Hud:
             target.blit(icons.get(icon), (x, 4))
             font.draw(target, f"{count:02d}", x + 9, 4, self.text)
             x += 26
+
+    def _draw_both_slots(self, target: pygame.Surface, state: GameState) -> None:
+        """Two short rows of slots: player one above, player two below."""
+        font = self.assets.font6
+        icons = self.assets.icons
+        for player, (slots, y) in enumerate(((state.slots, CO_ROW_Y[0]),
+                                             (state.slots2, CO_ROW_Y[1]))):
+            font.draw(target, str(player + 1), SLOT_X[0] - 14, y + 2, self.label)
+            for i, x in enumerate(SLOT_X):
+                box = pygame.Rect(x, y, CO_SLOT_SIZE, CO_SLOT_SIZE)
+                target.fill(self.slot_fill, box)
+                pygame.draw.rect(target, self.slot_edge, box, 1)
+                font.draw(target, SLOT_LABELS[i], x - 7, y + 2, self.label)
+                name = self.icon_for(slots[i] if i < len(slots) else None)
+                if icons.has(name):
+                    target.blit(icons.get(name), (x + 2, y + 2))
 
     def _draw_slots(self, target: pygame.Surface, state: GameState) -> None:
         font = self.assets.font6

@@ -53,8 +53,9 @@ class Bomb(Entity):
         for ent in list(world.enemies()):
             if ent.body_rect().colliderect(blast):
                 ent.take_damage(world, BOMB_DAMAGE, self)
-        if world.hero.body_rect().colliderect(blast):
-            world.hero.hurt(world, 1, self)
+        caught = world.touching_hero(blast)
+        if caught is not None:
+            caught.hurt(world, 1, self)
 
     def sprite_name(self) -> str:
         """Blinks faster as the fuse runs out."""

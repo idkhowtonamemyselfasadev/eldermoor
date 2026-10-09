@@ -112,13 +112,16 @@ class Enemy(Entity):
         self.touch_hero(world)
 
     def touch_hero(self, world: World) -> None:
-        """Hurt the hero on contact. A blind thing cannot hurt what it cannot see."""
+        """Hurt whoever it runs into. A blind thing cannot hurt what it cannot see."""
         if self.contact_damage <= 0:
             return
-        if world.hero.cloaked and self.definition.raw.get("cloak_blind"):
-            return
-        if self.body_rect().colliderect(world.hero.body_rect()):
-            world.hero.hurt(world, self.contact_damage, self)
+        blind = bool(self.definition.raw.get("cloak_blind"))
+        for hero in world.heroes:
+            if blind and hero.cloaked:
+                continue
+            if self.body_rect().colliderect(hero.body_rect()):
+                hero.hurt(world, self.contact_damage, self)
+                return
 
     # ----- damage --------------------------------------------------------
     def vulnerable_from(self, attacker: Entity) -> bool:
@@ -212,8 +215,8 @@ class Projectile(Entity):
         if world.room.blocked(rect) or not world.play_rect.colliderect(rect):
             self.alive = False
             return
-        hero = world.hero
-        if rect.colliderect(hero.body_rect()):
+        hero = world.touching_hero(rect)
+        if hero is not None:
             mirrored = hero.cloaked or world.ring_bonus.reflect
             if (mirrored or hero.blocks_from(*self.center)) and self.reflectable:
                 world.audio.play("block")

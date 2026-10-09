@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import math
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pygame
 
@@ -86,6 +86,16 @@ class Hero(Entity):
         self.swimming = False
         #: heading kept while sliding on ice
         self.slide: tuple[float, float] = (0.0, 0.0)
+        #: 0 for the lamplighter the save belongs to, 1 for the one who dropped in
+        self.player = 0
+
+    def buttons(self, world: World) -> Any:
+        """This lamplighter's share of the buttons."""
+        return world.player_input(self.player)
+
+    def slots(self, world: World) -> list[str | None]:
+        """This lamplighter's three item slots."""
+        return world.slots_for(self.player)
 
     # ----- queries used by the rest of the game --------------------------
     @property
@@ -129,7 +139,7 @@ class Hero(Entity):
         if self.block_cooldown > 0:
             self.block_cooldown -= 1
         # the shield answers the button even while being shoved around
-        self.shielding = world.input.is_held("l") and world.state.shield_level > 0
+        self.shielding = self.buttons(world).is_held("l") and world.state.shield_level > 0
         self.swimming = world.in_water(self)
         self.cloaked = self._cloak_held(world)
         if self.step_knockback(world):
@@ -151,19 +161,19 @@ class Hero(Entity):
         """True while the Mirror Cloak's button is down and the cloak is owned."""
         if not world.state.has("mirror_cloak"):
             return False
-        slots = world.state.slots
+        slots = self.slots(world)
         if "mirror_cloak" not in slots:
             return False
-        return world.input.is_held(("b", "x", "y")[slots.index("mirror_cloak")])
+        return self.buttons(world).is_held(("b", "x", "y")[slots.index("mirror_cloak")])
 
     def _read_actions(self, world: World) -> None:
-        inp = world.input
+        inp = self.buttons(world)
         if inp.pressed("r") and self.roll_cooldown == 0:
             self._start_roll(world)
             return
         for index, action in enumerate(("b", "x", "y")):
             if inp.pressed(action):
-                world.use_item(self, world.state.slots[index])
+                world.use_item(self, self.slots(world)[index])
                 return
         if inp.pressed("a"):
             if self.carrying is not None:
@@ -183,7 +193,7 @@ class Hero(Entity):
             self.charge = 0
 
     def _walk(self, world: World) -> None:
-        dx, dy = world.input.axis()
+        dx, dy = self.buttons(world).axis()
         self.facing = facing_from(dx, dy, self.facing)
         if dx or dy:
             self.moving = True
@@ -290,7 +300,7 @@ class Hero(Entity):
 
     # ----- roll ----------------------------------------------------------
     def _start_roll(self, world: World) -> None:
-        dx, dy = world.input.axis()
+        dx, dy = self.buttons(world).axis()
         if not dx and not dy:
             dx, dy = DIRS[self.facing]
         length = math.hypot(dx, dy) or 1.0

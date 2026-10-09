@@ -55,7 +55,7 @@ class Pickup(Entity):
         if self.timer >= LIFETIME:
             self.alive = False
             return
-        if self.body_rect().colliderect(world.hero.body_rect()):
+        if world.touching_hero(self.body_rect()) is not None:
             self.collect(world)
 
     def collect(self, world: World) -> None:

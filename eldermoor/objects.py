@@ -360,7 +360,7 @@ class FloorSwitch(RoomObject):
 
     def update(self, world: World) -> None:
         """Check what is standing on the plate."""
-        on = self.body_rect().colliderect(world.hero.body_rect())
+        on = world.touching_hero(self.body_rect()) is not None
         if not on:
             on = any(isinstance(e, PushBlock) and e.body_rect().colliderect(self.body_rect())
                      for e in world.entities)
@@ -457,7 +457,7 @@ class Stairs(RoomObject):
 
     def update(self, world: World) -> None:
         """Warp once the hero is standing on the stairs."""
-        touching = self.body_rect().colliderect(world.hero.body_rect())
+        touching = world.touching_hero(self.body_rect()) is not None
         if touching and self.armed:
             world.audio.play(self.sound)
             spawn = tuple(self.spawn) if self.spawn else None
@@ -497,7 +497,7 @@ class Reward(RoomObject):
     def update(self, world: World) -> None:
         """Taken on touch."""
         self.frame += 1
-        if self.body_rect().colliderect(world.hero.body_rect()):
+        if world.touching_hero(self.body_rect()) is not None:
             self.alive = False
             self.mark(world)
             world.take_reward(self.what, self.spec)
@@ -525,7 +525,7 @@ class WarpLantern(RoomObject):
         self.frame += 1
         if self.lit:
             return
-        if self.body_rect().inflate(6, 6).colliderect(world.hero.body_rect()):
+        if world.touching_hero(self.body_rect().inflate(6, 6)) is not None:
             self.lit = True
             self.mark(world)
             world.state.warps[self.region] = world.room.id

@@ -71,6 +71,9 @@ class Input:
         self._key_held: dict[str, bool] = {a: False for a in ALL_ACTIONS}
         self._pad_held: dict[str, bool] = {a: False for a in ALL_ACTIONS}
         self._stick: dict[str, bool] = {a: False for a in ("up", "down", "left", "right")}
+        self._prev_key: dict[str, bool] = dict(self._key_held)
+        self._prev_pad: dict[str, bool] = dict(self._pad_held)
+        self._prev_stick: dict[str, bool] = dict(self._stick)
         self.last_device = "keyboard"
         self.controllers: dict[int, Any] = {}
         self.quit_requested = False
@@ -115,6 +118,9 @@ class Input:
     def begin_frame(self) -> None:
         """Snapshot the previous state so ``pressed`` can detect edges."""
         self._prev = dict(self.held)
+        self._prev_key = dict(self._key_held)
+        self._prev_pad = dict(self._pad_held)
+        self._prev_stick = dict(self._stick)
 
     def handle_event(self, event: pygame.event.Event) -> None:
         """Feed one pygame event."""
@@ -215,7 +221,38 @@ class Input:
         dy = int(self.held["down"]) - int(self.held["up"])
         return dx, dy
 
+    # ----- one player's share of the buttons ------------------------------
+    def view(self, source: str = "both") -> PlayerInput:
+        """A read-only view of one device's buttons ("keyboard", "gamepad", "both")."""
+        return PlayerInput(self, source)
+
+    def held_on(self, source: str, action: str) -> bool:
+        """Is this button down on one device?"""
+        if source == "keyboard":
+            return self._key_held.get(action, False)
+        if source == "gamepad":
+            return self._pad_held.get(action, False) or self._stick.get(action, False)
+        return self.held.get(action, False)
+
+    def was_held_on(self, source: str, action: str) -> bool:
+        """Was it down on the previous frame, on that device?"""
+        if source == "keyboard":
+            return self._prev_key.get(action, False)
+        if source == "gamepad":
+            return self._prev_pad.get(action, False) or self._prev_stick.get(action, False)
+        return self._prev.get(action, False)
+
     # ----- test / script helpers -----------------------------------------
+    def press_pad(self, action: str) -> None:
+        """Simulate holding a gamepad button (tests, bots)."""
+        self._pad_held[action] = True
+        self._recompute(action)
+
+    def release_pad(self, action: str) -> None:
+        """Simulate releasing a gamepad button."""
+        self._pad_held[action] = False
+        self._recompute(action)
+
     def press(self, action: str) -> None:
         """Simulate holding a logical button (tests, bots)."""
         self._key_held[action] = True
@@ -232,3 +269,37 @@ class Input:
         """Release every button."""
         for a in ALL_ACTIONS:
             self.release(a)
+
+
+class PlayerInput:
+    """One lamplighter's share of the buttons.
+
+    In one-player games both heroes-worth of buttons come from "both", which
+    is every device at once. In two-player games player one reads the
+    keyboard and player two the gamepad, so the same frame can hold two
+    different directions.
+    """
+
+    def __init__(self, source_input: Input, source: str = "both") -> None:
+        self.input = source_input
+        self.source = source
+
+    def is_held(self, action: str) -> bool:
+        """True while this player holds the button."""
+        if isinstance(action, tuple):
+            return any(self.is_held(a) for a in action)
+        return self.input.held_on(self.source, action)
+
+    def pressed(self, action: str) -> bool:
+        """True on the frame this player pushed it down."""
+        return self.is_held(action) and not self.input.was_held_on(self.source, action)
+
+    def released(self, action: str) -> bool:
+        """True on the frame this player let it go."""
+        return not self.is_held(action) and self.input.was_held_on(self.source, action)
+
+    def axis(self) -> tuple[int, int]:
+        """This player's movement direction."""
+        dx = int(self.is_held("right")) - int(self.is_held("left"))
+        dy = int(self.is_held("down")) - int(self.is_held("up"))
+        return dx, dy

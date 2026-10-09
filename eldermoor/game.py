@@ -102,7 +102,15 @@ class Game:
         self.world.text_speed = self.settings.text_speed
         self._last_room = self.world.room.id
 
+    def _sync_players(self) -> None:
+        """Drop the second lamplighter in or out to match the setting."""
+        if self.settings.two_player and self.world.hero2 is None:
+            self.world.join_player_two()
+        elif not self.settings.two_player and self.world.hero2 is not None:
+            self.world.drop_player_two()
+
     def _update_play(self) -> None:
+        self._sync_players()
         self.state.playtime += DT
         self.world.tick_clock(DT)
         self.hud.tick(self.state, self.audio, self.settings.low_health_beep)
@@ -189,6 +197,7 @@ class Game:
     # ----- saving --------------------------------------------------------
     def _apply_settings(self) -> None:
         self.settings.clamped()
+        self._sync_players()
         self.audio.set_volumes(self.settings.music_volume, self.settings.sfx_volume)
         self.world.text_speed = self.settings.text_speed
         self.settings.save()
@@ -227,5 +236,5 @@ class Game:
             self.pause.draw(canvas)
             return
         self.world.draw(canvas)
-        self.hud.draw(canvas, self.state)
+        self.hud.draw(canvas, self.state, self.world.hero2 is not None)
         self.debug.draw(canvas, self)

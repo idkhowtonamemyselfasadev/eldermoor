@@ -304,3 +304,24 @@ The Master Quest asks the state three questions - how much does this hit
 for, how much life does this have, which drop table does this roll - and
 answers them differently on a file with the `master` flag. Nothing else in
 the engine knows it exists.
+
+
+--------------------------------------------------------------------------
+## 6. Milestone 7 — the second lamplighter
+
+`Input` keeps three sets of button states - keyboard, gamepad buttons and
+gamepad stick - and merged them into one. Co-op only needed a view onto one
+of them: `Input.view("keyboard")` and `Input.view("gamepad")` are the two
+players, `Input.view("both")` is one-player, and `PlayerInput` does the edge
+detection per device so a single frame can hold two directions.
+
+Everything else followed from one question: who is this creature thinking
+about? `World.nearest_hero` answers it, and the AI, the projectiles, the
+contact damage and the cloak all ask. `World.touching_hero` is the same
+question for pickups, switches and rewards. Those two functions are the
+whole of co-op's effect on the rest of the engine; `eldermoor/players.py`
+holds the joining and leaving.
+
+Shared: hearts, keys, embers, items, flags, the save. Separate: the three
+item slots, which is what PROMPT.md asks for and what makes a second player
+useful rather than decorative.

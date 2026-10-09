@@ -38,21 +38,22 @@ def draw_world(world: World, target: pygame.Surface, oy: int = PLAY_Y) -> None:
 
 
 def draw_darkness(world: World, target: pygame.Surface, oy: int) -> None:
-    """A dark room: black except a circle around Wren, wider with the Lantern lit.
+    """A dark room: black but for a circle around each lamplighter.
 
     Lighting the room's torch clears it for good, which is what the
     Lantern is for.
     """
     if any(isinstance(e, Torch) and e.lit for e in world.entities):
         return
-    radius = 30
-    if world.state.has("lantern"):
-        radius = 76 if world.hero.lantern_timer > 0 else 62
     shade = pygame.Surface((PLAY_W, PLAY_H), pygame.SRCALPHA)
     shade.fill((2, 2, 8, 248))
-    cx, cy = world.hero.center
-    for i in range(6):
-        r = radius - i * radius // 7
-        alpha = 248 - round(248 * (1.0 - i / 6.0) ** 0.6)
-        pygame.draw.circle(shade, (2, 2, 8, alpha), (round(cx), round(cy)), r)
+    for hero in world.heroes:
+        radius = 30
+        if world.state.has("lantern"):
+            radius = 76 if hero.lantern_timer > 0 else 62
+        cx, cy = hero.center
+        for i in range(6):
+            r = radius - i * radius // 7
+            alpha = 248 - round(248 * (1.0 - i / 6.0) ** 0.6)
+            pygame.draw.circle(shade, (2, 2, 8, alpha), (round(cx), round(cy)), r)
     target.blit(shade, (0, oy))

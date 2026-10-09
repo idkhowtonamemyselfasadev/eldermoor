@@ -706,5 +706,7 @@
  "title.master": "{n}. MASTER QUEST",
  "master.hello": "The kingdom remembers you, and it has been practising.",
  "choice.yes": "Yes",
- "choice.no": "Not yet"
+ "choice.no": "Not yet",
+ "menu.two_player": "Two players",
+ "menu.player_two": "P2 slots"
 }

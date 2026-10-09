@@ -73,6 +73,7 @@ class GameState:
     seashells: int = 0
     owned: list[str] = field(default_factory=list)
     slots: list[str | None] = field(default_factory=lambda: [None, None, None])
+    slots2: list[str | None] = field(default_factory=lambda: [None, None, None])
     flags: dict[str, int] = field(default_factory=dict)
     dungeons: dict[str, DungeonProgress] = field(default_factory=dict)
     room: str = "ow_1105"
@@ -110,15 +111,16 @@ class GameState:
         self.owned.append(item)
         return True
 
-    def assign(self, index: int, item: str | None) -> None:
-        """Put an item in HUD slot 0/1/2 (B, X, Y), clearing it from any other slot."""
-        if not 0 <= index < len(self.slots):
+    def assign(self, index: int, item: str | None, player: int = 0) -> None:
+        """Put an item in a HUD slot (B, X, Y), clearing it from that player's others."""
+        slots = self.slots2 if player else self.slots
+        if not 0 <= index < len(slots):
             raise IndexError(index)
         if item is not None:
-            for i, cur in enumerate(self.slots):
+            for i, cur in enumerate(slots):
                 if cur == item and i != index:
-                    self.slots[i] = None
-        self.slots[index] = item
+                    slots[i] = None
+        slots[index] = item
 
     # ----- flags ---------------------------------------------------------
     def flag(self, name: str) -> int:
@@ -268,7 +270,9 @@ class GameState:
         state = cls(**kwargs)
         state.dungeons = {k: DungeonProgress.from_json(v)
                           for k, v in raw.get("dungeons", {}).items()}
-        state.slots = list(raw.get("slots", state.slots))[:3]
-        while len(state.slots) < 3:
-            state.slots.append(None)
+        for name in ("slots", "slots2"):
+            slots = list(raw.get(name, getattr(state, name)))[:3]
+            while len(slots) < 3:
+                slots.append(None)
+            setattr(state, name, slots)
         return state

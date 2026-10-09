@@ -56,6 +56,8 @@ class Settings:
     show_button_glyphs: bool = True
     #: set the first time an ending rolls: the Master Quest is on offer after that
     master_unlocked: bool = False
+    #: two lamplighters: player one on the keyboard, player two on the gamepad
+    two_player: bool = False
 
     @classmethod
     def load(cls, path: Path | None = None) -> Settings:

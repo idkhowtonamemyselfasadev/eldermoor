@@ -268,3 +268,31 @@ screens and the whole 35-room Ember Temple, from its door to the Flame.
   (`eldermoor/postgame.py`), so every room, enemy and drop table in the
   game is harder without a second copy of any of them.
 - 667 rooms, 47 enemy kinds, 190 tests.
+
+
+## 0.7.0 — Milestone 7: two lamplighters
+
+- **Local co-op.** Turn on *Two players* in the settings page and a second
+  lamplighter drops in beside the first; turn it off and they step back out.
+  Player one reads the keyboard, player two the gamepad, so the same frame
+  can hold two different directions (`Input.view`, `PlayerInput`).
+- **Own item slots.** Player two starts with a copy of player one's three
+  items and keeps their own set after that; the items page switches between
+  the two with Select, and the HUD halves its slot boxes and stacks them,
+  player one over player two.
+- **One heart row, two bodies.** Both lamplighters draw on the same hearts,
+  keys and embers, because it is one save and one kingdom. Either of them
+  can be hit, fall in a pit, pick something up, stand on a floor switch or
+  take a reward.
+- **Creatures think about the nearer one.** Chasing, orbiting, shooting,
+  telegraphing and the Mirror Cloak all ask which lamplighter a creature is
+  closest to, so a second player splits a boss's attention rather than
+  standing in a blind spot.
+- **Both carry a light.** A dark room now has one circle of lantern light
+  per lamplighter.
+- **Screens stay shared.** Player one walks the party from screen to screen;
+  player two is carried along to the same doorway, and cannot drag the
+  screen along by standing on an edge.
+- Save version 3 gained `slots2`; a milestone-6 file migrates into it with
+  empty second slots.
+- 207 tests.

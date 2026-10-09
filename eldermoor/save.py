@@ -45,6 +45,7 @@ def _v2_to_v3(raw: dict[str, Any]) -> dict[str, Any]:
     for table in ("placed", "bestiary", "scores"):
         raw.setdefault(table, {})
     raw.setdefault("trade", 0)
+    raw.setdefault("slots2", [None, None, None])
     raw["version"] = 3
     return raw
 

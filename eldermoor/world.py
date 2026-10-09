@@ -7,14 +7,25 @@ from typing import TYPE_CHECKING, Any
 
 import pygame
 
-from eldermoor import actions, postgame, render, rewards, talk, trade, transition
+from eldermoor import (
+    actions,
+    clock,
+    players,
+    postgame,
+    render,
+    rewards,
+    rooms,
+    talk,
+    trade,
+    transition,
+)
 from eldermoor.bosses import Boss
 from eldermoor.config import PLAY_H, PLAY_W, PLAY_Y, TEXT_SPEED_DEFAULT, TILE
 from eldermoor.content import Content
 from eldermoor.enemies import Enemy, Projectile
 from eldermoor.entities import Entity
 from eldermoor.hero import Hero
-from eldermoor.objects import Door, build
+from eldermoor.objects import Door
 from eldermoor.pickups import Pickup, spawn_drop
 from eldermoor.rings import RingBonus
 from eldermoor.script import fire
@@ -30,9 +41,6 @@ if TYPE_CHECKING:
 
 LANTERN_FRAMES = 26
 #: eight real minutes from dawn to dawn
-DAY_LENGTH = 8 * 60.0
-NIGHT_FROM = 0.55
-NIGHT_TO = 0.95
 
 
 class World:
@@ -52,6 +60,7 @@ class World:
         self.tilesets: dict[str, Tileset] = {}
         self.entities: list[Entity] = []
         self.hero = Hero(0, 0)
+        self.hero2: Hero | None = None
         self.transition: FlipScroll | None = None
         self.dialogue: TextBox | None = None
         self.dialogue_after: Any = None
@@ -107,125 +116,25 @@ class World:
 
     # ----- rooms ---------------------------------------------------------
     def enter_room(self, room_id: str, x: float | None = None, y: float | None = None) -> None:
-        """Load a room, place the hero and build its objects."""
-        self.room = Room.load(room_id, tilesets=self.tilesets)
-        self._room_surface = None
-        self.entities = [self.hero]
-        self.boss = None
-        self.dialogue = None
-        self.dialogue_after = None
-        if x is not None:
-            self.hero.x = x
-        elif self.room.spawn:
-            self.hero.x = self.room.spawn[0]
-        if y is not None:
-            self.hero.y = y
-        elif self.room.spawn:
-            self.hero.y = self.room.spawn[1]
-        self.last_safe = (self.hero.x, self.hero.y)
-        self._build_objects()
-        self._remember_room()
-        self.update_music()
-        fire(self, "enter")
-
-    def _build_objects(self) -> None:
-        for spec in self.room.objects:
-            self.spawn_from_spec(spec)
-        self._respawn_triggered_objects()
-
-    def _respawn_triggered_objects(self) -> None:
-        """Re-place objects a one-shot trigger created on an earlier visit.
-
-        A chest that appears when a room is cleared must still be there when
-        the player comes back for it; the trigger itself has already fired, so
-        the object is rebuilt here and reads its own flag to know whether it
-        was opened.
-        """
-        for trigger in self.room.triggers:
-            flag = trigger.get("flag")
-            if not flag or not self.state.flag(str(flag)):
-                continue
-            for action in trigger.get("do", []):
-                if "spawn" in action:
-                    self.spawn_from_spec(dict(action["spawn"]))
+        """Load a room, place the lamplighters and build its objects."""
+        rooms.enter(self, room_id, x, y)
 
     def spec_applies(self, spec: dict[str, Any]) -> bool:
         """Whether a room-object entry is live right now (time of day, flags)."""
-        if spec.get("if_night") and not self.is_night:
-            return False
-        if spec.get("if_day") and self.is_night:
-            return False
-        flag = spec.get("if_flag")
-        if flag and not self.state.flag(str(flag)):
-            return False
-        unless = spec.get("unless_flag")
-        if unless and self.state.flag(str(unless)):
-            return False
-        return True
+        return rooms.applies(self, spec)
 
     def spawn_from_spec(self, spec: dict[str, Any]) -> Entity | None:
         """Create one entity from a room-object entry (``kind`` picks the class)."""
-        if not self.spec_applies(spec):
-            return None
-        kind = str(spec.get("kind", ""))
-        if kind == "enemy":
-            return self._spawn_enemy(spec)
-        obj = build(self, spec)
-        if obj is None or not obj.alive:
-            return None
-        self.spawn(obj)
-        return obj
-
-    def _spawn_enemy(self, spec: dict[str, Any]) -> Entity | None:
-        definition = self.enemy_defs.get(str(spec.get("type", "")))
-        if definition is None:
-            return None
-        col, row = spec.get("at", (0, 0))
-        cls = Boss if definition.raw.get("boss") else Enemy
-        enemy = cls(definition, col * TILE, row * TILE, self.rng)
-        enemy.hp = postgame.scale_hp(self.state, enemy.hp)
-        enemy.contact_damage = postgame.scale_damage(self.state, enemy.contact_damage)
-        if isinstance(enemy, Boss):
-            self.boss = enemy
-        self.spawn(enemy)
-        return enemy
-
-    def _remember_room(self) -> None:
-        if self.room.id not in self.state.rooms_visited:
-            self.state.rooms_visited.append(self.room.id)
-        if self.room.dungeon:
-            if self.state.dungeon != self.room.dungeon:
-                self.state.enter_dungeon(self.room.dungeon)
-            progress = self.state.progress(self.room.dungeon)
-            if self.room.id not in progress.rooms:
-                progress.rooms.append(self.room.id)
-            dungeon = self.content.dungeons.get(self.room.dungeon)
-            if dungeon is not None:
-                self.state.respawn_room = dungeon.entrance
-                self.state.respawn_x, self.state.respawn_y = dungeon.entrance_spawn
-        elif self.state.dungeon:
-            self.state.sync_keys()
-            self.state.enter_dungeon("")
-        if not self.room.dungeon and not self.room.id.startswith("house"):
-            self.state.respawn_room = self.room.id
-            self.state.respawn_x, self.state.respawn_y = self.room.spawn
-        self.state.room = self.room.id
+        return rooms.spawn_spec(self, spec)
 
     def update_music(self) -> None:
         """Pick the track for the current room."""
-        track = self.room.music
-        if not track and self.room.dungeon:
-            dungeon = self.content.dungeons.get(self.room.dungeon)
-            track = dungeon.music if dungeon else ""
-        if not track and self.room.outdoors:
-            track = "overworld_night" if self.is_night else "overworld_day"
-        self.audio.play_music(track or "overworld_day")
+        self.audio.play_music(clock.track_for(self))
 
     @property
     def is_night(self) -> bool:
-        """True while the mist is up. The clock only runs outdoors."""
-        phase = (self.state.minutes_of_day % DAY_LENGTH) / DAY_LENGTH
-        return NIGHT_FROM <= phase < NIGHT_TO
+        """True while the mist is up."""
+        return clock.is_night(self.state)
 
     @property
     def draw_region(self) -> str:
@@ -236,12 +145,13 @@ class World:
 
     def tick_clock(self, seconds: float) -> None:
         """Advance the day/night clock; indoors and underground time stands still."""
-        if self.room.outdoors:
-            was = self.is_night
-            self.state.minutes_of_day = (self.state.minutes_of_day + seconds) % DAY_LENGTH
-            if self.is_night != was:
-                self._room_surface = None
-                self.update_music()
+        if not self.room.outdoors:
+            return
+        was = self.is_night
+        clock.advance(self.state, seconds)
+        if self.is_night != was:
+            self._room_surface = None
+            self.update_music()
 
     def room_surface(self) -> pygame.Surface:
         """The current room's tile layer, rendered once and cached per palette."""
@@ -276,6 +186,38 @@ class World:
     def enemies(self) -> list[Enemy]:
         """Living enemies in the room."""
         return [e for e in self.entities if isinstance(e, Enemy) and e.alive]
+
+    # ----- two lamplighters ----------------------------------------------
+    @property
+    def heroes(self) -> list[Hero]:
+        """Every lamplighter on the screen, player one first."""
+        return [h for h in (self.hero, self.hero2) if h is not None and h.alive]
+
+    def player_input(self, player: int) -> Any:
+        """One player's share of the buttons."""
+        if self.hero2 is None:
+            return self.input.view("both")
+        return self.input.view("keyboard" if player == 0 else "gamepad")
+
+    def slots_for(self, player: int) -> list[str | None]:
+        """One player's three item slots."""
+        return self.state.slots2 if player else self.state.slots
+
+    def nearest_hero(self, ent: Entity) -> Hero:
+        """Whichever lamplighter this creature should be thinking about."""
+        return players.nearest(self, ent)
+
+    def touching_hero(self, rect: pygame.Rect) -> Hero | None:
+        """The first lamplighter a rect overlaps, if any."""
+        return players.touching(self, rect)
+
+    def join_player_two(self) -> Hero:
+        """Drop the second lamplighter in beside the first."""
+        return players.join(self)
+
+    def drop_player_two(self) -> None:
+        """Take the second lamplighter back out of the game."""
+        players.drop(self)
 
     @property
     def ring_bonus(self) -> RingBonus:
@@ -523,7 +465,11 @@ class World:
         self._check_exit()
 
     def _check_hazards(self) -> None:
-        hero = self.hero
+        for hero in self.heroes:
+            self._check_hazard(hero)
+
+    def _check_hazard(self, hero: Hero) -> None:
+        """Lava, pits and the ledge one lamplighter is standing on."""
         if hero.airborne or hero.invulnerable:
             return
         hazard = self.room.hazard_at(hero.body_rect())
@@ -532,7 +478,7 @@ class World:
         if hazard is Collision.PIT and hero.hooking:
             return
         if hazard is None:
-            if not self.room.blocked(hero.body_rect()):
+            if hero is self.hero and not self.room.blocked(hero.body_rect()):
                 self.last_safe = (hero.x, hero.y)
             return
         self.audio.play("fall" if hazard is Collision.PIT else "lava")

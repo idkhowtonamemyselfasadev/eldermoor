@@ -27,6 +27,7 @@ SETTINGS_ROWS = (
     ("screen_shake", "menu.shake", "bool"),
     ("low_health_beep", "menu.beep", "bool"),
     ("hints", "menu.hints", "bool"),
+    ("two_player", "menu.two_player", "bool"),
     ("stretch", "menu.stretch", "bool"),
 )
 
@@ -48,6 +49,8 @@ class PauseMenu:
         self.want_warp = ""
         self.tab = 0
         self.ring_slot = 0
+        #: which lamplighter the items page is equipping
+        self.player = 0
 
     # ----- frame ---------------------------------------------------------
     def update(self, inp: Input) -> str | None:
@@ -70,18 +73,26 @@ class PauseMenu:
         owned = self.content.items.ordered(self.state.owned)
         if not owned:
             return
+        if inp.pressed("select"):
+            self.player = 1 - self.player
+            self.audio.play("menu_move")
         self._move_cursor(inp, len(owned), GRID_COLS)
         if inp.pressed("a"):
             item = owned[self.cursor]
             if item.assignable:
                 slot = self._next_slot(item.id)
-                self.state.assign(slot, item.id)
+                self.state.assign(slot, item.id, self.player)
                 self.audio.play("menu_select")
             else:
                 self.audio.play("error")
 
+    @property
+    def slots(self) -> list[str | None]:
+        """The slots the items page is currently equipping."""
+        return self.state.slots2 if self.player else self.state.slots
+
     def _next_slot(self, item_id: str) -> int:
-        slots = self.state.slots
+        slots = self.slots
         if item_id in slots:
             return (slots.index(item_id) + 1) % 3
         for i, cur in enumerate(slots):
@@ -182,9 +193,12 @@ class PauseMenu:
             pygame.draw.rect(target, edge, box, 1)
             if self.assets.icons.has(item.icon):
                 target.blit(self.assets.icons.get(item.icon), (box.x + 6, box.y + 6))
-            if item.id in self.state.slots:
-                font.draw(target, "BXY"[self.state.slots.index(item.id)],
+            if item.id in self.slots:
+                font.draw(target, "BXY"[self.slots.index(item.id)],
                           box.right - 6, box.bottom - 8, self.assets.colour("lime"))
+        if self.player:
+            font.draw(target, self.content.text.get("menu.player_two"), CANVAS_W - 70, 32,
+                      self.assets.colour("sky"))
         if owned:
             name = self.content.text.get(owned[self.cursor].name)
             self.assets.font8.draw(target, name, 8, 32, self.assets.colour("white"))

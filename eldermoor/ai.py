@@ -26,9 +26,13 @@ MoveFn = Callable[["Entity", "World", dict[str, Any]], None]
 
 
 def blind_to(ent: Entity, world: World) -> bool:
-    """True when the Mirror Cloak hides the hero from this creature."""
+    """True when the Mirror Cloak hides its wearer from this creature.
+
+    With two lamplighters on the screen, the one this creature is thinking
+    about is the one whose cloak matters.
+    """
     definition = getattr(ent, "definition", None)
-    return bool(world.hero.cloaked and definition is not None
+    return bool(world.nearest_hero(ent).cloaked and definition is not None
                 and definition.raw.get("cloak_blind"))
 
 
@@ -36,7 +40,7 @@ def _towards(ent: Entity, world: World) -> tuple[float, float]:
     if blind_to(ent, world):
         return ent.heading if ent.heading != (0.0, 0.0) else (0.0, 1.0)
     ax, ay = ent.center
-    bx, by = world.hero.center
+    bx, by = world.nearest_hero(ent).center
     dx, dy = bx - ax, by - ay
     length = math.hypot(dx, dy) or 1.0
     return dx / length, dy / length
@@ -130,7 +134,7 @@ def move_circle(ent: Entity, world: World, params: dict[str, Any]) -> None:
     orbit ends up half inside the wall, where nothing can reach it.
     """
     ax, ay = ent.center
-    bx, by = world.hero.center
+    bx, by = world.nearest_hero(ent).center
     angle = math.atan2(ay - by, ax - bx) + float(params.get("spin", 0.05))
     radius = float(params.get("radius", 48))
     want_x = bx + math.cos(angle) * radius - ent.width / 2
@@ -186,7 +190,7 @@ class Brain:
         """One frame: run the move function, then take any transition."""
         params = self.current
         MOVES.get(str(params.get("move", "none")), move_none)(ent, world, params)
-        dist = 10 ** 6 if blind_to(ent, world) else ent.distance_to(world.hero)
+        dist = 10 ** 6 if blind_to(ent, world) else ent.distance_to(world.nearest_hero(ent))
         near = params.get("if_near")
         far = params.get("if_far")
         if near and dist <= float(near.get("dist", 32)):

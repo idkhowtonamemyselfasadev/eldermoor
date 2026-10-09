@@ -216,3 +216,19 @@ Decisions made without asking, with the reason. Newest at the bottom.
     boss in the game, and one of them had sprites, a name in the notes and
     no data. The lesson stands as the rule the validator already follows -
     a table that names something is a check waiting to be written.
+
+54. **Co-op is a setting, not a secret button.** "Drop-in" is lovely until
+    you work out which button a second gamepad can press that player one is
+    not already using for an item. The settings page already asks about
+    devices, the pause menu is one button away, and turning it off puts the
+    second lamplighter away mid-room, which is what drop-out means.
+55. **Player one is the camera.** Only player one's position opens the next
+    screen, and player two is carried to the same doorway. The alternative -
+    either player dragging the screen - means one of them is walked out of a
+    fight they were in the middle of.
+56. **One heart row.** Two separate health bars means two death rules, two
+    respawns and a long argument about what happens to the other player. One
+    row, two bodies: the second lamplighter is help, not a second life.
+57. **Player two gets copies, not an empty bag.** They start with player
+    one's three slots so the first thing a second player does is play, and
+    their slots diverge from the moment anyone changes them.
