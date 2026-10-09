@@ -146,6 +146,7 @@ class Enemy(Entity):
         world.audio.play("enemy_die")
         world.drop_from(self.x, self.y, self.definition.drop)
         world.state.set_flag(f"seen:{self.definition.id}", 1)
+        world.state.record_kill(self.definition.id)
         world.trigger("enemy_died", self.definition.id)
 
     # ----- drawing -------------------------------------------------------

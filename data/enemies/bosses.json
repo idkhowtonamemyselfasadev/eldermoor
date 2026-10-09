@@ -1,1150 +1,1590 @@
 {
-  "_comment": "Mini-boss and boss of the Ember Temple. 'weak_states' are the only states in which damage lands, so the temple item is what opens the window.",
-  "cinderjaw": {
-    "name": "boss.cinderjaw",
-    "bestiary": "bestiary.cinderjaw",
-    "boss": true,
-    "mini": true,
-    "sprite": "cinderjaw",
-    "frames": 2,
-    "frame_time": 14,
-    "size": 32,
-    "body": [
-      4,
-      10,
-      24,
-      20
-    ],
-    "hp": 12,
-    "damage": 2,
-    "speed": 0.7,
-    "drop": "enemy_tough",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "roam",
-      "states": {
-        "roam": {
-          "move": "chase",
-          "speed": 0.62,
-          "time": 110,
-          "next": "ready",
-          "if_near": {
-            "dist": 44,
-            "go": "ready"
-          }
-        },
-        "ready": {
-          "move": "none",
-          "time": 28,
-          "telegraph": true,
-          "next": "slam"
-        },
-        "slam": {
-          "move": "dash",
-          "speed": 2.4,
-          "time": 34,
-          "next": "stunned"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 96,
-          "next": "roam"
-        }
-      }
+ "_comment": "Mini-boss and boss of the Ember Temple. 'weak_states' are the only states in which damage lands, so the temple item is what opens the window.",
+ "cinderjaw": {
+  "name": "boss.cinderjaw",
+  "bestiary": "bestiary.cinderjaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "cinderjaw",
+  "frames": 2,
+  "frame_time": 14,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 12,
+  "damage": 2,
+  "speed": 0.7,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.62,
+     "time": 110,
+     "next": "ready",
+     "if_near": {
+      "dist": 44,
+      "go": "ready"
+     }
     },
-    "phases": [
-      {
-        "below": 6,
-        "speed_mul": 1.4,
-        "start": "ready"
-      }
-    ]
+    "ready": {
+     "move": "none",
+     "time": 28,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.4,
+     "time": 34,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 96,
+     "next": "roam"
+    }
+   }
   },
-  "ashmaw": {
-    "name": "boss.ashmaw",
-    "bestiary": "bestiary.ashmaw",
-    "boss": true,
-    "sprite": "ashmaw",
-    "frames": 2,
-    "frame_time": 22,
-    "size": 48,
-    "body": [
-      6,
-      14,
-      36,
-      28
-    ],
-    "hp": 18,
-    "damage": 2,
-    "speed": 0.4,
-    "drop": "none",
-    "reward": "heart_container",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "shut",
-      "states": {
-        "shut": {
-          "move": "chase",
-          "speed": 0.34,
-          "time": 150,
-          "next": "wind"
-        },
-        "wind": {
-          "move": "none",
-          "time": 30,
-          "telegraph": true,
-          "next": "spit"
-        },
-        "spit": {
-          "move": "shoot",
-          "shot": "shot_ember",
-          "shot_speed": 1.5,
-          "shot_damage": 2,
-          "time": 18,
-          "next": "roam"
-        },
-        "roam": {
-          "move": "wander",
-          "speed": 0.5,
-          "turn": 40,
-          "time": 110,
-          "next": "wind"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 150,
-          "next": "shut"
-        }
-      }
+  "phases": [
+   {
+    "below": 6,
+    "speed_mul": 1.4,
+    "start": "ready"
+   }
+  ]
+ },
+ "ashmaw": {
+  "name": "boss.ashmaw",
+  "bestiary": "bestiary.ashmaw",
+  "boss": true,
+  "sprite": "ashmaw",
+  "frames": 2,
+  "frame_time": 22,
+  "size": 48,
+  "body": [
+   6,
+   14,
+   36,
+   28
+  ],
+  "hp": 18,
+  "damage": 2,
+  "speed": 0.4,
+  "drop": "none",
+  "reward": "heart_container",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "shut",
+   "states": {
+    "shut": {
+     "move": "chase",
+     "speed": 0.34,
+     "time": 150,
+     "next": "wind"
     },
-    "phases": [
-      {
-        "below": 12,
-        "speed_mul": 1.25,
-        "start": "wind"
-      },
-      {
-        "below": 6,
-        "speed_mul": 1.25,
-        "start": "spit"
-      }
-    ]
+    "wind": {
+     "move": "none",
+     "time": 30,
+     "telegraph": true,
+     "next": "spit"
+    },
+    "spit": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.5,
+     "shot_damage": 2,
+     "time": 18,
+     "next": "roam"
+    },
+    "roam": {
+     "move": "wander",
+     "speed": 0.5,
+     "turn": 40,
+     "time": 110,
+     "next": "wind"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 150,
+     "next": "shut"
+    }
+   }
   },
-  "thornjaw": {
-    "name": "boss.thornjaw",
-    "bestiary": "bestiary.thornjaw",
-    "boss": true,
-    "mini": true,
-    "sprite": "thornjaw",
-    "frames": 2,
-    "frame_time": 12,
-    "size": 32,
-    "body": [
-      4,
-      10,
-      24,
-      20
-    ],
-    "hp": 14,
-    "damage": 2,
-    "speed": 0.8,
-    "drop": "enemy_tough",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "roam",
-      "states": {
-        "roam": {
-          "move": "wander",
-          "speed": 0.7,
-          "turn": 40,
-          "time": 100,
-          "next": "ready",
-          "if_near": {
-            "dist": 56,
-            "go": "ready"
-          }
-        },
-        "ready": {
-          "move": "none",
-          "time": 26,
-          "telegraph": true,
-          "next": "roll"
-        },
-        "roll": {
-          "move": "dash",
-          "speed": 2.8,
-          "time": 40,
-          "next": "stunned"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 90,
-          "next": "roam"
-        }
-      }
+  "phases": [
+   {
+    "below": 12,
+    "speed_mul": 1.25,
+    "start": "wind"
+   },
+   {
+    "below": 6,
+    "speed_mul": 1.25,
+    "start": "spit"
+   }
+  ]
+ },
+ "thornjaw": {
+  "name": "boss.thornjaw",
+  "bestiary": "bestiary.thornjaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "thornjaw",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 14,
+  "damage": 2,
+  "speed": 0.8,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "wander",
+     "speed": 0.7,
+     "turn": 40,
+     "time": 100,
+     "next": "ready",
+     "if_near": {
+      "dist": 56,
+      "go": "ready"
+     }
     },
-    "phases": [
-      {
-        "below": 7,
-        "speed_mul": 1.35,
-        "start": "ready"
-      }
-    ]
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "roll"
+    },
+    "roll": {
+     "move": "dash",
+     "speed": 2.8,
+     "time": 40,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 90,
+     "next": "roam"
+    }
+   }
   },
-  "hollowking": {
-    "name": "boss.hollowking",
-    "bestiary": "bestiary.hollowking",
-    "boss": true,
-    "sprite": "hollowking",
-    "frames": 2,
-    "frame_time": 20,
-    "size": 48,
-    "body": [
-      6,
-      14,
-      36,
-      28
-    ],
-    "hp": 20,
-    "damage": 2,
-    "speed": 0.45,
-    "drop": "none",
-    "reward": "heart_container",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "shut",
-      "states": {
-        "shut": {
-          "move": "chase",
-          "speed": 0.4,
-          "time": 140,
-          "next": "wind"
-        },
-        "wind": {
-          "move": "none",
-          "time": 30,
-          "telegraph": true,
-          "next": "spit"
-        },
-        "spit": {
-          "move": "shoot",
-          "shot": "shot_rock",
-          "shot_speed": 1.6,
-          "shot_damage": 2,
-          "time": 18,
-          "next": "roam"
-        },
-        "roam": {
-          "move": "wander",
-          "speed": 0.55,
-          "turn": 40,
-          "time": 110,
-          "next": "wind"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 140,
-          "next": "shut"
-        }
-      }
+  "phases": [
+   {
+    "below": 7,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "hollowking": {
+  "name": "boss.hollowking",
+  "bestiary": "bestiary.hollowking",
+  "boss": true,
+  "sprite": "hollowking",
+  "frames": 2,
+  "frame_time": 20,
+  "size": 48,
+  "body": [
+   6,
+   14,
+   36,
+   28
+  ],
+  "hp": 20,
+  "damage": 2,
+  "speed": 0.45,
+  "drop": "none",
+  "reward": "heart_container",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "shut",
+   "states": {
+    "shut": {
+     "move": "chase",
+     "speed": 0.4,
+     "time": 140,
+     "next": "wind"
     },
-    "phases": [
-      {
-        "below": 13,
-        "speed_mul": 1.2,
-        "start": "wind"
-      },
-      {
-        "below": 6,
-        "speed_mul": 1.2,
-        "start": "spit"
-      }
-    ]
+    "wind": {
+     "move": "none",
+     "time": 30,
+     "telegraph": true,
+     "next": "spit"
+    },
+    "spit": {
+     "move": "shoot",
+     "shot": "shot_rock",
+     "shot_speed": 1.6,
+     "shot_damage": 2,
+     "time": 18,
+     "next": "roam"
+    },
+    "roam": {
+     "move": "wander",
+     "speed": 0.55,
+     "turn": 40,
+     "time": 110,
+     "next": "wind"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 140,
+     "next": "shut"
+    }
+   }
   },
-  "brinejaw": {
-    "name": "boss.brinejaw",
-    "bestiary": "bestiary.brinejaw",
-    "boss": true,
-    "mini": true,
-    "sprite": "brinejaw",
-    "frames": 2,
-    "frame_time": 12,
-    "size": 32,
-    "body": [
-      4,
-      10,
-      24,
-      20
-    ],
-    "hp": 16,
-    "damage": 2,
-    "speed": 0.85,
-    "drop": "enemy_tough",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "roam",
-      "states": {
-        "roam": {
-          "move": "chase",
-          "speed": 0.7,
-          "time": 100,
-          "next": "ready",
-          "if_near": {
-            "dist": 50,
-            "go": "ready"
-          }
-        },
-        "ready": {
-          "move": "none",
-          "time": 26,
-          "telegraph": true,
-          "next": "lunge"
-        },
-        "lunge": {
-          "move": "dash",
-          "speed": 2.7,
-          "time": 36,
-          "next": "stunned"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 92,
-          "next": "roam"
-        }
-      }
+  "phases": [
+   {
+    "below": 13,
+    "speed_mul": 1.2,
+    "start": "wind"
+   },
+   {
+    "below": 6,
+    "speed_mul": 1.2,
+    "start": "spit"
+   }
+  ]
+ },
+ "brinejaw": {
+  "name": "boss.brinejaw",
+  "bestiary": "bestiary.brinejaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "brinejaw",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 16,
+  "damage": 2,
+  "speed": 0.85,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.7,
+     "time": 100,
+     "next": "ready",
+     "if_near": {
+      "dist": 50,
+      "go": "ready"
+     }
     },
-    "phases": [
-      {
-        "below": 8,
-        "speed_mul": 1.35,
-        "start": "ready"
-      }
-    ]
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "lunge"
+    },
+    "lunge": {
+     "move": "dash",
+     "speed": 2.7,
+     "time": 36,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 92,
+     "next": "roam"
+    }
+   }
   },
-  "tideclaw": {
-    "name": "boss.tideclaw",
-    "bestiary": "bestiary.tideclaw",
-    "boss": true,
-    "sprite": "tideclaw",
-    "frames": 2,
-    "frame_time": 20,
-    "size": 48,
-    "body": [
-      6,
-      14,
-      36,
-      28
-    ],
-    "hp": 22,
-    "damage": 2,
-    "speed": 0.45,
-    "drop": "none",
-    "reward": "heart_container",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "shut",
-      "states": {
-        "shut": {
-          "move": "chase",
-          "speed": 0.42,
-          "time": 140,
-          "next": "wind"
-        },
-        "wind": {
-          "move": "none",
-          "time": 30,
-          "telegraph": true,
-          "next": "spit"
-        },
-        "spit": {
-          "move": "shoot",
-          "shot": "shot_rock",
-          "shot_speed": 1.6,
-          "shot_damage": 2,
-          "time": 18,
-          "next": "roam"
-        },
-        "roam": {
-          "move": "wander",
-          "speed": 0.55,
-          "turn": 40,
-          "time": 110,
-          "next": "wind"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 140,
-          "next": "shut"
-        }
-      }
+  "phases": [
+   {
+    "below": 8,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "tideclaw": {
+  "name": "boss.tideclaw",
+  "bestiary": "bestiary.tideclaw",
+  "boss": true,
+  "sprite": "tideclaw",
+  "frames": 2,
+  "frame_time": 20,
+  "size": 48,
+  "body": [
+   6,
+   14,
+   36,
+   28
+  ],
+  "hp": 22,
+  "damage": 2,
+  "speed": 0.45,
+  "drop": "none",
+  "reward": "heart_container",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "shut",
+   "states": {
+    "shut": {
+     "move": "chase",
+     "speed": 0.42,
+     "time": 140,
+     "next": "wind"
     },
-    "phases": [
-      {
-        "below": 14,
-        "speed_mul": 1.2,
-        "start": "wind"
-      },
-      {
-        "below": 7,
-        "speed_mul": 1.2,
-        "start": "spit"
-      }
-    ]
+    "wind": {
+     "move": "none",
+     "time": 30,
+     "telegraph": true,
+     "next": "spit"
+    },
+    "spit": {
+     "move": "shoot",
+     "shot": "shot_rock",
+     "shot_speed": 1.6,
+     "shot_damage": 2,
+     "time": 18,
+     "next": "roam"
+    },
+    "roam": {
+     "move": "wander",
+     "speed": 0.55,
+     "turn": 40,
+     "time": 110,
+     "next": "wind"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 140,
+     "next": "shut"
+    }
+   }
   },
-  "sandjaw": {
-    "name": "boss.sandjaw",
-    "bestiary": "bestiary.sandjaw",
-    "boss": true,
-    "mini": true,
-    "sprite": "sandjaw",
-    "frames": 2,
-    "frame_time": 12,
-    "size": 32,
-    "body": [
-      4,
-      10,
-      24,
-      20
-    ],
-    "hp": 18,
-    "damage": 2,
-    "speed": 0.85,
-    "drop": "enemy_tough",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "roam",
-      "states": {
-        "roam": {
-          "move": "chase",
-          "speed": 0.7,
-          "time": 100,
-          "next": "ready",
-          "if_near": {
-            "dist": 50,
-            "go": "ready"
-          }
-        },
-        "ready": {
-          "move": "none",
-          "time": 26,
-          "telegraph": true,
-          "next": "lunge"
-        },
-        "lunge": {
-          "move": "dash",
-          "speed": 2.7,
-          "time": 36,
-          "next": "stunned"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 92,
-          "next": "roam"
-        }
-      }
+  "phases": [
+   {
+    "below": 14,
+    "speed_mul": 1.2,
+    "start": "wind"
+   },
+   {
+    "below": 7,
+    "speed_mul": 1.2,
+    "start": "spit"
+   }
+  ]
+ },
+ "sandjaw": {
+  "name": "boss.sandjaw",
+  "bestiary": "bestiary.sandjaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "sandjaw",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 18,
+  "damage": 2,
+  "speed": 0.85,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.7,
+     "time": 100,
+     "next": "ready",
+     "if_near": {
+      "dist": 50,
+      "go": "ready"
+     }
     },
-    "phases": [
-      {
-        "below": 9,
-        "speed_mul": 1.35,
-        "start": "ready"
-      }
-    ]
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "lunge"
+    },
+    "lunge": {
+     "move": "dash",
+     "speed": 2.7,
+     "time": 36,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 92,
+     "next": "roam"
+    }
+   }
   },
-  "glassmaw": {
-    "name": "boss.glassmaw",
-    "bestiary": "bestiary.glassmaw",
-    "boss": true,
-    "sprite": "glassmaw",
-    "frames": 2,
-    "frame_time": 20,
-    "size": 48,
-    "body": [
-      6,
-      14,
-      36,
-      28
-    ],
-    "hp": 24,
-    "damage": 2,
-    "speed": 0.45,
-    "drop": "none",
-    "reward": "heart_container",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "shut",
-      "states": {
-        "shut": {
-          "move": "chase",
-          "speed": 0.42,
-          "time": 140,
-          "next": "wind"
-        },
-        "wind": {
-          "move": "none",
-          "time": 30,
-          "telegraph": true,
-          "next": "spit"
-        },
-        "spit": {
-          "move": "shoot",
-          "shot": "shot_ember",
-          "shot_speed": 1.6,
-          "shot_damage": 2,
-          "time": 18,
-          "next": "roam"
-        },
-        "roam": {
-          "move": "wander",
-          "speed": 0.55,
-          "turn": 40,
-          "time": 110,
-          "next": "wind"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 140,
-          "next": "shut"
-        }
-      }
+  "phases": [
+   {
+    "below": 9,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "glassmaw": {
+  "name": "boss.glassmaw",
+  "bestiary": "bestiary.glassmaw",
+  "boss": true,
+  "sprite": "glassmaw",
+  "frames": 2,
+  "frame_time": 20,
+  "size": 48,
+  "body": [
+   6,
+   14,
+   36,
+   28
+  ],
+  "hp": 24,
+  "damage": 2,
+  "speed": 0.45,
+  "drop": "none",
+  "reward": "heart_container",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "shut",
+   "states": {
+    "shut": {
+     "move": "chase",
+     "speed": 0.42,
+     "time": 140,
+     "next": "wind"
     },
-    "phases": [
-      {
-        "below": 16,
-        "speed_mul": 1.2,
-        "start": "wind"
-      },
-      {
-        "below": 8,
-        "speed_mul": 1.2,
-        "start": "spit"
-      }
-    ]
+    "wind": {
+     "move": "none",
+     "time": 30,
+     "telegraph": true,
+     "next": "spit"
+    },
+    "spit": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.6,
+     "shot_damage": 2,
+     "time": 18,
+     "next": "roam"
+    },
+    "roam": {
+     "move": "wander",
+     "speed": 0.55,
+     "turn": 40,
+     "time": 110,
+     "next": "wind"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 140,
+     "next": "shut"
+    }
+   }
   },
-  "weedjaw": {
-    "name": "boss.weedjaw",
-    "bestiary": "bestiary.weedjaw",
-    "boss": true,
-    "mini": true,
-    "sprite": "weedjaw",
-    "frames": 2,
-    "frame_time": 12,
-    "size": 32,
-    "body": [
-      4,
-      10,
-      24,
-      20
-    ],
-    "hp": 18,
-    "damage": 2,
-    "speed": 0.85,
-    "drop": "enemy_tough",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "roam",
-      "states": {
-        "roam": {
-          "move": "chase",
-          "speed": 0.85,
-          "time": 100,
-          "next": "ready",
-          "if_near": {
-            "dist": 50,
-            "go": "ready"
-          }
-        },
-        "ready": {
-          "move": "none",
-          "time": 26,
-          "telegraph": true,
-          "next": "lunge"
-        },
-        "lunge": {
-          "move": "dash",
-          "speed": 2.8,
-          "time": 36,
-          "next": "stunned"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 88,
-          "next": "roam"
-        }
-      }
+  "phases": [
+   {
+    "below": 16,
+    "speed_mul": 1.2,
+    "start": "wind"
+   },
+   {
+    "below": 8,
+    "speed_mul": 1.2,
+    "start": "spit"
+   }
+  ]
+ },
+ "weedjaw": {
+  "name": "boss.weedjaw",
+  "bestiary": "bestiary.weedjaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "weedjaw",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 18,
+  "damage": 2,
+  "speed": 0.85,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.85,
+     "time": 100,
+     "next": "ready",
+     "if_near": {
+      "dist": 50,
+      "go": "ready"
+     }
     },
-    "phases": [
-      {
-        "below": 9,
-        "speed_mul": 1.35,
-        "start": "ready"
-      }
-    ]
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "lunge"
+    },
+    "lunge": {
+     "move": "dash",
+     "speed": 2.8,
+     "time": 36,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 88,
+     "next": "roam"
+    }
+   }
   },
-  "drownking": {
-    "name": "boss.drownking",
-    "bestiary": "bestiary.drownking",
-    "boss": true,
-    "sprite": "drownking",
-    "frames": 2,
-    "frame_time": 20,
-    "size": 48,
-    "body": [
-      6,
-      14,
-      36,
-      28
-    ],
-    "hp": 24,
-    "damage": 2,
-    "speed": 0.46,
-    "drop": "none",
-    "reward": "heart_container",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "shut",
-      "states": {
-        "shut": {
-          "move": "chase",
-          "speed": 0.44,
-          "time": 140,
-          "next": "wind"
-        },
-        "wind": {
-          "move": "none",
-          "time": 30,
-          "telegraph": true,
-          "next": "spit"
-        },
-        "spit": {
-          "move": "shoot",
-          "shot": "shot_rock",
-          "shot_speed": 1.7,
-          "shot_damage": 2,
-          "time": 18,
-          "next": "roam"
-        },
-        "roam": {
-          "move": "wander",
-          "speed": 0.58,
-          "turn": 40,
-          "time": 110,
-          "next": "wind"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 140,
-          "next": "shut"
-        }
-      }
+  "phases": [
+   {
+    "below": 9,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "drownking": {
+  "name": "boss.drownking",
+  "bestiary": "bestiary.drownking",
+  "boss": true,
+  "sprite": "drownking",
+  "frames": 2,
+  "frame_time": 20,
+  "size": 48,
+  "body": [
+   6,
+   14,
+   36,
+   28
+  ],
+  "hp": 24,
+  "damage": 2,
+  "speed": 0.46,
+  "drop": "none",
+  "reward": "heart_container",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "shut",
+   "states": {
+    "shut": {
+     "move": "chase",
+     "speed": 0.44,
+     "time": 140,
+     "next": "wind"
     },
-    "phases": [
-      {
-        "below": 16,
-        "speed_mul": 1.2,
-        "start": "wind"
-      },
-      {
-        "below": 8,
-        "speed_mul": 1.25,
-        "start": "spit"
-      }
-    ]
+    "wind": {
+     "move": "none",
+     "time": 30,
+     "telegraph": true,
+     "next": "spit"
+    },
+    "spit": {
+     "move": "shoot",
+     "shot": "shot_rock",
+     "shot_speed": 1.7,
+     "shot_damage": 2,
+     "time": 18,
+     "next": "roam"
+    },
+    "roam": {
+     "move": "wander",
+     "speed": 0.58,
+     "turn": 40,
+     "time": 110,
+     "next": "wind"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 140,
+     "next": "shut"
+    }
+   }
   },
-  "slagjaw": {
-    "name": "boss.slagjaw",
-    "bestiary": "bestiary.slagjaw",
-    "boss": true,
-    "mini": true,
-    "sprite": "slagjaw",
-    "frames": 2,
-    "frame_time": 12,
-    "size": 32,
-    "body": [
-      4,
-      10,
-      24,
-      20
-    ],
-    "hp": 20,
-    "damage": 2,
-    "speed": 0.85,
-    "drop": "enemy_tough",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "roam",
-      "states": {
-        "roam": {
-          "move": "chase",
-          "speed": 0.85,
-          "time": 100,
-          "next": "ready",
-          "if_near": {
-            "dist": 50,
-            "go": "ready"
-          }
-        },
-        "ready": {
-          "move": "none",
-          "time": 26,
-          "telegraph": true,
-          "next": "lunge"
-        },
-        "lunge": {
-          "move": "dash",
-          "speed": 2.8,
-          "time": 36,
-          "next": "stunned"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 88,
-          "next": "roam"
-        }
-      }
+  "phases": [
+   {
+    "below": 16,
+    "speed_mul": 1.2,
+    "start": "wind"
+   },
+   {
+    "below": 8,
+    "speed_mul": 1.25,
+    "start": "spit"
+   }
+  ]
+ },
+ "slagjaw": {
+  "name": "boss.slagjaw",
+  "bestiary": "bestiary.slagjaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "slagjaw",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 20,
+  "damage": 2,
+  "speed": 0.85,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.85,
+     "time": 100,
+     "next": "ready",
+     "if_near": {
+      "dist": 50,
+      "go": "ready"
+     }
     },
-    "phases": [
-      {
-        "below": 10,
-        "speed_mul": 1.35,
-        "start": "ready"
-      }
-    ]
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "lunge"
+    },
+    "lunge": {
+     "move": "dash",
+     "speed": 2.8,
+     "time": 36,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 88,
+     "next": "roam"
+    }
+   }
   },
-  "kilnmaw": {
-    "name": "boss.kilnmaw",
-    "bestiary": "bestiary.kilnmaw",
-    "boss": true,
-    "sprite": "kilnmaw",
-    "frames": 2,
-    "frame_time": 20,
-    "size": 48,
-    "body": [
-      6,
-      14,
-      36,
-      28
-    ],
-    "hp": 26,
-    "damage": 2,
-    "speed": 0.46,
-    "drop": "none",
-    "reward": "heart_container",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "shut",
-      "states": {
-        "shut": {
-          "move": "chase",
-          "speed": 0.44,
-          "time": 140,
-          "next": "wind"
-        },
-        "wind": {
-          "move": "none",
-          "time": 30,
-          "telegraph": true,
-          "next": "spit"
-        },
-        "spit": {
-          "move": "shoot",
-          "shot": "shot_ember",
-          "shot_speed": 1.7,
-          "shot_damage": 2,
-          "time": 18,
-          "next": "roam"
-        },
-        "roam": {
-          "move": "wander",
-          "speed": 0.58,
-          "turn": 40,
-          "time": 110,
-          "next": "wind"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 140,
-          "next": "shut"
-        }
-      }
+  "phases": [
+   {
+    "below": 10,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "kilnmaw": {
+  "name": "boss.kilnmaw",
+  "bestiary": "bestiary.kilnmaw",
+  "boss": true,
+  "sprite": "kilnmaw",
+  "frames": 2,
+  "frame_time": 20,
+  "size": 48,
+  "body": [
+   6,
+   14,
+   36,
+   28
+  ],
+  "hp": 26,
+  "damage": 2,
+  "speed": 0.46,
+  "drop": "none",
+  "reward": "heart_container",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "shut",
+   "states": {
+    "shut": {
+     "move": "chase",
+     "speed": 0.44,
+     "time": 140,
+     "next": "wind"
     },
-    "phases": [
-      {
-        "below": 17,
-        "speed_mul": 1.2,
-        "start": "wind"
-      },
-      {
-        "below": 8,
-        "speed_mul": 1.25,
-        "start": "spit"
-      }
-    ]
+    "wind": {
+     "move": "none",
+     "time": 30,
+     "telegraph": true,
+     "next": "spit"
+    },
+    "spit": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.7,
+     "shot_damage": 2,
+     "time": 18,
+     "next": "roam"
+    },
+    "roam": {
+     "move": "wander",
+     "speed": 0.58,
+     "turn": 40,
+     "time": 110,
+     "next": "wind"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 140,
+     "next": "shut"
+    }
+   }
   },
-  "frostjaw": {
-    "name": "boss.frostjaw",
-    "bestiary": "bestiary.frostjaw",
-    "boss": true,
-    "mini": true,
-    "sprite": "frostjaw",
-    "frames": 2,
-    "frame_time": 12,
-    "size": 32,
-    "body": [
-      4,
-      10,
-      24,
-      20
-    ],
-    "hp": 20,
-    "damage": 2,
-    "speed": 0.85,
-    "drop": "enemy_tough",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "roam",
-      "states": {
-        "roam": {
-          "move": "chase",
-          "speed": 0.85,
-          "time": 100,
-          "next": "ready",
-          "if_near": {
-            "dist": 50,
-            "go": "ready"
-          }
-        },
-        "ready": {
-          "move": "none",
-          "time": 26,
-          "telegraph": true,
-          "next": "lunge"
-        },
-        "lunge": {
-          "move": "dash",
-          "speed": 2.8,
-          "time": 36,
-          "next": "stunned"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 88,
-          "next": "roam"
-        }
-      }
+  "phases": [
+   {
+    "below": 17,
+    "speed_mul": 1.2,
+    "start": "wind"
+   },
+   {
+    "below": 8,
+    "speed_mul": 1.25,
+    "start": "spit"
+   }
+  ]
+ },
+ "frostjaw": {
+  "name": "boss.frostjaw",
+  "bestiary": "bestiary.frostjaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "frostjaw",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 20,
+  "damage": 2,
+  "speed": 0.85,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.85,
+     "time": 100,
+     "next": "ready",
+     "if_near": {
+      "dist": 50,
+      "go": "ready"
+     }
     },
-    "phases": [
-      {
-        "below": 10,
-        "speed_mul": 1.35,
-        "start": "ready"
-      }
-    ]
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "lunge"
+    },
+    "lunge": {
+     "move": "dash",
+     "speed": 2.8,
+     "time": 36,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 88,
+     "next": "roam"
+    }
+   }
   },
-  "glassking": {
-    "name": "boss.glassking",
-    "bestiary": "bestiary.glassking",
-    "boss": true,
-    "sprite": "glassking",
-    "frames": 2,
-    "frame_time": 20,
-    "size": 48,
-    "body": [
-      6,
-      14,
-      36,
-      28
-    ],
-    "hp": 26,
-    "damage": 2,
-    "speed": 0.46,
-    "drop": "none",
-    "reward": "heart_container",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "shut",
-      "states": {
-        "shut": {
-          "move": "chase",
-          "speed": 0.44,
-          "time": 140,
-          "next": "wind"
-        },
-        "wind": {
-          "move": "none",
-          "time": 30,
-          "telegraph": true,
-          "next": "spit"
-        },
-        "spit": {
-          "move": "shoot",
-          "shot": "shot_ember",
-          "shot_speed": 1.7,
-          "shot_damage": 2,
-          "time": 18,
-          "next": "roam"
-        },
-        "roam": {
-          "move": "wander",
-          "speed": 0.58,
-          "turn": 40,
-          "time": 110,
-          "next": "wind"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 140,
-          "next": "shut"
-        }
-      }
+  "phases": [
+   {
+    "below": 10,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "glassking": {
+  "name": "boss.glassking",
+  "bestiary": "bestiary.glassking",
+  "boss": true,
+  "sprite": "glassking",
+  "frames": 2,
+  "frame_time": 20,
+  "size": 48,
+  "body": [
+   6,
+   14,
+   36,
+   28
+  ],
+  "hp": 26,
+  "damage": 2,
+  "speed": 0.46,
+  "drop": "none",
+  "reward": "heart_container",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "shut",
+   "states": {
+    "shut": {
+     "move": "chase",
+     "speed": 0.44,
+     "time": 140,
+     "next": "wind"
     },
-    "phases": [
-      {
-        "below": 17,
-        "speed_mul": 1.2,
-        "start": "wind"
-      },
-      {
-        "below": 8,
-        "speed_mul": 1.25,
-        "start": "spit"
-      }
-    ],
-    "cloak_blind": true
+    "wind": {
+     "move": "none",
+     "time": 30,
+     "telegraph": true,
+     "next": "spit"
+    },
+    "spit": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.7,
+     "shot_damage": 2,
+     "time": 18,
+     "next": "roam"
+    },
+    "roam": {
+     "move": "wander",
+     "speed": 0.58,
+     "turn": 40,
+     "time": 110,
+     "next": "wind"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 140,
+     "next": "shut"
+    }
+   }
   },
-  "stonejaw": {
-    "name": "boss.stonejaw",
-    "bestiary": "bestiary.stonejaw",
-    "boss": true,
-    "mini": true,
-    "sprite": "stonejaw",
-    "frames": 2,
-    "frame_time": 12,
-    "size": 32,
-    "body": [
-      4,
-      10,
-      24,
-      20
-    ],
-    "hp": 22,
-    "damage": 2,
-    "speed": 0.85,
-    "drop": "enemy_tough",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "roam",
-      "states": {
-        "roam": {
-          "move": "chase",
-          "speed": 0.85,
-          "time": 100,
-          "next": "ready",
-          "if_near": {
-            "dist": 50,
-            "go": "ready"
-          }
-        },
-        "ready": {
-          "move": "none",
-          "time": 26,
-          "telegraph": true,
-          "next": "lunge"
-        },
-        "lunge": {
-          "move": "dash",
-          "speed": 2.8,
-          "time": 36,
-          "next": "stunned"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 88,
-          "next": "roam"
-        }
-      }
+  "phases": [
+   {
+    "below": 17,
+    "speed_mul": 1.2,
+    "start": "wind"
+   },
+   {
+    "below": 8,
+    "speed_mul": 1.25,
+    "start": "spit"
+   }
+  ],
+  "cloak_blind": true
+ },
+ "stonejaw": {
+  "name": "boss.stonejaw",
+  "bestiary": "bestiary.stonejaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "stonejaw",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 22,
+  "damage": 2,
+  "speed": 0.85,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.85,
+     "time": 100,
+     "next": "ready",
+     "if_near": {
+      "dist": 50,
+      "go": "ready"
+     }
     },
-    "phases": [
-      {
-        "below": 11,
-        "speed_mul": 1.35,
-        "start": "ready"
-      }
-    ]
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "lunge"
+    },
+    "lunge": {
+     "move": "dash",
+     "speed": 2.8,
+     "time": 36,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 88,
+     "next": "roam"
+    }
+   }
   },
-  "titanmaw": {
-    "name": "boss.titanmaw",
-    "bestiary": "bestiary.titanmaw",
-    "boss": true,
-    "sprite": "titanmaw",
-    "frames": 2,
-    "frame_time": 20,
-    "size": 48,
-    "body": [
-      6,
-      14,
-      36,
-      28
-    ],
-    "hp": 28,
-    "damage": 2,
-    "speed": 0.46,
-    "drop": "none",
-    "reward": "heart_container",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "shut",
-      "states": {
-        "shut": {
-          "move": "chase",
-          "speed": 0.44,
-          "time": 140,
-          "next": "wind"
-        },
-        "wind": {
-          "move": "none",
-          "time": 30,
-          "telegraph": true,
-          "next": "spit"
-        },
-        "spit": {
-          "move": "shoot",
-          "shot": "shot_rock",
-          "shot_speed": 1.7,
-          "shot_damage": 2,
-          "time": 18,
-          "next": "roam"
-        },
-        "roam": {
-          "move": "wander",
-          "speed": 0.58,
-          "turn": 40,
-          "time": 110,
-          "next": "wind"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 140,
-          "next": "shut"
-        }
-      }
+  "phases": [
+   {
+    "below": 11,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "titanmaw": {
+  "name": "boss.titanmaw",
+  "bestiary": "bestiary.titanmaw",
+  "boss": true,
+  "sprite": "titanmaw",
+  "frames": 2,
+  "frame_time": 20,
+  "size": 48,
+  "body": [
+   6,
+   14,
+   36,
+   28
+  ],
+  "hp": 28,
+  "damage": 2,
+  "speed": 0.46,
+  "drop": "none",
+  "reward": "heart_container",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "shut",
+   "states": {
+    "shut": {
+     "move": "chase",
+     "speed": 0.44,
+     "time": 140,
+     "next": "wind"
     },
-    "phases": [
-      {
-        "below": 18,
-        "speed_mul": 1.2,
-        "start": "wind"
-      },
-      {
-        "below": 9,
-        "speed_mul": 1.25,
-        "start": "spit"
-      }
-    ]
+    "wind": {
+     "move": "none",
+     "time": 30,
+     "telegraph": true,
+     "next": "spit"
+    },
+    "spit": {
+     "move": "shoot",
+     "shot": "shot_rock",
+     "shot_speed": 1.7,
+     "shot_damage": 2,
+     "time": 18,
+     "next": "roam"
+    },
+    "roam": {
+     "move": "wander",
+     "speed": 0.58,
+     "turn": 40,
+     "time": 110,
+     "next": "wind"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 140,
+     "next": "shut"
+    }
+   }
   },
-  "thequiet": {
-    "name": "boss.thequiet",
-    "bestiary": "bestiary.thequiet",
-    "boss": true,
-    "sprite": "thequiet",
-    "frames": 2,
-    "frame_time": 18,
-    "size": 48,
-    "body": [
-      6,
-      14,
-      36,
-      28
-    ],
-    "hp": 36,
-    "damage": 3,
-    "speed": 0.5,
-    "drop": "none",
-    "reward": "",
-    "weak_states": [
-      "stunned"
-    ],
-    "ai": {
-      "start": "circle",
-      "states": {
-        "circle": {
-          "move": "circle",
-          "radius": 62,
-          "spin": 0.03,
-          "speed": 1.2,
-          "time": 120,
-          "next": "wind"
-        },
-        "wind": {
-          "move": "none",
-          "time": 32,
-          "telegraph": true,
-          "next": "spit"
-        },
-        "spit": {
-          "move": "shoot",
-          "shot": "shot_ember",
-          "shot_speed": 1.9,
-          "shot_damage": 3,
-          "time": 20,
-          "next": "charge"
-        },
-        "charge": {
-          "move": "dash",
-          "speed": 2.6,
-          "time": 34,
-          "next": "stunned"
-        },
-        "stunned": {
-          "move": "none",
-          "time": 110,
-          "next": "circle"
-        }
-      }
+  "phases": [
+   {
+    "below": 18,
+    "speed_mul": 1.2,
+    "start": "wind"
+   },
+   {
+    "below": 9,
+    "speed_mul": 1.25,
+    "start": "spit"
+   }
+  ]
+ },
+ "thequiet": {
+  "name": "boss.thequiet",
+  "bestiary": "bestiary.thequiet",
+  "boss": true,
+  "sprite": "thequiet",
+  "frames": 2,
+  "frame_time": 18,
+  "size": 48,
+  "body": [
+   6,
+   14,
+   36,
+   28
+  ],
+  "hp": 36,
+  "damage": 3,
+  "speed": 0.5,
+  "drop": "none",
+  "reward": "",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "circle",
+   "states": {
+    "circle": {
+     "move": "circle",
+     "radius": 62,
+     "spin": 0.03,
+     "speed": 1.2,
+     "time": 120,
+     "next": "wind"
     },
-    "phases": [
-      {
-        "below": 24,
-        "speed_mul": 1.2,
-        "start": "wind"
-      },
-      {
-        "below": 12,
-        "speed_mul": 1.3,
-        "start": "charge"
-      }
-    ]
-  }
+    "wind": {
+     "move": "none",
+     "time": 32,
+     "telegraph": true,
+     "next": "spit"
+    },
+    "spit": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.9,
+     "shot_damage": 3,
+     "time": 20,
+     "next": "charge"
+    },
+    "charge": {
+     "move": "dash",
+     "speed": 2.6,
+     "time": 34,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 110,
+     "next": "circle"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 24,
+    "speed_mul": 1.2,
+    "start": "wind"
+   },
+   {
+    "below": 12,
+    "speed_mul": 1.3,
+    "start": "charge"
+   }
+  ]
+ },
+ "huskjaw": {
+  "name": "enemy.huskjaw",
+  "bestiary": "bestiary.huskjaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "huskjaw",
+  "frames": 2,
+  "frame_time": 14,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 14,
+  "damage": 2,
+  "speed": 0.6,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.6,
+     "time": 110,
+     "next": "ready",
+     "if_near": {
+      "dist": 46,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.2,
+     "time": 32,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 90,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 7,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "clamjaw": {
+  "name": "enemy.clamjaw",
+  "bestiary": "bestiary.clamjaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "clamjaw",
+  "frames": 2,
+  "frame_time": 14,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 16,
+  "damage": 2,
+  "speed": 0.5,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.5,
+     "time": 110,
+     "next": "ready",
+     "if_near": {
+      "dist": 46,
+      "go": "ready"
+     },
+     "if_far": {
+      "dist": 90,
+      "go": "aim"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.0,
+     "time": 32,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 90,
+     "next": "roam"
+    },
+    "aim": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_rock",
+     "shot_speed": 1.4,
+     "time": 16,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 8,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "slagpup": {
+  "name": "enemy.slagpup",
+  "bestiary": "bestiary.slagpup",
+  "boss": true,
+  "mini": true,
+  "sprite": "slagpup",
+  "frames": 2,
+  "frame_time": 14,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 15,
+  "damage": 3,
+  "speed": 0.75,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.75,
+     "time": 110,
+     "next": "ready",
+     "if_near": {
+      "dist": 46,
+      "go": "ready"
+     },
+     "if_far": {
+      "dist": 90,
+      "go": "aim"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.5,
+     "time": 32,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 90,
+     "next": "roam"
+    },
+    "aim": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.4,
+     "time": 16,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 7,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "frostpup": {
+  "name": "enemy.frostpup",
+  "bestiary": "bestiary.frostpup",
+  "boss": true,
+  "mini": true,
+  "sprite": "frostpup",
+  "frames": 2,
+  "frame_time": 14,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 16,
+  "damage": 2,
+  "speed": 0.55,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.55,
+     "time": 110,
+     "next": "ready",
+     "if_near": {
+      "dist": 46,
+      "go": "ready"
+     },
+     "if_far": {
+      "dist": 90,
+      "go": "aim"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.1,
+     "time": 32,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 90,
+     "next": "roam"
+    },
+    "aim": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.4,
+     "time": 16,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 8,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "glasspup": {
+  "name": "enemy.glasspup",
+  "bestiary": "bestiary.glasspup",
+  "boss": true,
+  "mini": true,
+  "sprite": "glasspup",
+  "frames": 2,
+  "frame_time": 14,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 18,
+  "damage": 3,
+  "speed": 0.7,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.7,
+     "time": 110,
+     "next": "ready",
+     "if_near": {
+      "dist": 46,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.6,
+     "time": 32,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 90,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 9,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ },
+ "mistpup": {
+  "name": "enemy.mistpup",
+  "bestiary": "bestiary.mistpup",
+  "boss": true,
+  "mini": true,
+  "sprite": "mistpup",
+  "frames": 2,
+  "frame_time": 14,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 20,
+  "damage": 3,
+  "speed": 0.65,
+  "drop": "enemy_tough",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.65,
+     "time": 110,
+     "next": "ready",
+     "if_near": {
+      "dist": 46,
+      "go": "ready"
+     },
+     "if_far": {
+      "dist": 90,
+      "go": "aim"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.3,
+     "time": 32,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 90,
+     "next": "roam"
+    },
+    "aim": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.4,
+     "time": 16,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 10,
+    "speed_mul": 1.35,
+    "start": "ready"
+   }
+  ]
+ }
 }

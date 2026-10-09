@@ -1,0 +1,10 @@
+# Tarn Hollow, 4 x 3 rooms. An optional cave: no keys, no Flame.
+[east]
+eee
+.ee
+eee
+[south]
+ssss
+sss.
+[entrance]
+2,0

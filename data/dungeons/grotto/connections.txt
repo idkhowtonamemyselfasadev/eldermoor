@@ -1,0 +1,10 @@
+# Bramble Grotto, 3 x 3 rooms. An optional cave: no keys, no Flame.
+[east]
+ee
+.e
+ee
+[south]
+sss
+ss.
+[entrance]
+2,1

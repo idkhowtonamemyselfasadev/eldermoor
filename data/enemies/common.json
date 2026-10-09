@@ -1,269 +1,674 @@
 {
-  "_comment": "Enemy definitions. 'ai' is the state machine run by eldermoor/ai.py; a state with 'telegraph' must last at least ENEMY_TELEGRAPH_MIN frames (tools/validate_data.py checks this).",
-  "mote": {
-    "name": "enemy.mote",
-    "bestiary": "bestiary.mote",
-    "sprite": "mote",
-    "frames": 2,
-    "frame_time": 12,
-    "hp": 2,
-    "damage": 1,
-    "speed": 0.55,
-    "drop": "enemy",
-    "body": [
-      2,
-      8,
-      12,
-      8
-    ],
-    "ai": {
-      "start": "hop",
-      "states": {
-        "hop": {
-          "move": "hop",
-          "period": 46,
-          "height": 7,
-          "speed": 0.75,
-          "time": 0
-        }
-      }
+ "_comment": "Enemy definitions. 'ai' is the state machine run by eldermoor/ai.py; a state with 'telegraph' must last at least ENEMY_TELEGRAPH_MIN frames (tools/validate_data.py checks this).",
+ "mote": {
+  "name": "enemy.mote",
+  "bestiary": "bestiary.mote",
+  "sprite": "mote",
+  "frames": 2,
+  "frame_time": 12,
+  "hp": 2,
+  "damage": 1,
+  "speed": 0.55,
+  "drop": "enemy",
+  "body": [
+   2,
+   8,
+   12,
+   8
+  ],
+  "ai": {
+   "start": "hop",
+   "states": {
+    "hop": {
+     "move": "hop",
+     "period": 46,
+     "height": 7,
+     "speed": 0.75,
+     "time": 0
     }
-  },
-  "thistle": {
-    "name": "enemy.thistle",
-    "bestiary": "bestiary.thistle",
-    "sprite": "thistle",
-    "frames": 2,
-    "frame_time": 10,
-    "hp": 2,
-    "damage": 1,
-    "speed": 0.5,
-    "drop": "enemy",
-    "ai": {
-      "start": "lurk",
-      "states": {
-        "lurk": {
-          "move": "wander",
-          "speed": 0.35,
-          "turn": 50,
-          "time": 70,
-          "next": "lurk",
-          "if_near": {
-            "dist": 56,
-            "go": "tense"
-          }
-        },
-        "tense": {
-          "move": "none",
-          "time": 24,
-          "telegraph": true,
-          "next": "leap"
-        },
-        "leap": {
-          "move": "dash",
-          "speed": 2.0,
-          "time": 22,
-          "next": "rest"
-        },
-        "rest": {
-          "move": "none",
-          "time": 34,
-          "next": "lurk"
-        }
-      }
-    }
-  },
-  "crag": {
-    "name": "enemy.crag",
-    "bestiary": "bestiary.crag",
-    "sprite": "crag",
-    "frames": 2,
-    "frame_time": 12,
-    "directional": true,
-    "hp": 4,
-    "damage": 1,
-    "speed": 0.45,
-    "drop": "enemy",
-    "armour": "front",
-    "ai": {
-      "start": "patrol",
-      "states": {
-        "patrol": {
-          "move": "patrol",
-          "speed": 0.45,
-          "time": 110,
-          "next": "patrol",
-          "if_near": {
-            "dist": 46,
-            "go": "ready"
-          }
-        },
-        "ready": {
-          "move": "none",
-          "time": 26,
-          "telegraph": true,
-          "next": "charge"
-        },
-        "charge": {
-          "move": "dash",
-          "speed": 1.7,
-          "time": 28,
-          "next": "patrol"
-        }
-      }
-    }
-  },
-  "wisp": {
-    "name": "enemy.wisp",
-    "bestiary": "bestiary.wisp",
-    "sprite": "wisp",
-    "frames": 2,
-    "frame_time": 16,
-    "hp": 2,
-    "damage": 1,
-    "speed": 0.45,
-    "drop": "enemy",
-    "flying": true,
-    "ai": {
-      "start": "drift",
-      "states": {
-        "drift": {
-          "move": "float",
-          "speed": 0.45,
-          "wobble": 0.5,
-          "time": 180,
-          "next": "ring"
-        },
-        "ring": {
-          "move": "circle",
-          "radius": 44,
-          "spin": 0.045,
-          "time": 120,
-          "next": "drift"
-        }
-      }
-    }
-  },
-  "spitter": {
-    "name": "enemy.spitter",
-    "bestiary": "bestiary.spitter",
-    "sprite": "spitter",
-    "frames": 2,
-    "frame_time": 18,
-    "hp": 3,
-    "damage": 1,
-    "speed": 0.0,
-    "drop": "enemy",
-    "ai": {
-      "start": "wait",
-      "states": {
-        "wait": {
-          "move": "none",
-          "time": 80,
-          "next": "wait",
-          "if_near": {
-            "dist": 108,
-            "go": "aim"
-          }
-        },
-        "aim": {
-          "move": "none",
-          "time": 26,
-          "telegraph": true,
-          "next": "fire"
-        },
-        "fire": {
-          "move": "shoot",
-          "shot": "shot_ember",
-          "shot_speed": 1.35,
-          "time": 12,
-          "next": "cool"
-        },
-        "cool": {
-          "move": "none",
-          "time": 50,
-          "next": "wait"
-        }
-      }
-    }
-  },
-  "burrow": {
-    "name": "enemy.burrow",
-    "bestiary": "bestiary.burrow",
-    "sprite": "burrow",
-    "frames": 3,
-    "frame_time": 14,
-    "hp": 3,
-    "damage": 1,
-    "speed": 0.8,
-    "drop": "enemy",
-    "ai": {
-      "start": "under",
-      "states": {
-        "under": {
-          "move": "chase",
-          "speed": 0.85,
-          "time": 100,
-          "next": "surface"
-        },
-        "surface": {
-          "move": "none",
-          "time": 28,
-          "telegraph": true,
-          "next": "attack"
-        },
-        "attack": {
-          "move": "dash",
-          "speed": 1.6,
-          "time": 30,
-          "next": "dive"
-        },
-        "dive": {
-          "move": "none",
-          "time": 22,
-          "next": "under"
-        }
-      }
-    }
-  },
-  "sentinel": {
-    "name": "enemy.sentinel",
-    "bestiary": "bestiary.sentinel",
-    "sprite": "spitter",
-    "frames": 2,
-    "frame_time": 24,
-    "hp": 12,
-    "damage": 3,
-    "speed": 0.0,
-    "drop": "none",
-    "cloak_blind": true,
-    "ai": {
-      "start": "watch",
-      "states": {
-        "watch": {
-          "move": "none",
-          "time": 90,
-          "next": "watch",
-          "if_near": {
-            "dist": 120,
-            "go": "aim"
-          }
-        },
-        "aim": {
-          "move": "none",
-          "time": 26,
-          "telegraph": true,
-          "next": "fire"
-        },
-        "fire": {
-          "move": "shoot",
-          "shot": "shot_ember",
-          "shot_speed": 1.8,
-          "shot_damage": 2,
-          "time": 12,
-          "next": "watch"
-        }
-      }
-    }
+   }
   }
+ },
+ "thistle": {
+  "name": "enemy.thistle",
+  "bestiary": "bestiary.thistle",
+  "sprite": "thistle",
+  "frames": 2,
+  "frame_time": 10,
+  "hp": 2,
+  "damage": 1,
+  "speed": 0.5,
+  "drop": "enemy",
+  "ai": {
+   "start": "lurk",
+   "states": {
+    "lurk": {
+     "move": "wander",
+     "speed": 0.35,
+     "turn": 50,
+     "time": 70,
+     "next": "lurk",
+     "if_near": {
+      "dist": 56,
+      "go": "tense"
+     }
+    },
+    "tense": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "leap"
+    },
+    "leap": {
+     "move": "dash",
+     "speed": 2.0,
+     "time": 22,
+     "next": "rest"
+    },
+    "rest": {
+     "move": "none",
+     "time": 34,
+     "next": "lurk"
+    }
+   }
+  }
+ },
+ "crag": {
+  "name": "enemy.crag",
+  "bestiary": "bestiary.crag",
+  "sprite": "crag",
+  "frames": 2,
+  "frame_time": 12,
+  "directional": true,
+  "hp": 4,
+  "damage": 1,
+  "speed": 0.45,
+  "drop": "enemy",
+  "armour": "front",
+  "ai": {
+   "start": "patrol",
+   "states": {
+    "patrol": {
+     "move": "patrol",
+     "speed": 0.45,
+     "time": 110,
+     "next": "patrol",
+     "if_near": {
+      "dist": 46,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "charge"
+    },
+    "charge": {
+     "move": "dash",
+     "speed": 1.7,
+     "time": 28,
+     "next": "patrol"
+    }
+   }
+  }
+ },
+ "wisp": {
+  "name": "enemy.wisp",
+  "bestiary": "bestiary.wisp",
+  "sprite": "wisp",
+  "frames": 2,
+  "frame_time": 16,
+  "hp": 2,
+  "damage": 1,
+  "speed": 0.45,
+  "drop": "enemy",
+  "flying": true,
+  "ai": {
+   "start": "drift",
+   "states": {
+    "drift": {
+     "move": "float",
+     "speed": 0.45,
+     "wobble": 0.5,
+     "time": 180,
+     "next": "ring"
+    },
+    "ring": {
+     "move": "circle",
+     "radius": 44,
+     "spin": 0.045,
+     "time": 120,
+     "next": "drift"
+    }
+   }
+  }
+ },
+ "spitter": {
+  "name": "enemy.spitter",
+  "bestiary": "bestiary.spitter",
+  "sprite": "spitter",
+  "frames": 2,
+  "frame_time": 18,
+  "hp": 3,
+  "damage": 1,
+  "speed": 0.0,
+  "drop": "enemy",
+  "ai": {
+   "start": "wait",
+   "states": {
+    "wait": {
+     "move": "none",
+     "time": 80,
+     "next": "wait",
+     "if_near": {
+      "dist": 108,
+      "go": "aim"
+     }
+    },
+    "aim": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.35,
+     "time": 12,
+     "next": "cool"
+    },
+    "cool": {
+     "move": "none",
+     "time": 50,
+     "next": "wait"
+    }
+   }
+  }
+ },
+ "burrow": {
+  "name": "enemy.burrow",
+  "bestiary": "bestiary.burrow",
+  "sprite": "burrow",
+  "frames": 3,
+  "frame_time": 14,
+  "hp": 3,
+  "damage": 1,
+  "speed": 0.8,
+  "drop": "enemy",
+  "ai": {
+   "start": "under",
+   "states": {
+    "under": {
+     "move": "chase",
+     "speed": 0.85,
+     "time": 100,
+     "next": "surface"
+    },
+    "surface": {
+     "move": "none",
+     "time": 28,
+     "telegraph": true,
+     "next": "attack"
+    },
+    "attack": {
+     "move": "dash",
+     "speed": 1.6,
+     "time": 30,
+     "next": "dive"
+    },
+    "dive": {
+     "move": "none",
+     "time": 22,
+     "next": "under"
+    }
+   }
+  }
+ },
+ "sentinel": {
+  "name": "enemy.sentinel",
+  "bestiary": "bestiary.sentinel",
+  "sprite": "spitter",
+  "frames": 2,
+  "frame_time": 24,
+  "hp": 12,
+  "damage": 3,
+  "speed": 0.0,
+  "drop": "none",
+  "cloak_blind": true,
+  "ai": {
+   "start": "watch",
+   "states": {
+    "watch": {
+     "move": "none",
+     "time": 90,
+     "next": "watch",
+     "if_near": {
+      "dist": 120,
+      "go": "aim"
+     }
+    },
+    "aim": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.8,
+     "shot_damage": 2,
+     "time": 12,
+     "next": "watch"
+    }
+   }
+  }
+ },
+ "grub": {
+  "name": "enemy.grub",
+  "bestiary": "bestiary.grub",
+  "frames": 2,
+  "sprite": "grub",
+  "hp": 2,
+  "damage": 1,
+  "speed": 0.4,
+  "drop": "enemy",
+  "frame_time": 14,
+  "ai": {
+   "start": "crawl",
+   "states": {
+    "crawl": {
+     "move": "wander",
+     "speed": 0.4,
+     "time": 70,
+     "next": "crawl",
+     "if_near": {
+      "dist": 52,
+      "go": "flee"
+     }
+    },
+    "flee": {
+     "move": "flee",
+     "speed": 0.8,
+     "time": 60,
+     "next": "crawl"
+    }
+   }
+  }
+ },
+ "shale": {
+  "name": "enemy.shale",
+  "bestiary": "bestiary.shale",
+  "frames": 2,
+  "sprite": "shale",
+  "hp": 5,
+  "damage": 1,
+  "speed": 0.0,
+  "drop": "enemy",
+  "frame_time": 20,
+  "armour": "front",
+  "ai": {
+   "start": "sleep",
+   "states": {
+    "sleep": {
+     "move": "none",
+     "time": 90,
+     "next": "sleep",
+     "if_near": {
+      "dist": 40,
+      "go": "wake"
+     }
+    },
+    "wake": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "roll"
+    },
+    "roll": {
+     "move": "dash",
+     "speed": 1.9,
+     "time": 36,
+     "next": "sleep"
+    }
+   }
+  }
+ },
+ "brinelet": {
+  "name": "enemy.brinelet",
+  "bestiary": "bestiary.brinelet",
+  "frames": 2,
+  "sprite": "brinelet",
+  "hp": 3,
+  "damage": 1,
+  "speed": 0.7,
+  "drop": "enemy",
+  "frame_time": 10,
+  "ai": {
+   "start": "swim",
+   "states": {
+    "swim": {
+     "move": "circle",
+     "speed": 0.8,
+     "radius": 30,
+     "time": 0
+    }
+   }
+  }
+ },
+ "thornpup": {
+  "name": "enemy.thornpup",
+  "bestiary": "bestiary.thornpup",
+  "frames": 2,
+  "sprite": "thornpup",
+  "hp": 3,
+  "damage": 2,
+  "speed": 0.65,
+  "drop": "enemy",
+  "frame_time": 9,
+  "ai": {
+   "start": "prowl",
+   "states": {
+    "prowl": {
+     "move": "chase",
+     "speed": 0.65,
+     "time": 120,
+     "next": "prowl",
+     "if_near": {
+      "dist": 28,
+      "go": "bristle"
+     }
+    },
+    "bristle": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "pounce"
+    },
+    "pounce": {
+     "move": "dash",
+     "speed": 2.0,
+     "time": 20,
+     "next": "prowl"
+    }
+   }
+  }
+ },
+ "dustmite": {
+  "name": "enemy.dustmite",
+  "bestiary": "bestiary.dustmite",
+  "frames": 2,
+  "sprite": "dustmite",
+  "hp": 1,
+  "damage": 1,
+  "speed": 0.9,
+  "drop": "enemy",
+  "frame_time": 8,
+  "ai": {
+   "start": "skitter",
+   "states": {
+    "skitter": {
+     "move": "wander",
+     "speed": 0.95,
+     "time": 36,
+     "next": "skitter"
+    }
+   }
+  }
+ },
+ "emberfly": {
+  "name": "enemy.emberfly",
+  "bestiary": "bestiary.emberfly",
+  "frames": 2,
+  "sprite": "emberfly",
+  "hp": 2,
+  "damage": 1,
+  "speed": 0.8,
+  "drop": "enemy",
+  "frame_time": 7,
+  "flying": true,
+  "ai": {
+   "start": "drift",
+   "states": {
+    "drift": {
+     "move": "float",
+     "speed": 0.8,
+     "time": 80,
+     "next": "drift",
+     "if_near": {
+      "dist": 64,
+      "go": "dive"
+     }
+    },
+    "dive": {
+     "move": "chase",
+     "speed": 1.3,
+     "time": 54,
+     "next": "drift"
+    }
+   }
+  }
+ },
+ "glimmer": {
+  "name": "enemy.glimmer",
+  "bestiary": "bestiary.glimmer",
+  "frames": 2,
+  "sprite": "glimmer",
+  "hp": 3,
+  "damage": 1,
+  "speed": 0.5,
+  "drop": "enemy",
+  "frame_time": 11,
+  "flying": true,
+  "cloak_blind": true,
+  "ai": {
+   "start": "watch",
+   "states": {
+    "watch": {
+     "move": "float",
+     "speed": 0.5,
+     "time": 70,
+     "next": "watch",
+     "if_near": {
+      "dist": 96,
+      "go": "aim"
+     }
+    },
+    "aim": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.5,
+     "time": 12,
+     "next": "watch"
+    }
+   }
+  }
+ },
+ "reedsnap": {
+  "name": "enemy.reedsnap",
+  "bestiary": "bestiary.reedsnap",
+  "frames": 2,
+  "sprite": "reedsnap",
+  "hp": 4,
+  "damage": 2,
+  "speed": 0.0,
+  "drop": "enemy",
+  "frame_time": 13,
+  "ai": {
+   "start": "hide",
+   "states": {
+    "hide": {
+     "move": "none",
+     "time": 60,
+     "next": "hide",
+     "if_near": {
+      "dist": 34,
+      "go": "rise"
+     }
+    },
+    "rise": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "snap"
+    },
+    "snap": {
+     "move": "none",
+     "time": 30,
+     "next": "hide"
+    }
+   }
+  }
+ },
+ "stonehand": {
+  "name": "enemy.stonehand",
+  "bestiary": "bestiary.stonehand",
+  "frames": 2,
+  "sprite": "stonehand",
+  "hp": 7,
+  "damage": 2,
+  "speed": 0.35,
+  "drop": "enemy",
+  "frame_time": 16,
+  "ai": {
+   "start": "stand",
+   "states": {
+    "stand": {
+     "move": "none",
+     "time": 70,
+     "next": "walk",
+     "if_near": {
+      "dist": 72,
+      "go": "walk"
+     }
+    },
+    "walk": {
+     "move": "chase",
+     "speed": 0.35,
+     "time": 130,
+     "next": "stand"
+    }
+   }
+  }
+ },
+ "mistling": {
+  "name": "enemy.mistling",
+  "bestiary": "bestiary.mistling",
+  "frames": 2,
+  "sprite": "mistling",
+  "hp": 4,
+  "damage": 2,
+  "speed": 0.6,
+  "drop": "enemy",
+  "frame_time": 12,
+  "ghost": true,
+  "cloak_blind": true,
+  "ai": {
+   "start": "fade",
+   "states": {
+    "fade": {
+     "move": "wander",
+     "speed": 0.5,
+     "time": 80,
+     "next": "fade",
+     "if_near": {
+      "dist": 56,
+      "go": "rush"
+     }
+    },
+    "rush": {
+     "move": "chase",
+     "speed": 1.1,
+     "time": 70,
+     "next": "fade"
+    }
+   }
+  }
+ },
+ "cinderworm": {
+  "name": "enemy.cinderworm",
+  "bestiary": "bestiary.cinderworm",
+  "frames": 2,
+  "sprite": "cinderworm",
+  "hp": 5,
+  "damage": 2,
+  "speed": 0.55,
+  "drop": "enemy",
+  "frame_time": 10,
+  "ai": {
+   "start": "burrow",
+   "states": {
+    "burrow": {
+     "move": "wander",
+     "speed": 0.55,
+     "time": 90,
+     "next": "burrow",
+     "if_near": {
+      "dist": 60,
+      "go": "spit"
+     }
+    },
+    "spit": {
+     "move": "none",
+     "time": 26,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.2,
+     "time": 14,
+     "next": "burrow"
+    }
+   }
+  }
+ },
+ "glasscrab": {
+  "name": "enemy.glasscrab",
+  "bestiary": "bestiary.glasscrab",
+  "frames": 2,
+  "sprite": "glasscrab",
+  "hp": 6,
+  "damage": 2,
+  "speed": 0.5,
+  "drop": "enemy",
+  "frame_time": 12,
+  "armour": "front",
+  "ai": {
+   "start": "sidle",
+   "states": {
+    "sidle": {
+     "move": "patrol",
+     "speed": 0.5,
+     "time": 100,
+     "next": "sidle",
+     "if_near": {
+      "dist": 44,
+      "go": "pinch"
+     }
+    },
+    "pinch": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "snip"
+    },
+    "snip": {
+     "move": "dash",
+     "speed": 1.5,
+     "time": 22,
+     "next": "sidle"
+    }
+   }
+  }
+ }
 }

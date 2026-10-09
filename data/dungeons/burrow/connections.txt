@@ -1,0 +1,12 @@
+# Glass Burrow, 4 x 4 rooms. An optional cave: no keys, no Flame.
+[east]
+eee
+.ee
+eee
+eee
+[south]
+ssss
+ssss
+sss.
+[entrance]
+3,2

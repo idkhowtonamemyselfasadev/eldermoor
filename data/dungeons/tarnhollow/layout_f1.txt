@@ -1,0 +1,5 @@
+# tarnhollow, 4 x 3 rooms, planned by tools/plan_dungeon.py
+# from connections.txt and motifs.txt. Every room is reachable.
+r_se+m_pillars r_sew+m_rubble r_sew+m_pots r_sw+m_statues
+r_ns+m_webs r_nse+m_water r_nsew+m_tiles r_nw+m_statues
+r_ne+m_plates r_new+m_pit r_new+m_pillars r_w+m_rubble

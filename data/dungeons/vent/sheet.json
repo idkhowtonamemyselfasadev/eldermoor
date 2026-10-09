@@ -1,0 +1,133 @@
+{
+ "prefix": "cv3",
+ "tileset": "temple",
+ "region": "cinder",
+ "dungeon": "vent",
+ "music": "temple_ember",
+ "id_layer": true,
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 4,
+   "cols": 3,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "cinder": {
+   "types": [
+    "cinderworm",
+    "emberfly"
+   ],
+   "count": 2
+  }
+ },
+ "screens": {
+  "cv3_f1_0301": {
+   "name": "Cinder Vent",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_0114",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_0114",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.vent.enter"
+      }
+     ],
+     "flag": "cv3_seen"
+    }
+   ]
+  },
+  "cv3_f1_0002": {
+   "name": "cave.vent.deep",
+   "objects": [
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      5
+     ],
+     "type": "slagpup"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "vent_boss",
+     "do": [
+      {
+       "shake": 24
+      },
+      {
+       "open": "*"
+      },
+      {
+       "spawn": {
+        "kind": "reward",
+        "at": [
+         9,
+         6
+        ],
+        "what": "ring",
+        "which": "ring_ember",
+        "flag": "ring:vent"
+       }
+      }
+     ]
+    }
+   ],
+   "music": "miniboss"
+  },
+  "cv3_f1_0000": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:vent"
+    }
+   ]
+  },
+  "cv3_f1_0302": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "shell",
+     "flag": "shell:vent"
+    }
+   ]
+  }
+ }
+}

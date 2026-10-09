@@ -1,0 +1,133 @@
+{
+ "prefix": "cv2",
+ "tileset": "temple",
+ "region": "saltmarsh",
+ "dungeon": "tidecave",
+ "music": "temple_ember",
+ "id_layer": true,
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 3,
+   "cols": 4,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "saltmarsh": {
+   "types": [
+    "brinelet",
+    "reedsnap"
+   ],
+   "count": 2
+  }
+ },
+ "screens": {
+  "cv2_f1_0201": {
+   "name": "Tidewrack Cave",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_1211",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_1211",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.tidecave.enter"
+      }
+     ],
+     "flag": "cv2_seen"
+    }
+   ]
+  },
+  "cv2_f1_0003": {
+   "name": "cave.tidecave.deep",
+   "objects": [
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      5
+     ],
+     "type": "clamjaw"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "tidecave_boss",
+     "do": [
+      {
+       "shake": 24
+      },
+      {
+       "open": "*"
+      },
+      {
+       "spawn": {
+        "kind": "reward",
+        "at": [
+         9,
+         6
+        ],
+        "what": "ring",
+        "which": "ring_pouch",
+        "flag": "ring:tidecave"
+       }
+      }
+     ]
+    }
+   ],
+   "music": "miniboss"
+  },
+  "cv2_f1_0000": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:tidecave"
+    }
+   ]
+  },
+  "cv2_f1_0203": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "shell",
+     "flag": "shell:tidecave"
+    }
+   ]
+  }
+ }
+}

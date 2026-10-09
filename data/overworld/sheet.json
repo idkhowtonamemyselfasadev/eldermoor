@@ -1705,6 +1705,34 @@
       2,
       2
      ]
+    },
+    {
+     "kind": "stairs",
+     "id": "cave_grotto",
+     "at": [
+      3,
+      2
+     ],
+     "to": "cv1_f1_0201",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "stairs",
+     "id": "cave_grotto",
+     "at": [
+      4,
+      2
+     ],
+     "to": "cv1_f1_0201",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
     }
    ]
   },
@@ -1838,6 +1866,166 @@
       2,
       2
      ]
+    }
+   ]
+  },
+  "ow_1211": {
+   "objects": [
+    {
+     "kind": "stairs",
+     "id": "cave_tidecave",
+     "at": [
+      16,
+      2
+     ],
+     "to": "cv2_f1_0201",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "stairs",
+     "id": "cave_tidecave",
+     "at": [
+      17,
+      2
+     ],
+     "to": "cv2_f1_0201",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    }
+   ]
+  },
+  "ow_0114": {
+   "objects": [
+    {
+     "kind": "stairs",
+     "id": "cave_vent",
+     "at": [
+      2,
+      2
+     ],
+     "to": "cv3_f1_0301",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "stairs",
+     "id": "cave_vent",
+     "at": [
+      3,
+      2
+     ],
+     "to": "cv3_f1_0301",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    }
+   ]
+  },
+  "ow_0109": {
+   "objects": [
+    {
+     "kind": "stairs",
+     "id": "cave_tarnhollow",
+     "at": [
+      2,
+      2
+     ],
+     "to": "cv4_f1_0200",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "stairs",
+     "id": "cave_tarnhollow",
+     "at": [
+      3,
+      2
+     ],
+     "to": "cv4_f1_0200",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    }
+   ]
+  },
+  "ow_0511": {
+   "objects": [
+    {
+     "kind": "stairs",
+     "id": "cave_burrow",
+     "at": [
+      2,
+      2
+     ],
+     "to": "cv5_f1_0302",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "stairs",
+     "id": "cave_burrow",
+     "at": [
+      3,
+      2
+     ],
+     "to": "cv5_f1_0302",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    }
+   ]
+  },
+  "ow_0003": {
+   "objects": [
+    {
+     "kind": "stairs",
+     "id": "cave_warren",
+     "at": [
+      2,
+      2
+     ],
+     "to": "cv6_f1_0301",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "stairs",
+     "id": "cave_warren",
+     "at": [
+      3,
+      2
+     ],
+     "to": "cv6_f1_0301",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
     }
    ]
   }

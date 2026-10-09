@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Put the side-quest people and props on the map.
+"""Put the people, props and cave mouths on the overworld map.
 
 The quest table (``data/quests/quests.json``) says who asks and in which
 region; the tokens and quest-item chests are listed here because they are
@@ -52,6 +52,16 @@ TOKENS: dict[str, tuple[str, str, str, str, str]] = {
     "boat": ("ow_1213", "token_boat", "boat_free", "token.boat", "gauntlet"),
     "bellows": ("ow_0113", "token_bellows", "bellows_fixed", "token.bellows", ""),
     "ice": ("ow_0107", "token_shard", "ice_crossed", "token.ice", ""),
+}
+
+#: the six optional caves: id -> (overworld screen, first room inside)
+CAVES = {
+    "grotto": ("ow_0306", "cv1_f1_0201"),
+    "tidecave": ("ow_1211", "cv2_f1_0201"),
+    "vent": ("ow_0114", "cv3_f1_0301"),
+    "tarnhollow": ("ow_0109", "cv4_f1_0200"),
+    "burrow": ("ow_0511", "cv5_f1_0302"),
+    "warren": ("ow_0003", "cv6_f1_0301"),
 }
 
 #: counted sets: name -> (flag, sprite, text key, [screens])
@@ -143,6 +153,23 @@ class Placer:
         taken.add(cells[0])
         objects.append(spec)
 
+    def place_wide(self, room_id: str, cave_id: str, target: str) -> None:
+        """A two-tile cave mouth: one pair of stairs per tile, side by side."""
+        from eldermoor.tilemap import BLOCKING
+        objects = self.entries(room_id)
+        room = self.room_of(room_id, tilesets=self.tilesets)
+        taken = self.occupied(room_id)
+        pairs = [(c, r) for c, r in free_cells(room, taken)
+                 if (c + 1, r) not in taken and c + 1 < 18
+                 and room.collision_at(c + 1, r) not in BLOCKING]
+        if not pairs:
+            raise SystemExit(f"{room_id}: nowhere to put the mouth of {cave_id}")
+        col, row = pairs[0]
+        for i in (0, 1):
+            taken.add((col + i, row))
+            objects.append({"kind": "stairs", "id": f"cave_{cave_id}", "at": [col + i, row],
+                            "to": target, "spawn": [152, 160], "sound": "door_open"})
+
     def write(self) -> None:
         """Save the sheet."""
         SHEET.write_text(json.dumps(self.raw, indent=1) + "\n", encoding="utf-8")
@@ -154,6 +181,7 @@ def main() -> int:
     table = Quests.load()
     placer = Placer()
     placer.forget(set(GIVERS) | {f"chest_{i}" for i in QUEST_ITEMS}
+                  | {f"cave_{c}" for c in CAVES}
                   | {f"token_{n}" for n in TOKENS}
                   | {f"{n}{i}" for n, spec in SETS.items() for i in range(len(spec[3]))})
     for quest_id, room_id in GIVERS.items():
@@ -176,8 +204,10 @@ def main() -> int:
             placer.place(screen, {"kind": "token", "id": f"{name}{i}", "sprite": sprite,
                                   "count": name, "of": len(screens), "sets": flag,
                                   "flag": f"token:{name}{i}", "text": text, "vanish": True})
+    for cave_id, (room_id, target) in CAVES.items():
+        placer.place_wide(room_id, cave_id, target)
     placer.write()
-    print(f"placed {len(GIVERS)} givers, {len(QUEST_ITEMS)} quest chests, "
+    print(f"placed {len(CAVES)} cave mouths, {len(GIVERS)} givers, {len(QUEST_ITEMS)} quest chests, "
           f"{len(TOKENS) + sum(len(s[3]) for s in SETS.values())} tokens")
     return 0
 

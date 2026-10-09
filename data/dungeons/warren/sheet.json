@@ -1,0 +1,133 @@
+{
+ "prefix": "cv6",
+ "tileset": "temple",
+ "region": "mistlands",
+ "dungeon": "warren",
+ "music": "temple_ember",
+ "id_layer": true,
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 4,
+   "cols": 4,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "mistlands": {
+   "types": [
+    "mistling",
+    "stonehand"
+   ],
+   "count": 2
+  }
+ },
+ "screens": {
+  "cv6_f1_0301": {
+   "name": "The Mist Warren",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_0003",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_0003",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.warren.enter"
+      }
+     ],
+     "flag": "cv6_seen"
+    }
+   ]
+  },
+  "cv6_f1_0003": {
+   "name": "cave.warren.deep",
+   "objects": [
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      5
+     ],
+     "type": "mistpup"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "warren_boss",
+     "do": [
+      {
+       "shake": 24
+      },
+      {
+       "open": "*"
+      },
+      {
+       "spawn": {
+        "kind": "reward",
+        "at": [
+         9,
+         6
+        ],
+        "what": "ring",
+        "which": "ring_roll",
+        "flag": "ring:warren"
+       }
+      }
+     ]
+    }
+   ],
+   "music": "miniboss"
+  },
+  "cv6_f1_0000": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:warren"
+    }
+   ]
+  },
+  "cv6_f1_0303": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "shell",
+     "flag": "shell:warren"
+    }
+   ]
+  }
+ }
+}

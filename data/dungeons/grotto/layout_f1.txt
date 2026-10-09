@@ -1,0 +1,5 @@
+# grotto, 3 x 3 rooms, planned by tools/plan_dungeon.py
+# from connections.txt and motifs.txt. Every room is reachable.
+r_se+m_statues r_sew+m_rubble r_sw+m_pots
+r_ns+m_pits r_nse+m_webs r_nw+m_water
+r_ne+m_tiles r_new+m_statues r_w+m_plates

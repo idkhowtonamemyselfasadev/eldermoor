@@ -93,6 +93,8 @@ class Boss(Enemy):
         """Explode, hand over the reward and tell the room."""
         self.alive = False
         world.audio.play("boss_die")
+        world.state.set_flag(f"seen:{self.definition.id}", 1)
+        world.state.record_kill(self.definition.id)
         world.boss_defeated(self)
 
     # ----- drawing -------------------------------------------------------

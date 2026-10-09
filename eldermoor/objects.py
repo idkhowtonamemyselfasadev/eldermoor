@@ -410,12 +410,14 @@ class Stairs(RoomObject):
 
 
 class Reward(RoomObject):
-    """A heart piece, heart container, seashell or Flame waiting to be taken."""
+    """Something waiting to be taken: a piece, a shell, a ring, a Flame."""
 
     body = pygame.Rect(2, 2, 12, 12)
 
     SPRITES = {"heart_piece": "icon_piece", "heart_container": "heart_container",
-               "shell": "pickup_shell", "flame": "flame_pickup"}
+               "shell": "pickup_shell", "flame": "flame_pickup",
+               "ring": "icon_ring_gold", "figurine": "icon_figurine",
+               "furniture": "icon_chair"}
 
     def __init__(self, world: World, spec: dict[str, Any]) -> None:
         super().__init__(world, spec)

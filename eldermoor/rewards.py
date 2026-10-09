@@ -59,7 +59,7 @@ def give_item(world: World, item: str) -> None:
     world.say(f"get.{item}")
 
 def take_reward(world: World, what: str, spec: dict[str, Any]) -> None:
-    """Pick up a heart piece, heart container, seashell or Flame."""
+    """Pick up a heart piece, container, shell, ring, figurine or Flame."""
     state = world.state
     if what == "heart_piece":
         made = state.add_heart_piece()
@@ -73,6 +73,19 @@ def take_reward(world: World, what: str, spec: dict[str, Any]) -> None:
         state.seashells += 1
         world.audio.play("shell")
         world.say("get.shell")
+    elif what == "ring":
+        ring_id = str(spec.get("which", ""))
+        ring = world.content.rings.get(ring_id)
+        if ring is not None and state.find_ring(ring_id):
+            world.audio.play("item_get")
+            world.say("get.ring", after=None)
+        else:
+            world.audio.play("secret")
+    elif what in ("figurine", "furniture"):
+        box = "figurines" if what == "figurine" else "furniture"
+        if state.collect(box, str(spec.get("which", ""))):
+            world.audio.play("figurine")
+            world.say(f"get.{what}")
     elif what == "flame":
         dungeon_id = str(spec.get("dungeon", world.room.dungeon))
         progress = state.progress(dungeon_id)

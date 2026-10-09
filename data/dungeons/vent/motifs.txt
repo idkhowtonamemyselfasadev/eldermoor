@@ -1,0 +1,13 @@
+# Cinder Vent: what goes inside each room.
+0,0 m_pillars
+0,1 m_rubble
+0,2 m_statues
+1,0 m_pits
+1,1 m_webs
+1,2 m_water
+2,0 m_tiles
+2,1 m_statues
+2,2 m_plates
+3,0 m_pit
+3,1 m_pillars
+3,2 m_rubble

@@ -393,7 +393,8 @@ def check_dungeons(report: Report, content: Content, rooms: dict[str, Room]) -> 
             report.fail(f"{dungeon.id}: boss room {dungeon.boss_room} cannot be reached")
         if dungeon.flame and "flame" not in run.items:
             report.fail(f"{dungeon.id}: the Flame cannot be taken")
-        for needed in ("map", "compass", dungeon.item):
+        wanted = [dungeon.item] if dungeon.optional else ["map", "compass", dungeon.item]
+        for needed in wanted:
             if needed and needed not in run.items:
                 report.fail(f"{dungeon.id}: {needed} cannot be collected")
         if dungeon.small_keys and not run.big_key:
@@ -402,7 +403,7 @@ def check_dungeons(report: Report, content: Content, rooms: dict[str, Room]) -> 
         if keys < doors:
             report.fail(f"{dungeon.id}: {keys} small keys for {doors} locked doors")
         report.note(f"{dungeon.id}: {len(ids)} rooms, {keys} keys, {doors} locked doors, "
-                    f"flame reachable")
+                    + ("optional" if dungeon.optional else "flame reachable"))
 
 
 def _count_keys_and_doors(rooms: dict[str, Room], ids: list[str]) -> tuple[int, int]:

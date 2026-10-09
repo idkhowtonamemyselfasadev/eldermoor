@@ -128,6 +128,7 @@ def ashmaw(open_mouth: bool, shell: str = "q", glow: str = "e", eye: str = "f") 
 HEADER = """# Bosses, composed by tools/sketch_bosses.py and then editable by hand.
 # Each temple gets a jaw-shaped mini-boss (32x32) and a maw-shaped boss
 # (48x48) in its own colours; the two frames are its shut and open poses.
+# The six optional caves get a mini-boss each and no maw.
 # Palette: 0 ink, 6 white, c blood, d red, e ember, f gold, q rust, g moss,
 #          h leaf, i lime, k sea, u cyan, m ice, n plum, o violet, 8 sand
 """
@@ -145,6 +146,16 @@ CAST = [
     ("mistjaw", "thequiet", "2", "v", "5"),
 ]
 
+#: the six optional caves get a mini-boss and no maw: (name, shell, glow, eye)
+CAVE_CAST = [
+    ("huskjaw", "a", "i", "h"),
+    ("clamjaw", "j", "m", "u"),
+    ("slagpup", "q", "e", "6"),
+    ("frostpup", "m", "6", "l"),
+    ("glasspup", "p", "6", "f"),
+    ("mistpup", "3", "5", "v"),
+]
+
 
 def main() -> int:
     """Write bosses.txt."""
@@ -154,6 +165,9 @@ def main() -> int:
         blocks.append(cinderjaw(True, shell, glow, eye).text(f"{mini}_1"))
         blocks.append(ashmaw(False, shell, glow, eye).text(f"{boss}_0"))
         blocks.append(ashmaw(True, shell, glow, eye).text(f"{boss}_1"))
+    for name, shell, glow, eye in CAVE_CAST:
+        blocks.append(cinderjaw(False, shell, glow, eye).text(f"{name}_0"))
+        blocks.append(cinderjaw(True, shell, glow, eye).text(f"{name}_1"))
     OUT.write_text(HEADER + "\n" + "\n".join(blocks), encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)}: {len(blocks)} frames")
     return 0

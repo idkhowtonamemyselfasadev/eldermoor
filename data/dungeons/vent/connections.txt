@@ -1,0 +1,12 @@
+# Cinder Vent, 3 x 4 rooms. An optional cave: no keys, no Flame.
+[east]
+ee
+.e
+ee
+ee
+[south]
+sss
+sss
+ss.
+[entrance]
+3,1

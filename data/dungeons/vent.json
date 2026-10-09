@@ -1,0 +1,75 @@
+{
+ "id": "vent",
+ "name": "dungeon.vent",
+ "music": "temple_ember",
+ "tileset": "temple",
+ "entrance": "cv3_f1_0301",
+ "entrance_spawn": [
+  152,
+  160
+ ],
+ "return_room": "ow_0114",
+ "miniboss_room": "cv3_f1_0002",
+ "boss_room": "cv3_f1_0002",
+ "item": "",
+ "flame": "",
+ "optional": true,
+ "small_keys": 0,
+ "floors": [
+  {
+   "n": 1,
+   "w": 3,
+   "h": 4,
+   "rooms": {
+    "cv3_f1_0000": [
+     0,
+     0
+    ],
+    "cv3_f1_0001": [
+     1,
+     0
+    ],
+    "cv3_f1_0002": [
+     2,
+     0
+    ],
+    "cv3_f1_0100": [
+     0,
+     1
+    ],
+    "cv3_f1_0101": [
+     1,
+     1
+    ],
+    "cv3_f1_0102": [
+     2,
+     1
+    ],
+    "cv3_f1_0200": [
+     0,
+     2
+    ],
+    "cv3_f1_0201": [
+     1,
+     2
+    ],
+    "cv3_f1_0202": [
+     2,
+     2
+    ],
+    "cv3_f1_0300": [
+     0,
+     3
+    ],
+    "cv3_f1_0301": [
+     1,
+     3
+    ],
+    "cv3_f1_0302": [
+     2,
+     3
+    ]
+   }
+  }
+ ]
+}

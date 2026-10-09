@@ -1,0 +1,75 @@
+{
+ "id": "tidecave",
+ "name": "dungeon.tidecave",
+ "music": "temple_ember",
+ "tileset": "temple",
+ "entrance": "cv2_f1_0201",
+ "entrance_spawn": [
+  152,
+  160
+ ],
+ "return_room": "ow_1211",
+ "miniboss_room": "cv2_f1_0003",
+ "boss_room": "cv2_f1_0003",
+ "item": "",
+ "flame": "",
+ "optional": true,
+ "small_keys": 0,
+ "floors": [
+  {
+   "n": 1,
+   "w": 4,
+   "h": 3,
+   "rooms": {
+    "cv2_f1_0000": [
+     0,
+     0
+    ],
+    "cv2_f1_0001": [
+     1,
+     0
+    ],
+    "cv2_f1_0002": [
+     2,
+     0
+    ],
+    "cv2_f1_0003": [
+     3,
+     0
+    ],
+    "cv2_f1_0100": [
+     0,
+     1
+    ],
+    "cv2_f1_0101": [
+     1,
+     1
+    ],
+    "cv2_f1_0102": [
+     2,
+     1
+    ],
+    "cv2_f1_0103": [
+     3,
+     1
+    ],
+    "cv2_f1_0200": [
+     0,
+     2
+    ],
+    "cv2_f1_0201": [
+     1,
+     2
+    ],
+    "cv2_f1_0202": [
+     2,
+     2
+    ],
+    "cv2_f1_0203": [
+     3,
+     2
+    ]
+   }
+  }
+ ]
+}

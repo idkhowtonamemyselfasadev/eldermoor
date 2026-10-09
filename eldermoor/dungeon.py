@@ -28,7 +28,11 @@ class Floor:
 
 @dataclass
 class Dungeon:
-    """A whole dungeon: floors, entrance, boss room, item and flame."""
+    """A whole dungeon: floors, entrance, boss room, item and flame.
+
+    An optional cave is the same record with ``optional`` set and the
+    ceremony left out: no small keys, no map, no compass and no Flame.
+    """
 
     id: str
     name: str
@@ -43,6 +47,8 @@ class Dungeon:
     miniboss_room: str = ""
     return_room: str = ""
     entrance_spawn: tuple[int, int] = (152, 160)
+    #: an optional cave: no keys, no map, no compass, no Flame, off the main line
+    optional: bool = False
 
     @classmethod
     def load(cls, dungeon_id: str, root: Path = DATA) -> Dungeon:
@@ -58,7 +64,8 @@ class Dungeon:
                    floors=floors, tileset=raw.get("tileset", ""),
                    miniboss_room=raw.get("miniboss_room", ""),
                    return_room=raw.get("return_room", ""),
-                   entrance_spawn=tuple(raw.get("entrance_spawn", (152, 160))))
+                   entrance_spawn=tuple(raw.get("entrance_spawn", (152, 160))),
+                   optional=bool(raw.get("optional", False)))
 
     def floor(self, number: int) -> Floor | None:
         """Floor by number."""
