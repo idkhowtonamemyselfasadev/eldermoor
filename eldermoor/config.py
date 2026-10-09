@@ -36,6 +36,30 @@ SWING_FRAME_TIME = 4             # frames per swing frame
 SWING_FRAMES = 3
 SWING_TOTAL = SWING_FRAME_TIME * SWING_FRAMES
 
+SAVE_VERSION = 2
+APP_NAME = "eldermoor"
+SAVE_SLOTS = 3
+
+# Combat and reactions
+HERO_INVULN_FRAMES = 54          # ~0.9 s of mercy after a hit
+HERO_KNOCKBACK_SPEED = 2.5
+KNOCKBACK_FRAMES = 8
+HIT_FLASH_FRAMES = 10
+ROLL_FRAMES = 20
+ROLL_IFRAMES = 8
+ROLL_SPEED = 2.75
+ROLL_COOLDOWN = 12
+SHIELD_SPEED_FACTOR = 0.55
+DEATH_PUFF_FRAMES = 16           # 4 frames x 4 ticks
+SPIN_CHARGE_FRAMES = 36          # hold A this long for a spin attack
+SPIN_FRAMES = 24
+ENEMY_TELEGRAPH_MIN = 20         # every attack must be readable this long
+
+# Text
+TEXT_SPEED_DEFAULT = 2           # glyphs per frame
+DIALOGUE_LINES = 3
+DIALOGUE_COLS = 36
+
 # Logical buttons (the 12 the whole game is played with)
 BUTTONS = ("up", "down", "left", "right",
            "a", "b", "x", "y", "l", "r", "start", "select")
