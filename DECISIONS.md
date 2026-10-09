@@ -169,3 +169,32 @@ Decisions made without asking, with the reason. Newest at the bottom.
     better, rather than from a flag set by a side quest. One number already
     counts everything the post-game cares about; a second bookkeeping path
     would only drift from it.
+
+44. **Side content is tables, not code.** Rings, quests, figurines,
+    furniture, the trading chain and the minigames' prizes are each one
+    JSON file and one small reader. The engine asks the table a question;
+    it never holds a list of what exists. That is what makes
+    `tools/validate_data.py` able to fail when something in a table has
+    nobody who gives it out, which is the bug that actually happens.
+45. **A quest is a condition and a payment, and the world half is a
+    token.** Rather than thirty bespoke scripts, a quest reads a counter, a
+    flag or an item; the `token` object is the thing you poke to set the
+    flag, and a set of tokens shares a count. The five-pot, nine-frog and
+    three-sheep quests are the same object placed five, nine and three
+    times.
+46. **Nothing may stand in the doorway lanes.** The placer learned this the
+    hard way: a quest giver on the two middle columns of a screen is a wall
+    across the road, and the sim bot walked into one and stopped. Cols 9-10
+    and rows 6-7 are the road; everything is placed outside them.
+47. **The trading chain is an index, not ten items.** `state.trade` says
+    which link you are on, and the item you are carrying is implied by it.
+    Ten real items would have inflated the inventory counter, and the chain
+    is only ever one thing long anyway.
+48. **Trade and quest items that stay in the bag are souvenirs.** The
+    twelve quest items are real items and are not taken back when the quest
+    is paid: the quest is ticked off in its own list, so there is no reason
+    to pick the player's pocket for the sake of tidiness.
+49. **Optional means optional.** The six caves carry `optional` in their
+    record, and the completability proof stops asking them for a map, a
+    compass, keys and a Flame. A cave that demanded the full temple
+    furniture would either be a temple or a lie.

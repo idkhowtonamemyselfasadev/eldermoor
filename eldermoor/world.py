@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 import pygame
 
-from eldermoor import actions, quests, render, rewards, transition
+from eldermoor import actions, render, rewards, talk, trade, transition
 from eldermoor.bosses import Boss
 from eldermoor.config import PLAY_H, PLAY_W, PLAY_Y, TEXT_SPEED_DEFAULT, TILE
 from eldermoor.content import Content
@@ -57,6 +57,7 @@ class World:
         self.dialogue_after: Any = None
         self.pending_shop: dict[str, Any] | None = None
         self.pending_warp_menu = False
+        self.pending_minigame = ""
         self.regen_timer = 0
         self.pending_ending = ""
         self.shake_timer = 0
@@ -387,24 +388,15 @@ class World:
 
     def talk_quest(self, quest_id: str) -> bool:
         """One conversation with a quest giver: ask, wait, pay or reminisce."""
-        quest = self.content.quests.get(quest_id)
-        if quest is None:
-            self.say("npc.hello")
-            return True
-        state = self.state
-        if quest_id in state.quests:
-            self.say(quest.line("done"))
-            return True
-        if not state.flag(quest.start_flag):
-            state.set_flag(quest.start_flag, 1)
-            self.say(quest.line("ask"))
-            return True
-        if quests.satisfied(self, quest):
-            quests.pay(self, quest)
-            self.say(quest.line("thanks"))
-        else:
-            self.say(quest.line("wait"))
-        return True
+        return talk.quest(self, quest_id)
+
+    def talk_trade(self, index: int) -> bool:
+        """One conversation with a link in the trading chain."""
+        return trade.talk(self, index)
+
+    def offer_minigame(self, game_id: str, spec: dict[str, Any]) -> bool:
+        """Ask the game to open a minigame once this conversation is over."""
+        return talk.minigame(self, game_id, spec)
 
     def request_shop(self, spec: dict[str, Any]) -> None:
         """Ask the game to open a shop screen after this conversation."""
@@ -412,13 +404,7 @@ class World:
 
     def npc_line(self, spec: dict[str, Any]) -> str:
         """Pick an NPC's line for the current story state: later flags win."""
-        lines = spec.get("lines")
-        if isinstance(lines, list):
-            for entry in reversed(lines):
-                flag = entry.get("if_flag")
-                if flag is None or self.state.flag(str(flag)):
-                    return str(entry.get("text", ""))
-        return str(spec.get("text", "npc.hello"))
+        return talk.npc_line(self, spec)
 
     def _update_dialogue(self) -> None:
         box = self.dialogue

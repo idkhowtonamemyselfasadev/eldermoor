@@ -1,0 +1,20 @@
+{
+ "_comment": "The three minigames. 'prizes' pay out the first time a score is reached: [score, kind, id].",
+ "games": {
+  "gallery": {
+   "name": "game.gallery", "greeting": "game.gallery.hello", "cost": 10, "seconds": 30,
+   "prizes": [[5, "figurine", "fig_thistle"], [10, "figurine", "fig_crag"],
+              [14, "embers", "150"]]
+  },
+  "dig": {
+   "name": "game.dig", "greeting": "game.dig.hello", "cost": 20, "digs": 10,
+   "prizes": [[6, "embers", "80"], [8, "figurine", "fig_wisp"],
+              [10, "heart_piece", "hp:dig"]]
+  },
+  "bells": {
+   "name": "game.bells", "greeting": "game.bells.hello", "cost": 15, "rounds": 12,
+   "prizes": [[6, "embers", "90"], [9, "figurine", "fig_sentinel"],
+              [12, "shell", "shell:bells"]]
+  }
+ }
+}

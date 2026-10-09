@@ -119,6 +119,11 @@ class Npc(RoomObject):
         quest_id = str(self.spec.get("quest", ""))
         if quest_id:
             return world.talk_quest(quest_id)
+        if "trade" in self.spec:
+            return world.talk_trade(int(self.spec["trade"]))
+        game = str(self.spec.get("minigame", ""))
+        if game:
+            return world.offer_minigame(game, self.spec)
         stock = self.spec.get("shop")
         after = (lambda _r: world.request_shop(self.spec)) if stock else None
         world.say(world.npc_line(self.spec), after=after)
@@ -177,6 +182,56 @@ class Token(RoomObject):
             self.blocks = False
         world.say(str(self.spec.get("text", "token.found")))
         world.trigger("token", self.id)
+        return True
+
+
+class Display(RoomObject):
+    """One spot in Wren's house that shows a piece of furniture he owns.
+
+    Which piece stands here is whatever is nth in the collection, so the room
+    fills up as he collects; ``placed`` in the save remembers the pairing so a
+    piece does not jump around the room when a new one arrives.
+    """
+
+    blocks_movement = True
+    body = pygame.Rect(2, 4, 12, 12)
+
+    def __init__(self, world: World, spec: dict[str, Any]) -> None:
+        super().__init__(world, spec)
+        self.slot = int(spec.get("slot", 0))
+        self.piece = self._piece(world)
+        if self.piece is None:
+            self.alive = False
+
+    def _piece(self, world: World) -> str | None:
+        """The furniture id standing in this slot, if any."""
+        state = world.state
+        spot = f"spot{self.slot}"
+        placed = state.placed.get(spot)
+        if placed and placed in state.furniture:
+            return placed
+        free = [f for f in state.furniture if f not in state.placed.values()]
+        if not free:
+            return None
+        state.placed[spot] = free[0]
+        return free[0]
+
+    def sprite_name(self) -> str | None:
+        """Furniture is drawn from its 8x8 icon, not a sprite."""
+        return None
+
+    def draw(self, target: pygame.Surface, assets: Assets, oy: int = 0) -> None:
+        """Blit the piece's icon in the middle of its tile."""
+        entry = self.piece
+        if entry is None:
+            return
+        icon = "icon_chair"
+        target.blit(assets.icons.get(icon), (round(self.x) + 4, round(self.y) + oy + 4))
+
+    def interact(self, world: World) -> bool:
+        """Say what it is."""
+        entry = world.content.furniture.get(self.piece or "")
+        world.say(entry.name if entry is not None else "token.again")
         return True
 
 
@@ -480,7 +535,7 @@ class WarpLantern(RoomObject):
 #: room object kind -> class
 KINDS: dict[str, Callable[[World, dict[str, Any]], RoomObject]] = {
     "chest": Chest, "sign": Sign, "npc": Npc, "door": Door, "torch": Torch,
-    "token": Token,
+    "token": Token, "display": Display,
     "switch": FloorSwitch, "crystal": Crystal, "block": PushBlock,
     "stairs": Stairs, "reward": Reward, "warp": WarpLantern,
 }

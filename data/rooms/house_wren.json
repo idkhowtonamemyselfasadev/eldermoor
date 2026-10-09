@@ -66,6 +66,102 @@
         64
       ],
       "sound": "door_open"
+    },
+    {
+      "kind": "display",
+      "at": [
+        4,
+        3
+      ],
+      "slot": 0
+    },
+    {
+      "kind": "display",
+      "at": [
+        6,
+        3
+      ],
+      "slot": 1
+    },
+    {
+      "kind": "display",
+      "at": [
+        8,
+        3
+      ],
+      "slot": 2
+    },
+    {
+      "kind": "display",
+      "at": [
+        10,
+        3
+      ],
+      "slot": 3
+    },
+    {
+      "kind": "display",
+      "at": [
+        12,
+        3
+      ],
+      "slot": 4
+    },
+    {
+      "kind": "display",
+      "at": [
+        14,
+        3
+      ],
+      "slot": 5
+    },
+    {
+      "kind": "display",
+      "at": [
+        4,
+        9
+      ],
+      "slot": 6
+    },
+    {
+      "kind": "display",
+      "at": [
+        6,
+        9
+      ],
+      "slot": 7
+    },
+    {
+      "kind": "display",
+      "at": [
+        8,
+        9
+      ],
+      "slot": 8
+    },
+    {
+      "kind": "display",
+      "at": [
+        10,
+        9
+      ],
+      "slot": 9
+    },
+    {
+      "kind": "display",
+      "at": [
+        12,
+        9
+      ],
+      "slot": 10
+    },
+    {
+      "kind": "display",
+      "at": [
+        14,
+        9
+      ],
+      "slot": 11
     }
   ]
 }

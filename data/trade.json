@@ -1,0 +1,26 @@
+{
+ "_comment": "The trading chain. Step N is served by the NPC carrying {\"trade\": N}: they want what step N-1 handed over, and give the next thing. The last step pays a ring.",
+ "steps": [
+  {"item": "trade.reeds", "icon": "icon_scroll", "npc": "npc_man", "room": "ow_0407",
+   "ask": "trade.0.ask", "take": "trade.0.take", "done": "trade.0.done"},
+  {"item": "trade.basket", "icon": "icon_scroll", "npc": "npc_woman", "room": "ow_1210",
+   "ask": "trade.1.ask", "take": "trade.1.take", "done": "trade.1.done"},
+  {"item": "trade.fish", "icon": "icon_scroll", "npc": "npc_fisher", "room": "ow_1215",
+   "ask": "trade.2.ask", "take": "trade.2.take", "done": "trade.2.done"},
+  {"item": "trade.knife", "icon": "icon_scroll", "npc": "npc_baker", "room": "ow_1108",
+   "ask": "trade.3.ask", "take": "trade.3.take", "done": "trade.3.done"},
+  {"item": "trade.pie", "icon": "icon_scroll", "npc": "npc_child", "room": "ow_1004",
+   "ask": "trade.4.ask", "take": "trade.4.take", "done": "trade.4.done"},
+  {"item": "trade.whistle", "icon": "icon_whistle", "npc": "npc_guard", "room": "ow_0305",
+   "ask": "trade.5.ask", "take": "trade.5.take", "done": "trade.5.done"},
+  {"item": "trade.hound", "icon": "icon_scroll", "npc": "npc_elder", "room": "ow_0413",
+   "ask": "trade.6.ask", "take": "trade.6.take", "done": "trade.6.done"},
+  {"item": "trade.sandglass", "icon": "icon_scroll", "npc": "npc_man", "room": "ow_0115",
+   "ask": "trade.7.ask", "take": "trade.7.take", "done": "trade.7.done"},
+  {"item": "trade.coalstone", "icon": "icon_scroll", "npc": "npc_woman", "room": "ow_0008",
+   "ask": "trade.8.ask", "take": "trade.8.take", "done": "trade.8.done"},
+  {"item": "trade.lamp", "icon": "icon_scroll", "npc": "npc_ghost", "room": "ow_0002",
+   "ask": "trade.9.ask", "take": "trade.9.take", "done": "trade.9.done",
+   "gives": {"ring": "ring_swift"}}
+ ]
+}

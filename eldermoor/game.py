@@ -15,6 +15,8 @@ from eldermoor.ending import Ending
 from eldermoor.hud import Hud
 from eldermoor.input import Input
 from eldermoor.menu import PAGES, FileSelect, PauseMenu
+from eldermoor.minigames import MiniGame
+from eldermoor.minigames import start as start_minigame
 from eldermoor.settings import Settings
 from eldermoor.shop import Shop
 from eldermoor.state import GameState
@@ -44,6 +46,7 @@ class Game:
         self.pause: PauseMenu | None = None
         self.shop: Shop | None = None
         self.ending: Ending | None = None
+        self.minigame: MiniGame | None = None
         self.file_select: FileSelect | None = None
         if file_select:
             self.file_select = FileSelect(self.assets, self.content,
@@ -62,6 +65,8 @@ class Game:
             return "file"
         if self.ending is not None:
             return "ending"
+        if self.minigame is not None:
+            return "minigame"
         if self.shop is not None:
             return "shop"
         if self.pause is not None:
@@ -114,6 +119,12 @@ class Game:
             self.world.pending_warp_menu = False
             self._open_pause(PAGES.index("map"))
             return
+        if self.world.pending_minigame:
+            game_id, self.world.pending_minigame = self.world.pending_minigame, ""
+            self.minigame = start_minigame(self.world, game_id)
+            self.world.dialogue = None
+            self.audio.play("menu_select")
+            return
         if self.world.pending_ending:
             self._start_ending(self.world.pending_ending)
             return
@@ -159,6 +170,11 @@ class Game:
         self.file_select = FileSelect(self.assets, self.content,
                                       savefile.all_summaries(), self.audio)
 
+    def _update_minigame(self) -> None:
+        if self.minigame is not None and self.minigame.update(self.input) == "close":
+            self.minigame = None
+            self.save()
+
     def _update_shop(self) -> None:
         if self.shop is not None and self.shop.update(self.input) == "close":
             self.shop = None
@@ -193,6 +209,9 @@ class Game:
             return
         if self.ending is not None:
             self.ending.draw(canvas)
+            return
+        if self.minigame is not None:
+            self.minigame.draw(canvas)
             return
         if self.shop is not None:
             self.shop.draw(canvas)

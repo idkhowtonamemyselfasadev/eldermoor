@@ -1,0 +1,102 @@
+{
+  "id": "house_market",
+  "name": "Second-Hand Everything",
+  "tileset": "house",
+  "region": "village",
+  "music": "shop",
+  "spawn": [
+    152,
+    160
+  ],
+  "tiles": [
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMNMMMMMMMMNMMMMM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MM:KKKKKKKKKKKKKK:MM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MM::o::::::::::o::MM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MMMMMMMMMDDMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "npc",
+      "at": [
+        9,
+        4
+      ],
+      "sprite": "npc_man",
+      "face": "down",
+      "text": "npc.market.1",
+      "greeting": "shop.market",
+      "shop": [
+        {
+          "kind": "furniture",
+          "id": "fur_rug",
+          "cost": 50
+        },
+        {
+          "kind": "furniture",
+          "id": "fur_chair",
+          "cost": 65
+        },
+        {
+          "kind": "furniture",
+          "id": "fur_table",
+          "cost": 80
+        },
+        {
+          "kind": "furniture",
+          "id": "fur_bed",
+          "cost": 95
+        },
+        {
+          "kind": "furniture",
+          "id": "fur_chest",
+          "cost": 110
+        },
+        {
+          "kind": "furniture",
+          "id": "fur_clock",
+          "cost": 125
+        },
+        {
+          "kind": "ring",
+          "id": "ring_haggle",
+          "cost": 240
+        }
+      ]
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        9,
+        11
+      ],
+      "to": "ow_1205",
+      "spawn": [
+        48,
+        64
+      ],
+      "sound": "door_open"
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        10,
+        11
+      ],
+      "to": "ow_1205",
+      "spawn": [
+        48,
+        64
+      ],
+      "sound": "door_open"
+    }
+  ]
+}

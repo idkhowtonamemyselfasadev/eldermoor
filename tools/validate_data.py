@@ -22,6 +22,7 @@ import argparse
 import sys
 from collections import deque
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -373,6 +374,90 @@ class DungeonRun:
                             changed = True
 
 
+def check_collectibles(report: Report, content: Content, rooms: dict[str, Room]) -> None:
+    """Forty heart pieces and forty shells exist, each one only once."""
+    from eldermoor.state import HEART_PIECES_TOTAL, SEASHELLS_TOTAL
+    counts = {"heart_piece": 0, "shell": 0}
+    flags: dict[str, list[str]] = {}
+    for room_id, room in rooms.items():
+        specs = list(room.objects)
+        for trigger in room.triggers:
+            for action in trigger.get("do", []):
+                if "spawn" in action:
+                    specs.append(dict(action["spawn"]))
+        for spec in specs:
+            if spec.get("kind") != "reward":
+                continue
+            what = str(spec.get("what", ""))
+            if what in counts:
+                counts[what] += 1
+                flags.setdefault(str(spec.get("flag", "")), []).append(room_id)
+    for quest in content.quests.quests.values():
+        if "heart_piece" in quest.gives:
+            counts["heart_piece"] += 1
+    for flag, where in sorted(flags.items()):
+        if len(where) > 1:
+            report.fail(f"prize flag {flag!r} is used by {where}")
+    for what, total in (("heart_piece", HEART_PIECES_TOTAL), ("shell", SEASHELLS_TOTAL)):
+        if counts[what] != total:
+            report.fail(f"{counts[what]} {what}s in the world, want {total}")
+    report.note(f"{counts['heart_piece']} heart pieces, {counts['shell']} shells")
+
+
+def check_rings_and_collections(report: Report, content: Content, rooms: dict[str, Room]) -> None:
+    """Every ring, figurine and piece of furniture can be got hold of."""
+    from eldermoor.state import FIGURINES_TOTAL, FURNITURE_TOTAL, QUESTS_TOTAL, RINGS_TOTAL
+    sources: dict[str, set[str]] = {"ring": set(), "figurine": set(), "furniture": set()}
+    for room in rooms.values():
+        specs = list(room.objects)
+        for trigger in room.triggers:
+            for action in trigger.get("do", []):
+                if "spawn" in action:
+                    specs.append(dict(action["spawn"]))
+        for spec in specs:
+            what = str(spec.get("what", ""))
+            if spec.get("kind") == "reward" and what in sources:
+                sources[what].add(str(spec.get("which", "")))
+    for quest in content.quests.quests.values():
+        for what, value in quest.gives.items():
+            if what in sources:
+                sources[what].add(str(value))
+    for shop in _shop_stock(rooms):
+        for what in sources:
+            if shop.get("kind") == what:
+                sources[what].add(str(shop.get("id", "")))
+    for step in content.trade.steps:
+        for what, value in step.gives.items():
+            if what in sources:
+                sources[what].add(str(value))
+    for definition in content.minigames.games.values():
+        for _score, kind, value in definition.prizes:
+            if kind in sources:
+                sources[kind].add(str(value))
+    for name, table, total in (("ring", content.rings.rings, RINGS_TOTAL),
+                               ("figurine", content.figurines.entries, FIGURINES_TOTAL),
+                               ("furniture", content.furniture.entries, FURNITURE_TOTAL)):
+        if len(table) != total:
+            report.fail(f"{len(table)} {name}s in the table, want {total}")
+        missing = sorted(set(table) - sources[name])
+        if missing:
+            report.fail(f"{name}s nobody gives out: {missing}")
+    if len(content.quests) != QUESTS_TOTAL:
+        report.fail(f"{len(content.quests)} side quests, want {QUESTS_TOTAL}")
+    report.note(f"{len(content.rings)} rings, {len(content.figurines)} figurines, "
+                f"{len(content.furniture)} furniture, {len(content.quests)} quests")
+
+
+def _shop_stock(rooms: dict[str, Room]) -> list[dict[str, Any]]:
+    """Every entry of every shop in the game, flattened."""
+    out: list[dict[str, Any]] = []
+    for room in rooms.values():
+        for spec in room.objects:
+            for entry in spec.get("shop", []) or []:
+                out.append(dict(entry))
+    return out
+
+
 def check_dungeons(report: Report, content: Content, rooms: dict[str, Room]) -> None:
     """Every dungeon must be completable, with no key able to be wasted."""
     for dungeon in content.dungeons:
@@ -436,6 +521,8 @@ def main(argv: list[str] | None = None) -> int:
     rooms = check_rooms(report, content)
     check_enemies(report, content)
     check_text(report, content)
+    check_collectibles(report, content, rooms)
+    check_rings_and_collections(report, content, rooms)
     check_dungeons(report, content, rooms)
     for problem in report.problems:
         print("FAIL", problem, file=sys.stderr)

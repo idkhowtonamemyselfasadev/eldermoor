@@ -181,3 +181,60 @@ screens and the whole 35-room Ember Temple, from its door to the Flame.
 - Triggers take `if_flag` / `unless_flag`; the `ending` action hands the
   screen to the credits; an `t_ice` tile sprite replaces the stand-in.
 - 562 rooms, 24 enemy kinds, 143 tests.
+
+
+## 0.5.0 — Milestone 5: everything else in the kingdom
+
+### Rings
+- Twelve rings, two worn at a time, summed into one bonus the engine asks
+  for: sword damage, defence (never down to nothing), walking speed, bomb
+  and quiver room, shop prices, drop luck, ember handfuls, roll cooldown,
+  reflected shots, grip on ice and slow mending.
+- Ice carries Wren now — a new puzzle floor — and the Ring of Grip is what
+  takes it back.
+
+### Thirty side quests
+- `data/quests/quests.json`: thirty givers, each with a condition, a
+  payment and four lines (ask, wait, thanks, and what they say years
+  later). `eldermoor/quests.py` is the only code that knows what a quest is.
+- The world half is the new `token` object: poke the cat on the roof, or
+  all five cracked pots, or all nine lantern frogs, and the flag a quest
+  waits on goes up. Thirty-three of them are placed.
+- Twelve quest items sit in chests across the kingdom; the quest log on the
+  pause screen lists what is open, with a hint, and what is finished.
+
+### Six optional caves
+- Bramble Grotto, Tidewrack Cave, Cinder Vent, Tarn Hollow, Glass Burrow
+  and the Mist Warren: 9 to 16 rooms, a mini-boss each, a ring, a heart
+  piece and a shell. None of them is on the critical path, and the
+  completability proof knows an optional cave has no keys, map or Flame.
+
+### Things to find
+- Forty heart pieces and forty seashells, counted and proved reachable by
+  `tools/validate_data.py`, which also refuses two prizes that share a flag.
+- Twelve rings, twenty-four figurines, twelve pieces of furniture — and the
+  validator fails if anything in those tables has nobody who gives it out.
+- The furniture you own stands in Wren's house, one piece per spot.
+
+### People and games
+- A ten-step trading chain across every region, ending in the Ring of Haste.
+- Three minigames: the shooting gallery, the dig patch and the bells. Each
+  keeps a best score and pays figurines, embers, a heart piece or a shell
+  the first time a score is reached.
+- Two new shops: the Little Gallery (figurines, three of them for
+  collectors with a full enough bestiary) and Second-Hand Everything
+  (furniture, and one ring).
+
+### Screens
+- The pause menu grows RINGS and FINDS pages; FINDS has four tabs —
+  counters, figurines, furniture and the bestiary, which fills itself in as
+  things die. `completion()` counts flames, hearts, pieces, shells, items,
+  rings, figurines, furniture, bestiary entries and quests.
+
+### Engine
+- Twelve more creatures drawn by `tools/sketch_critters.py`, each with its
+  own state machine, and six cave mini-bosses.
+- Save version 3: rings, worn rings, figurines, furniture, where furniture
+  stands, the bestiary, finished quests, the trading step and best scores.
+  A milestone-4 file migrates straight into it.
+- 641 rooms, 42 enemy kinds, 173 tests.

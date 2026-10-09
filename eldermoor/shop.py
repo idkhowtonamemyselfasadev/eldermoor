@@ -15,7 +15,14 @@ TOP = 40
 
 
 class Shop:
-    """One shop visit. ``stock`` entries are ``{"item": id, "cost": n, "amount": n}``."""
+    """One shop visit.
+
+    A stock entry is ``{"item": id, "cost": n, "amount": n}`` for an
+    inventory item, or ``{"kind": "ring"|"figurine"|"furniture", "id": ...,
+    "cost": n}`` for something that goes in a collection rather than the bag.
+    ``once`` marks a one-off: it greys out when the shelf is empty, and
+    ``needs_bestiary`` holds a ware back until the bestiary is that full.
+    """
 
     def __init__(self, world: World, stock: list[dict[str, Any]], greeting: str = "shop.hello") -> None:
         self.world = world
@@ -48,10 +55,14 @@ class Shop:
 
     def _buy(self, entry: dict[str, Any]) -> None:
         state = self.world.state
-        item = str(entry.get("item", ""))
         cost = self.price(entry)
         if self.sold_out(entry):
             self.note = self.world.textdb.get("shop.sold")
+            self.world.audio.play("error")
+            return
+        want = int(entry.get("needs_bestiary", 0))
+        if want and len(state.bestiary) < want:
+            self.note = self.world.textdb.get("shop.locked", n=want)
             self.world.audio.play("error")
             return
         if state.embers < cost:
@@ -59,14 +70,49 @@ class Shop:
             self.world.audio.play("error")
             return
         state.embers -= cost
-        self.world.grant(item, int(entry.get("amount", 1)))
+        kind = str(entry.get("kind", ""))
+        if kind:
+            self._take_home(kind, str(entry.get("id", "")))
+        else:
+            self.world.grant(str(entry.get("item", "")), int(entry.get("amount", 1)))
         self.world.dialogue = None          # the shop prints its own note instead
         self.note = self.world.textdb.get("shop.thanks")
 
+    def _take_home(self, kind: str, entry_id: str) -> None:
+        """Buy something that lives in a collection, not in the bag."""
+        state = self.world.state
+        if kind == "ring":
+            state.find_ring(entry_id)
+            self.world.audio.play("item_get")
+        else:
+            state.collect("figurines" if kind == "figurine" else "furniture", entry_id)
+            self.world.audio.play("figurine")
+
     def sold_out(self, entry: dict[str, Any]) -> bool:
-        """True for a one-off item the player already owns."""
-        item = str(entry.get("item", ""))
-        return bool(entry.get("once")) and self.world.state.has(item)
+        """True for a one-off the player already has."""
+        state = self.world.state
+        kind = str(entry.get("kind", ""))
+        if kind:
+            box = {"ring": state.rings, "figurine": state.figurines,
+                   "furniture": state.furniture}[kind]
+            return str(entry.get("id", "")) in box
+        return bool(entry.get("once")) and state.has(str(entry.get("item", "")))
+
+    def label(self, entry: dict[str, Any]) -> tuple[str, str]:
+        """(icon, display name) for one stock entry."""
+        kind = str(entry.get("kind", ""))
+        if kind:
+            entry_id = str(entry.get("id", ""))
+            table = {"ring": self.world.content.rings.get(entry_id),
+                     "figurine": self.world.content.figurines.get(entry_id),
+                     "furniture": self.world.content.furniture.get(entry_id)}[kind]
+            if table is not None:
+                return table.icon, self.world.textdb.get(table.name)
+            return "icon_empty", entry_id
+        item = self.world.items.get(str(entry.get("item", "")))
+        if item is None:
+            return "icon_empty", str(entry.get("item", ""))
+        return item.icon, self.world.textdb.get(item.name)
 
     # ----- drawing -------------------------------------------------------
     def draw(self, target: pygame.Surface) -> None:
@@ -84,11 +130,9 @@ class Shop:
             colour = assets.colour("gold") if selected else assets.colour("white")
             if self.sold_out(entry):
                 colour = assets.colour("stone")
-            item = self.world.items.get(str(entry.get("item", "")))
-            icon = item.icon if item else "icon_empty"
+            icon, label = self.label(entry)
             if assets.icons.has(icon):
                 target.blit(assets.icons.get(icon), (20, y))
-            label = self.world.textdb.get(item.name) if item else str(entry.get("item", ""))
             font.draw(target, label, 36, y, colour)
             font.draw(target, f"{self.price(entry):3d}", CANVAS_W - 56, y, colour)
         pygame.draw.rect(target, assets.colour("slate"),

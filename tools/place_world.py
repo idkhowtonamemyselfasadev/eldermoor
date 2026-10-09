@@ -20,6 +20,8 @@ sys.path.insert(0, str(ROOT))
 os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
 
 SHEET = ROOT / "data" / "overworld" / "sheet.json"
+#: filled in by main() once the sheet is read: every overworld screen id
+ALL_SCREENS: set[str] = set()
 
 #: quest id -> the screen its giver stands on
 GIVERS = {
@@ -52,6 +54,22 @@ TOKENS: dict[str, tuple[str, str, str, str, str]] = {
     "boat": ("ow_1213", "token_boat", "boat_free", "token.boat", "gauntlet"),
     "bellows": ("ow_0113", "token_bellows", "bellows_fixed", "token.bellows", ""),
     "ice": ("ow_0107", "token_shard", "ice_crossed", "token.ice", ""),
+}
+
+#: the three minigame hosts: game id -> (screen, sprite)
+HOSTS = {
+    "gallery": ("ow_1106", "npc_guard"),
+    "dig": ("ow_0514", "npc_man"),
+    "bells": ("ow_1105", "npc_woman"),
+}
+
+#: the prizes hidden on the overworld, per region. The temples and caves
+#: hold the rest; tools/validate_data.py checks the totals come to forty.
+HIDDEN = {
+    "heart_piece": {"meadow": 3, "thornwood": 2, "saltmarsh": 3, "desert": 2,
+                    "cinder": 1, "tarn": 1, "fen": 1},
+    "shell": {"meadow": 5, "thornwood": 3, "saltmarsh": 5, "desert": 3,
+              "cinder": 2, "tarn": 2, "fen": 2, "mistlands": 1},
 }
 
 #: the six optional caves: id -> (overworld screen, first room inside)
@@ -114,6 +132,8 @@ class Placer:
         self.room_of = Room.load
         self.tilesets: dict[str, Any] = {}
         self.used: dict[str, set[tuple[int, int]]] = {}
+        #: screens that already hold one hidden prize
+        self.spoken_for: set[str] = set()
 
     def entries(self, room_id: str) -> list[dict[str, Any]]:
         """The object list of a screen, created if the screen is new."""
@@ -127,6 +147,12 @@ class Placer:
                      for o in self.entries(room_id) if "at" in o}
             self.used[room_id] = cells
         return self.used[room_id]
+
+    def all_screens(self) -> list[str]:
+        """Every screen id on the overworld sheet."""
+        from eldermoor.mapsheet import sheets
+        sheet = next(s for s in sheets() if s.folder.name == "overworld")
+        return sheet.room_ids()
 
     def forget(self, ids: set[str]) -> None:
         """Drop earlier copies of the objects this tool owns, so they re-place."""
@@ -170,9 +196,47 @@ class Placer:
             objects.append({"kind": "stairs", "id": f"cave_{cave_id}", "at": [col + i, row],
                             "to": target, "spawn": [152, 160], "sound": "door_open"})
 
+    def hide_prizes(self) -> int:
+        """Scatter the overworld's heart pieces and shells, one per screen.
+
+        The screens are taken in id order per region so the same run puts the
+        same prize on the same screen; the cell inside the screen is chosen the
+        same way as everything else.
+        """
+        from eldermoor.mapsheet import sheets
+        sheet = next(s for s in sheets() if s.folder.name == "overworld")
+        by_region: dict[str, list[str]] = {}
+        for room_id in sorted(sheet.room_ids()):
+            found = sheet.locate(room_id)
+            if found is None:
+                continue
+            layer, row, col = found
+            by_region.setdefault(sheet.region_of(layer, row, col), []).append(room_id)
+        placed = 0
+        for what, per_region in HIDDEN.items():
+            for region, count in per_region.items():
+                screens = [r for r in by_region.get(region, []) if r not in self.spoken_for]
+                for room_id in screens[:count]:
+                    self.spoken_for.add(room_id)
+                    self.place(room_id, {"kind": "reward", "id": f"{what}:{room_id}",
+                                         "what": what, "flag": f"{what}:{room_id}"})
+                    placed += 1
+        return placed
+
     def write(self) -> None:
         """Save the sheet."""
         SHEET.write_text(json.dumps(self.raw, indent=1) + "\n", encoding="utf-8")
+
+
+def _trade_stops() -> list[tuple[int, str, str]]:
+    """(step, screen, sprite) for every link in the trading chain."""
+    raw = json.loads((ROOT / "data" / "trade.json").read_text(encoding="utf-8"))
+    return [(i, d["room"], d.get("npc", "npc_elder")) for i, d in enumerate(raw["steps"])]
+
+
+def placer_prize_ids(what: str) -> set[str]:
+    """Ids this tool may have written for a prize kind, on any screen."""
+    return {f"{what}:{room}" for room in ALL_SCREENS}
 
 
 def main() -> int:
@@ -180,8 +244,13 @@ def main() -> int:
     from eldermoor.quests import Quests
     table = Quests.load()
     placer = Placer()
+    ALL_SCREENS.update(placer.all_screens())
     placer.forget(set(GIVERS) | {f"chest_{i}" for i in QUEST_ITEMS}
                   | {f"cave_{c}" for c in CAVES}
+                  | {f"host_{g}" for g in HOSTS}
+                  | {f"trade{i}" for i in range(len(_trade_stops()))}
+                  | {f"{what}:{room}" for what in HIDDEN
+                     for room in placer_prize_ids(what)}
                   | {f"token_{n}" for n in TOKENS}
                   | {f"{n}{i}" for n, spec in SETS.items() for i in range(len(spec[3]))})
     for quest_id, room_id in GIVERS.items():
@@ -204,11 +273,20 @@ def main() -> int:
             placer.place(screen, {"kind": "token", "id": f"{name}{i}", "sprite": sprite,
                                   "count": name, "of": len(screens), "sets": flag,
                                   "flag": f"token:{name}{i}", "text": text, "vanish": True})
+    for step, room_id, sprite in _trade_stops():
+        placer.place(room_id, {"kind": "npc", "id": f"trade{step}", "sprite": sprite,
+                               "trade": step})
+    for game_id, (room_id, sprite) in HOSTS.items():
+        placer.place(room_id, {"kind": "npc", "id": f"host_{game_id}", "sprite": sprite,
+                               "minigame": game_id})
     for cave_id, (room_id, target) in CAVES.items():
         placer.place_wide(room_id, cave_id, target)
+    hidden = placer.hide_prizes()
     placer.write()
-    print(f"placed {len(CAVES)} cave mouths, {len(GIVERS)} givers, {len(QUEST_ITEMS)} quest chests, "
-          f"{len(TOKENS) + sum(len(s[3]) for s in SETS.values())} tokens")
+    tokens = len(TOKENS) + sum(len(spec[3]) for spec in SETS.values())
+    print(f"placed {hidden} hidden prizes, {len(CAVES)} cave mouths, "
+          f"{len(GIVERS)} givers, {len(QUEST_ITEMS)} quest chests, {tokens} tokens, "
+          f"{len(_trade_stops())} traders, {len(HOSTS)} game hosts")
     return 0
 
 

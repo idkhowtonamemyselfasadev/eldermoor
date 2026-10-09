@@ -1,0 +1,125 @@
+{
+  "id": "house_gallery",
+  "name": "The Little Gallery",
+  "tileset": "house",
+  "region": "village",
+  "music": "shop",
+  "spawn": [
+    152,
+    160
+  ],
+  "tiles": [
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMNMMMMMMMMNMMMMM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MM:KKKKKKKKKKKKKK:MM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MM::o::::::::::o::MM",
+    "MM::::::::::::::::MM",
+    "MM::::::::::::::::MM",
+    "MMMMMMMMMDDMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": [
+    {
+      "kind": "npc",
+      "at": [
+        9,
+        4
+      ],
+      "sprite": "npc_woman",
+      "face": "down",
+      "text": "npc.gallery.1",
+      "greeting": "shop.gallery",
+      "shop": [
+        {
+          "kind": "figurine",
+          "id": "fig_wren",
+          "cost": 40
+        },
+        {
+          "kind": "figurine",
+          "id": "fig_elder",
+          "cost": 50
+        },
+        {
+          "kind": "figurine",
+          "id": "fig_baker",
+          "cost": 60
+        },
+        {
+          "kind": "figurine",
+          "id": "fig_fisher",
+          "cost": 70
+        },
+        {
+          "kind": "figurine",
+          "id": "fig_smith",
+          "cost": 80
+        },
+        {
+          "kind": "figurine",
+          "id": "fig_digger",
+          "cost": 90
+        },
+        {
+          "kind": "figurine",
+          "id": "fig_keeper",
+          "cost": 100
+        },
+        {
+          "kind": "figurine",
+          "id": "fig_mote",
+          "cost": 110
+        },
+        {
+          "kind": "figurine",
+          "id": "fig_hollowking",
+          "cost": 180,
+          "needs_bestiary": 20
+        },
+        {
+          "kind": "figurine",
+          "id": "fig_drownking",
+          "cost": 240,
+          "needs_bestiary": 30
+        },
+        {
+          "kind": "figurine",
+          "id": "fig_quiet",
+          "cost": 320,
+          "needs_bestiary": 42
+        }
+      ]
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        9,
+        11
+      ],
+      "to": "ow_1204",
+      "spawn": [
+        48,
+        64
+      ],
+      "sound": "door_open"
+    },
+    {
+      "kind": "stairs",
+      "at": [
+        10,
+        11
+      ],
+      "to": "ow_1204",
+      "spawn": [
+        48,
+        64
+      ],
+      "sound": "door_open"
+    }
+  ]
+}

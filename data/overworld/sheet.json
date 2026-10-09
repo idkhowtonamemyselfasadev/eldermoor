@@ -232,6 +232,16 @@
       16,
       2
      ]
+    },
+    {
+     "kind": "npc",
+     "id": "host_bells",
+     "sprite": "npc_woman",
+     "minigame": "bells",
+     "at": [
+      17,
+      3
+     ]
     }
    ]
   },
@@ -306,6 +316,16 @@
      "at": [
       16,
       2
+     ]
+    },
+    {
+     "kind": "npc",
+     "id": "host_gallery",
+     "sprite": "npc_guard",
+     "minigame": "gallery",
+     "at": [
+      17,
+      3
      ]
     }
    ]
@@ -897,6 +917,34 @@
   "ow_1204": {
    "objects": [
     {
+     "kind": "stairs",
+     "id": "door_house_gallery",
+     "at": [
+      3,
+      2
+     ],
+     "to": "house_gallery",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "stairs",
+     "id": "door_house_gallery",
+     "at": [
+      4,
+      2
+     ],
+     "to": "house_gallery",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    },
+    {
      "kind": "npc",
      "id": "q_letter",
      "sprite": "npc_woman",
@@ -925,6 +973,34 @@
   },
   "ow_1205": {
    "objects": [
+    {
+     "kind": "stairs",
+     "id": "door_house_market",
+     "at": [
+      3,
+      2
+     ],
+     "to": "house_market",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    },
+    {
+     "kind": "stairs",
+     "id": "door_house_market",
+     "at": [
+      4,
+      2
+     ],
+     "to": "house_market",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open"
+    },
     {
      "kind": "npc",
      "id": "q_shells5",
@@ -1021,11 +1097,31 @@
       2,
       2
      ]
+    },
+    {
+     "kind": "npc",
+     "id": "trade4",
+     "sprite": "npc_child",
+     "trade": 4,
+     "at": [
+      17,
+      2
+     ]
     }
    ]
   },
   "ow_0805": {
    "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_0805",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_0805",
+     "at": [
+      17,
+      2
+     ]
+    },
     {
      "kind": "npc",
      "id": "q_flowers",
@@ -1121,11 +1217,31 @@
       17,
       2
      ]
+    },
+    {
+     "kind": "npc",
+     "id": "trade5",
+     "sprite": "npc_guard",
+     "trade": 5,
+     "at": [
+      3,
+      2
+     ]
     }
    ]
   },
   "ow_0302": {
    "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0302",
+     "what": "shell",
+     "flag": "shell:ow_0302",
+     "at": [
+      3,
+      2
+     ]
+    },
     {
      "kind": "npc",
      "id": "q_mushroom",
@@ -1155,6 +1271,16 @@
   },
   "ow_1212": {
    "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_1212",
+     "what": "shell",
+     "flag": "shell:ow_1212",
+     "at": [
+      17,
+      2
+     ]
+    },
     {
      "kind": "npc",
      "id": "q_net",
@@ -1260,6 +1386,16 @@
      "quest": "q_dig",
      "at": [
       2,
+      4
+     ]
+    },
+    {
+     "kind": "npc",
+     "id": "host_dig",
+     "sprite": "npc_man",
+     "minigame": "dig",
+     "at": [
+      17,
       4
      ]
     }
@@ -1380,6 +1516,16 @@
   "ow_0407": {
    "objects": [
     {
+     "kind": "reward",
+     "id": "shell:ow_0407",
+     "what": "shell",
+     "flag": "shell:ow_0407",
+     "at": [
+      3,
+      2
+     ]
+    },
+    {
      "kind": "npc",
      "id": "q_oil",
      "sprite": "npc_man",
@@ -1401,6 +1547,16 @@
      "vanish": true,
      "at": [
       17,
+      2
+     ]
+    },
+    {
+     "kind": "npc",
+     "id": "trade0",
+     "sprite": "npc_man",
+     "trade": 0,
+     "at": [
+      16,
       2
      ]
     }
@@ -1429,6 +1585,16 @@
      "quest": "q_quiet",
      "at": [
       2,
+      2
+     ]
+    },
+    {
+     "kind": "npc",
+     "id": "trade9",
+     "sprite": "npc_ghost",
+     "trade": 9,
+     "at": [
+      17,
       2
      ]
     }
@@ -1465,6 +1631,16 @@
   "ow_0804": {
    "objects": [
     {
+     "kind": "reward",
+     "id": "heart_piece:ow_0804",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_0804",
+     "at": [
+      17,
+      2
+     ]
+    },
+    {
      "kind": "chest",
      "id": "chest_q_flowers",
      "item": "q_flowers",
@@ -1478,6 +1654,16 @@
   },
   "ow_0303": {
    "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0303",
+     "what": "shell",
+     "flag": "shell:ow_0303",
+     "at": [
+      3,
+      2
+     ]
+    },
     {
      "kind": "chest",
      "id": "chest_q_wood",
@@ -1508,6 +1694,16 @@
   "ow_0301": {
    "objects": [
     {
+     "kind": "reward",
+     "id": "heart_piece:ow_0301",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_0301",
+     "at": [
+      17,
+      2
+     ]
+    },
+    {
      "kind": "chest",
      "id": "chest_q_honey",
      "item": "q_honey",
@@ -1521,6 +1717,16 @@
   },
   "ow_0300": {
    "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_0300",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_0300",
+     "at": [
+      17,
+      2
+     ]
+    },
     {
      "kind": "chest",
      "id": "chest_q_mushroom",
@@ -1550,6 +1756,16 @@
   "ow_0006": {
    "objects": [
     {
+     "kind": "reward",
+     "id": "shell:ow_0006",
+     "what": "shell",
+     "flag": "shell:ow_0006",
+     "at": [
+      17,
+      2
+     ]
+    },
+    {
      "kind": "chest",
      "id": "chest_q_water",
      "item": "q_water",
@@ -1563,6 +1779,16 @@
   },
   "ow_0415": {
    "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0415",
+     "what": "shell",
+     "flag": "shell:ow_0415",
+     "at": [
+      17,
+      2
+     ]
+    },
     {
      "kind": "chest",
      "id": "chest_q_sand",
@@ -1578,6 +1804,16 @@
   "ow_0011": {
    "objects": [
     {
+     "kind": "reward",
+     "id": "shell:ow_0011",
+     "what": "shell",
+     "flag": "shell:ow_0011",
+     "at": [
+      17,
+      2
+     ]
+    },
+    {
      "kind": "chest",
      "id": "chest_q_coal",
      "item": "q_coal",
@@ -1592,6 +1828,16 @@
   "ow_0007": {
    "objects": [
     {
+     "kind": "reward",
+     "id": "shell:ow_0007",
+     "what": "shell",
+     "flag": "shell:ow_0007",
+     "at": [
+      17,
+      2
+     ]
+    },
+    {
      "kind": "chest",
      "id": "chest_q_shard",
      "item": "q_shard",
@@ -1605,6 +1851,16 @@
   },
   "ow_0406": {
    "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0406",
+     "what": "shell",
+     "flag": "shell:ow_0406",
+     "at": [
+      16,
+      2
+     ]
+    },
     {
      "kind": "chest",
      "id": "chest_q_oil",
@@ -1653,6 +1909,16 @@
   },
   "ow_0904": {
    "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0904",
+     "what": "shell",
+     "flag": "shell:ow_0904",
+     "at": [
+      17,
+      2
+     ]
+    },
     {
      "kind": "token",
      "id": "sheep1",
@@ -1757,6 +2023,16 @@
   },
   "ow_0405": {
    "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_0405",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_0405",
+     "at": [
+      17,
+      2
+     ]
+    },
     {
      "kind": "token",
      "id": "frogs0",
@@ -1872,6 +2148,16 @@
   "ow_1211": {
    "objects": [
     {
+     "kind": "reward",
+     "id": "shell:ow_1211",
+     "what": "shell",
+     "flag": "shell:ow_1211",
+     "at": [
+      2,
+      2
+     ]
+    },
+    {
      "kind": "stairs",
      "id": "cave_tidecave",
      "at": [
@@ -1968,6 +2254,16 @@
   "ow_0511": {
    "objects": [
     {
+     "kind": "reward",
+     "id": "shell:ow_0511",
+     "what": "shell",
+     "flag": "shell:ow_0511",
+     "at": [
+      17,
+      2
+     ]
+    },
+    {
      "kind": "stairs",
      "id": "cave_burrow",
      "at": [
@@ -2026,6 +2322,352 @@
       160
      ],
      "sound": "door_open"
+    }
+   ]
+  },
+  "ow_0806": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_0806",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_0806",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_1113": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_1113",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_1113",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_1114": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_1114",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_1114",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_1115": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_1115",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_1115",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0413": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_0413",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_0413",
+     "at": [
+      2,
+      2
+     ]
+    },
+    {
+     "kind": "npc",
+     "id": "trade6",
+     "sprite": "npc_elder",
+     "trade": 6,
+     "at": [
+      17,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0414": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_0414",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_0414",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0010": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_0010",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_0010",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0005": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "heart_piece:ow_0005",
+     "what": "heart_piece",
+     "flag": "heart_piece:ow_0005",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0807": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0807",
+     "what": "shell",
+     "flag": "shell:ow_0807",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0808": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0808",
+     "what": "shell",
+     "flag": "shell:ow_0808",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0809": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0809",
+     "what": "shell",
+     "flag": "shell:ow_0809",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0903": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0903",
+     "what": "shell",
+     "flag": "shell:ow_0903",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0400": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0400",
+     "what": "shell",
+     "flag": "shell:ow_0400",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_1200": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_1200",
+     "what": "shell",
+     "flag": "shell:ow_1200",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_1201": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_1201",
+     "what": "shell",
+     "flag": "shell:ow_1201",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_1202": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_1202",
+     "what": "shell",
+     "flag": "shell:ow_1202",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0510": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0510",
+     "what": "shell",
+     "flag": "shell:ow_0510",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0012": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0012",
+     "what": "shell",
+     "flag": "shell:ow_0012",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0000": {
+   "objects": [
+    {
+     "kind": "reward",
+     "id": "shell:ow_0000",
+     "what": "shell",
+     "flag": "shell:ow_0000",
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_1210": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "trade1",
+     "sprite": "npc_woman",
+     "trade": 1,
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_1215": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "trade2",
+     "sprite": "npc_fisher",
+     "trade": 2,
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_1108": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "trade3",
+     "sprite": "npc_baker",
+     "trade": 3,
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0115": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "trade7",
+     "sprite": "npc_man",
+     "trade": 7,
+     "at": [
+      2,
+      2
+     ]
+    }
+   ]
+  },
+  "ow_0008": {
+   "objects": [
+    {
+     "kind": "npc",
+     "id": "trade8",
+     "sprite": "npc_woman",
+     "trade": 8,
+     "at": [
+      2,
+      2
+     ]
     }
    ]
   }
