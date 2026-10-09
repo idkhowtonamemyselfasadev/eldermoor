@@ -221,3 +221,62 @@ an exit exists where both sides are walkable — quietly cut those rooms out
 of the dungeon. Exits now exist unless solid rock is in the way, and the
 relic is the gate. `tools/validate_data.py` carries the same rule, so the
 proof of completability is still a proof.
+
+--------------------------------------------------------------------------
+## 4. Milestone 5 — the rest of the kingdom
+
+The main line is finished, so everything in milestone 5 hangs off it: things
+to find on screens already painted, people already standing there, and six
+caves whose doors were cut into the overworld in milestone 3.
+
+### 4.1 One table per collection
+All of it is data. `data/quests/quests.json` holds thirty side quests
+(`id`, `name`, `giver`, `needs`, `gives`, `flag`, `hint`);
+`data/items/rings.json` the rings; `data/collections/figurines.json` and
+`furniture.json` the two display collections; `data/trade.json` the trading
+chain. `eldermoor/quests.py` is the only code that reads quest state, and it
+reads it out of flags the script engine already sets, so a quest is a
+trigger plus a row in a table rather than a new system.
+
+### 4.2 What the save learns to hold
+`GameState` gains `rings` (owned), `worn` (two ring slots), `figurines`,
+`furniture`, `bestiary` (kill counts by enemy id), `trade` (chain index),
+`scores` (best per minigame) and `quests` (finished ids). `SAVE_VERSION`
+goes to 3 and `save.migrate` fills the new fields for a version-2 file, so
+a milestone-4 save walks straight into milestone 5.
+
+### 4.3 Rings
+Two ring slots, worn from the item page. A ring is passive and additive:
+damage, defence, walking speed, bomb and arrow caps, shop prices, drop luck.
+`eldermoor/rings.py` turns the worn list into one `RingBonus` the rest of
+the game asks instead of reading the list itself.
+
+### 4.4 Forty hearts, forty shells
+Four pieces make a container, so forty pieces are ten hearts on top of the
+three you start with and the eight from the temples — exactly the twenty the
+HUD draws. Shells are hidden on screens, under bushes and in the six caves;
+the shell hunter pays out at 5, 10, 20, 30 and 40. `tools/validate_data.py`
+counts both sets, proves each one is reachable with the items of its region,
+and fails if a piece or a shell is placed twice.
+
+### 4.5 Six caves
+Bramble Grotto, Tidewrack Cave, Cinder Vent, Tarn Hollow, Glass Burrow and
+the Mist Warren: 9 to 16 rooms each on map sheets, one mini-boss, one prize
+(a ring, a bottle, a quiver or a heart container) and no Flame, so none of
+them is on the critical path. `tools/plan_dungeon.py` lays them out and the
+same completability proof covers them.
+
+### 4.6 People
+The trading chain is ten steps long and runs through every region. The three
+minigames are a shooting gallery, a dig patch and a bomb run; each keeps a
+best score in the save and pays a shell the first time it is beaten.
+Figurines are won and bought, furniture is bought and placed in Wren's
+house, and the bestiary fills itself in as things die.
+
+### 4.7 The collection screens
+The pause menu grows a **collections** page with four tabs (shells and
+pieces, figurines, furniture, bestiary) and the quest page becomes a real
+log: open quests with their hints, finished ones ticked.
+`state.completion()` counts the lot — flames, hearts, pieces, shells, items,
+rings, figurines, furniture, bestiary entries and quests — because the
+endings and the post-game read that one number.
