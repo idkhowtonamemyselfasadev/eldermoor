@@ -1,0 +1,551 @@
+{
+ "prefix": "tm",
+ "tileset": "temple",
+ "region": "mistlands",
+ "dungeon": "mists",
+ "music": "great_lantern",
+ "id_layer": true,
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 5,
+   "cols": 5,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "mistlands": {
+   "types": [
+    "mistling",
+    "glimmer",
+    "stonehand"
+   ],
+   "count": 3
+  }
+ },
+ "screens": {
+  "tm_f1_0402": {
+   "name": "The Mist Door",
+   "objects": [
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_0004",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_0004",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.mists.enter"
+      }
+     ],
+     "flag": "tm_seen"
+    }
+   ]
+  },
+  "tm_f1_0000": {
+   "name": "Veilmaw's Hall",
+   "objects": [
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      4
+     ],
+     "type": "veilmaw"
+    }
+   ],
+   "music": "boss",
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "mists_veilmaw",
+     "do": [
+      {
+       "shake": 36
+      },
+      {
+       "open": "*"
+      },
+      {
+       "set_flag": "mist_boss:veilmaw"
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         7
+        ],
+        "item": "embers",
+        "amount": 100,
+        "flag": "mist_purse:veilmaw"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "tm_f1_0004": {
+   "name": "Duskmaw's Hall",
+   "objects": [
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      4
+     ],
+     "type": "duskmaw"
+    }
+   ],
+   "music": "boss",
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "mists_duskmaw",
+     "do": [
+      {
+       "shake": 36
+      },
+      {
+       "open": "*"
+      },
+      {
+       "set_flag": "mist_boss:duskmaw"
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         7
+        ],
+        "item": "embers",
+        "amount": 100,
+        "flag": "mist_purse:duskmaw"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "tm_f1_0202": {
+   "name": "The Mere",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "tm_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "tm_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      4
+     ],
+     "type": "merewarden"
+    }
+   ],
+   "music": "boss",
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "mists_merewarden",
+     "do": [
+      {
+       "shake": 36
+      },
+      {
+       "open": "*"
+      },
+      {
+       "set_flag": "mist_boss:merewarden"
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         7
+        ],
+        "item": "embers",
+        "amount": 100,
+        "flag": "mist_purse:merewarden"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "tm_f1_0002": {
+   "name": "The Quiet Door",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "big",
+     "flag": "tm_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "big",
+     "flag": "tm_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      4
+     ],
+     "type": "palewarden"
+    }
+   ],
+   "music": "boss",
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "mists_palewarden",
+     "do": [
+      {
+       "shake": 36
+      },
+      {
+       "open": "*"
+      },
+      {
+       "set_flag": "mist_boss:palewarden"
+      },
+      {
+       "spawn": {
+        "kind": "reward",
+        "at": [
+         9,
+         7
+        ],
+        "what": "heart_container",
+        "flag": "hc:mists"
+       }
+      },
+      {
+       "set_flag": "mists_cleared"
+      }
+     ]
+    },
+    {
+     "on": "enter",
+     "if_flag": "mist_boss:merewarden",
+     "do": [
+      {
+       "jingle": "puzzle"
+      }
+     ],
+     "flag": "tm_warden_ready"
+    }
+   ]
+  },
+  "tm_f1_0302": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "tm_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "tm_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      4
+     ],
+     "item": "map",
+     "flag": "tm_chest_map"
+    }
+   ]
+  },
+  "tm_f1_0201": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      1,
+      6
+     ],
+     "lock": "small",
+     "flag": "tm_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      1,
+      7
+     ],
+     "lock": "small",
+     "flag": "tm_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "tm_f1_0200": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      18,
+      6
+     ],
+     "lock": "small",
+     "flag": "tm_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      18,
+      7
+     ],
+     "lock": "small",
+     "flag": "tm_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "tm_f1_0203": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      18,
+      6
+     ],
+     "lock": "small",
+     "flag": "tm_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      18,
+      7
+     ],
+     "lock": "small",
+     "flag": "tm_door_c",
+     "id": "c"
+    }
+   ]
+  },
+  "tm_f1_0204": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      1,
+      6
+     ],
+     "lock": "small",
+     "flag": "tm_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      1,
+      7
+     ],
+     "lock": "small",
+     "flag": "tm_door_c",
+     "id": "c"
+    }
+   ]
+  },
+  "tm_f1_0102": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "big",
+     "flag": "tm_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "big",
+     "flag": "tm_door_boss",
+     "id": "bk"
+    }
+   ]
+  },
+  "tm_f1_0400": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "tm_key1"
+    }
+   ]
+  },
+  "tm_f1_0404": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "tm_key2"
+    }
+   ]
+  },
+  "tm_f1_0301": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "tm_key3"
+    }
+   ]
+  },
+  "tm_f1_0303": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "tm_key4"
+    }
+   ]
+  },
+  "tm_f1_0300": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      4
+     ],
+     "item": "compass",
+     "flag": "tm_chest_compass"
+    }
+   ]
+  },
+  "tm_f1_0104": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      4
+     ],
+     "item": "bigkey",
+     "flag": "tm_chest_bigkey"
+    }
+   ]
+  },
+  "tm_f1_0401": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "embers",
+     "amount": 80,
+     "flag": "tm_purse:tm_f1_0401"
+    }
+   ]
+  },
+  "tm_f1_0403": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "embers",
+     "amount": 80,
+     "flag": "tm_purse:tm_f1_0403"
+    }
+   ]
+  }
+ }
+}

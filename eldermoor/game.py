@@ -50,7 +50,8 @@ class Game:
         self.file_select: FileSelect | None = None
         if file_select:
             self.file_select = FileSelect(self.assets, self.content,
-                                          savefile.all_summaries(), self.audio)
+                                          savefile.all_summaries(), self.audio,
+                                          self.settings.master_unlocked)
             self.audio.play_music("title")
         self.frame = 0
         self.want_fullscreen_toggle = False
@@ -85,12 +86,16 @@ class Game:
         self.frame += 1
 
     def _update_file(self) -> None:
-        chosen = self.file_select.update(self.input) if self.file_select else None
-        if chosen is None:
+        menu = self.file_select
+        chosen = menu.update(self.input) if menu else None
+        if chosen is None or menu is None:
             return
+        master = menu.wants_master
         self.file_select = None
         loaded = savefile.load(chosen)
         self.state = loaded or GameState(slot=chosen, room=NEW_GAME_ROOM)
+        if loaded is None and master:
+            self.state.set_flag("master", 1)
         self.state.slot = chosen
         self.world = World(self.assets, self.state, self.input, self.audio, self.content,
                            self.state.room)
@@ -159,6 +164,8 @@ class Game:
         self.world.pending_ending = ""
         self.state.set_flag("cleared", 1)
         self.state.set_flag("ending", 2 if which == "full" else 1)
+        self.settings.master_unlocked = True
+        self.settings.save()
         self.save()
         self.ending = Ending(self.assets, self.content, self.state, self.audio, which)
 
@@ -167,8 +174,8 @@ class Game:
             return
         self.ending = None
         self.audio.play_music("title")
-        self.file_select = FileSelect(self.assets, self.content,
-                                      savefile.all_summaries(), self.audio)
+        self.file_select = FileSelect(self.assets, self.content, savefile.all_summaries(),
+                                      self.audio, self.settings.master_unlocked)
 
     def _update_minigame(self) -> None:
         if self.minigame is not None and self.minigame.update(self.input) == "close":

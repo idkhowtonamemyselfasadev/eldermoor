@@ -146,6 +146,14 @@ CAST = [
     ("mistjaw", "thequiet", "2", "v", "5"),
 ]
 
+#: the four Mistlands bosses of the post-game temple: (name, shell, glow, eye)
+MIST_CAST = [
+    ("veilmaw", "5", "v", "6"),
+    ("duskmaw", "1", "o", "n"),
+    ("merewarden", "j", "u", "m"),
+    ("palewarden", "6", "5", "v"),
+]
+
 #: the six optional caves get a mini-boss and no maw: (name, shell, glow, eye)
 CAVE_CAST = [
     ("huskjaw", "a", "i", "h"),
@@ -165,6 +173,9 @@ def main() -> int:
         blocks.append(cinderjaw(True, shell, glow, eye).text(f"{mini}_1"))
         blocks.append(ashmaw(False, shell, glow, eye).text(f"{boss}_0"))
         blocks.append(ashmaw(True, shell, glow, eye).text(f"{boss}_1"))
+    for name, shell, glow, eye in MIST_CAST:
+        blocks.append(ashmaw(False, shell, glow, eye).text(f"{name}_0"))
+        blocks.append(ashmaw(True, shell, glow, eye).text(f"{name}_1"))
     for name, shell, glow, eye in CAVE_CAST:
         blocks.append(cinderjaw(False, shell, glow, eye).text(f"{name}_0"))
         blocks.append(cinderjaw(True, shell, glow, eye).text(f"{name}_1"))

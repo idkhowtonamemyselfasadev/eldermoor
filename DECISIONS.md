@@ -198,3 +198,21 @@ Decisions made without asking, with the reason. Newest at the bottom.
     record, and the completability proof stops asking them for a map, a
     compass, keys and a Flame. A cave that demanded the full temple
     furniture would either be a temple or a lie.
+
+50. **The Master Quest is a modifier, not a second kingdom.** A hand-built
+    second layout of nine temples would be a year of work and two sets of
+    bugs. One flag, scaled damage and life, and a leaner drop table change
+    every fight in the game, and the save says which kind of file it is.
+51. **The post-game unlocks live in two places on purpose.** Whether *this
+    file* has finished the game is a flag on the save, because the Mist Door
+    should only open for the file that earned it. Whether the Master Quest
+    is on offer at all is in settings.json, because a brand new file cannot
+    know what an older one did.
+52. **The Standing Ring asks first.** The Boss Rush warps you in and will
+    not let you out until it is over, which is the one place in the game
+    where a yes/no box is the honest interface.
+53. **Mistjaw was missing and the changelog said otherwise.** Writing the
+    post-game's boss list is what found it: the Boss Rush table named every
+    boss in the game, and one of them had sprites, a name in the notes and
+    no data. The lesson stands as the rule the validator already follows -
+    a table that names something is a check waiting to be written.

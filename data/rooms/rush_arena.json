@@ -1,0 +1,27 @@
+{
+  "id": "rush_arena",
+  "name": "The Standing Ring",
+  "tileset": "temple",
+  "region": "mistlands",
+  "music": "boss",
+  "spawn": [
+    152,
+    128
+  ],
+  "tiles": [
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMTTTTTTTTTTTTTTTTMM",
+    "MT..............TTTM",
+    "MT..............T..M",
+    "MT..............T..M",
+    "MT..............T..M",
+    "MT..............T..M",
+    "MT..............T..M",
+    "MT..............T..M",
+    "MT..............TTTM",
+    "MTTTTTTTTTTTTTTTTTTM",
+    "MMMMMMMMMMMMMMMMMMMM",
+    "MMMMMMMMMMMMMMMMMMMM"
+  ],
+  "objects": []
+}

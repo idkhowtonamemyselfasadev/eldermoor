@@ -280,3 +280,27 @@ log: open quests with their hints, finished ones ticked.
 `state.completion()` counts the lot — flames, hearts, pieces, shells, items,
 rings, figurines, furniture, bestiary entries and quests — because the
 endings and the post-game read that one number.
+
+
+--------------------------------------------------------------------------
+## 5. Milestone 6 — after the credits
+
+The post-game is three things, and none of them is new content for its own
+sake: the Temple of Mists is the hardest dungeon, the Boss Rush is the whole
+game's combat with no walking, and the Master Quest is the whole game again
+with the gloves off.
+
+The Temple of Mists is 25 rooms with four wardens in it, gated by the
+`cleared` flag so its door does not exist on a file that has not finished.
+It has keys and a Great Key but no Flame, because the Flames are over.
+
+The Boss Rush is a single walled room and a counter: `data/bossrush.json`
+holds the running order and the prize table, `eldermoor/postgame.py` spawns
+the next boss when the last one falls, heals a little every other round, and
+pays out whatever round was reached. Its best round is a minigame score, so
+it shows up on the same screen as the rest of them.
+
+The Master Quest asks the state three questions - how much does this hit
+for, how much life does this have, which drop table does this roll - and
+answers them differently on a file with the `master` flag. Nothing else in
+the engine knows it exists.

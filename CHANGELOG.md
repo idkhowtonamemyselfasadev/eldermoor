@@ -238,3 +238,33 @@ screens and the whole 35-room Ember Temple, from its door to the Flame.
   stands, the bestiary, finished quests, the trading step and best scores.
   A milestone-4 file migrates straight into it.
 - 641 rooms, 42 enemy kinds, 173 tests.
+
+
+## 0.6.0 — Milestone 6: the post-game
+
+### The Temple of Mists
+- Twenty-five rooms in the Mistlands, behind a door that is not there until
+  the kingdom has been saved once. Four keys, a Great Key, and no Flame:
+  there is nothing left to light.
+- Four wardens: **Veilmaw**, which wears the mist and takes it off to hit
+  you; **Duskmaw**; **the Mere Warden**; and behind the Quiet Door, **the
+  Pale Warden**, which is only visible by lantern light. Each has three
+  phases, and the last one leaves a whole heart.
+- **Mistjaw** finally exists: the mini-boss on the Great Lantern's stair,
+  which the milestone-4 notes promised and the data did not have.
+
+### The Boss Rush
+- The Standing Ring: every boss in the game, one after another, a breather
+  every other round, and prizes for getting six, twelve, eighteen and all
+  twenty-two rounds in. The best round reached is kept in the save.
+- Its host turns up in the village once the game has been finished, and
+  asks before it starts, because it does not let you out again.
+
+### The Master Quest
+- A new file can be started as a Master Quest once an ending has rolled.
+  Everything in the kingdom hits twice as hard, has half again as much
+  life, and gives up far fewer hearts.
+- It is one flag on the save and three small questions the engine asks
+  (`eldermoor/postgame.py`), so every room, enemy and drop table in the
+  game is harder without a second copy of any of them.
+- 667 rooms, 47 enemy kinds, 190 tests.

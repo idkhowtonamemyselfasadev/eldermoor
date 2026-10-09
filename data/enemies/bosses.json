@@ -1586,5 +1586,469 @@
     "start": "ready"
    }
   ]
+ },
+ "veilmaw": {
+  "name": "enemy.veilmaw",
+  "bestiary": "bestiary.veilmaw",
+  "boss": true,
+  "sprite": "veilmaw",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 48,
+  "body": [
+   8,
+   14,
+   32,
+   30
+  ],
+  "hp": 30,
+  "damage": 3,
+  "speed": 0.8,
+  "drop": "boss",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.8,
+     "time": 120,
+     "next": "ready",
+     "if_near": {
+      "dist": 52,
+      "go": "ready"
+     },
+     "if_far": {
+      "dist": 96,
+      "go": "aim"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.6,
+     "time": 30,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 70,
+     "next": "roam"
+    },
+    "aim": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.6,
+     "time": 18,
+     "next": "circle"
+    },
+    "circle": {
+     "move": "circle",
+     "speed": 0.8,
+     "radius": 44,
+     "time": 90,
+     "next": "roam"
+    },
+    "spent": {
+     "move": "none",
+     "time": 80,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 20,
+    "speed_mul": 1.2,
+    "start": "aim"
+   },
+   {
+    "below": 10,
+    "speed_mul": 1.45,
+    "start": "ready"
+   }
+  ],
+  "cloak_blind": true
+ },
+ "duskmaw": {
+  "name": "enemy.duskmaw",
+  "bestiary": "bestiary.duskmaw",
+  "boss": true,
+  "sprite": "duskmaw",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 48,
+  "body": [
+   8,
+   14,
+   32,
+   30
+  ],
+  "hp": 34,
+  "damage": 3,
+  "speed": 0.7,
+  "drop": "boss",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.7,
+     "time": 120,
+     "next": "ready",
+     "if_near": {
+      "dist": 52,
+      "go": "ready"
+     },
+     "if_far": {
+      "dist": 96,
+      "go": "aim"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.4,
+     "time": 30,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 70,
+     "next": "roam"
+    },
+    "aim": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_rock",
+     "shot_speed": 1.6,
+     "time": 18,
+     "next": "circle"
+    },
+    "circle": {
+     "move": "circle",
+     "speed": 0.7,
+     "radius": 44,
+     "time": 90,
+     "next": "roam"
+    },
+    "spent": {
+     "move": "none",
+     "time": 80,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 22,
+    "speed_mul": 1.2,
+    "start": "aim"
+   },
+   {
+    "below": 11,
+    "speed_mul": 1.45,
+    "start": "ready"
+   }
+  ]
+ },
+ "merewarden": {
+  "name": "enemy.merewarden",
+  "bestiary": "bestiary.merewarden",
+  "boss": true,
+  "sprite": "merewarden",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 48,
+  "body": [
+   8,
+   14,
+   32,
+   30
+  ],
+  "hp": 36,
+  "damage": 4,
+  "speed": 0.9,
+  "drop": "boss",
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.9,
+     "time": 120,
+     "next": "ready",
+     "if_near": {
+      "dist": 52,
+      "go": "ready"
+     },
+     "if_far": {
+      "dist": 96,
+      "go": "aim"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.8,
+     "time": 30,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 70,
+     "next": "roam"
+    },
+    "aim": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.6,
+     "time": 18,
+     "next": "circle"
+    },
+    "circle": {
+     "move": "circle",
+     "speed": 0.9,
+     "radius": 44,
+     "time": 90,
+     "next": "roam"
+    },
+    "spent": {
+     "move": "none",
+     "time": 80,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 24,
+    "speed_mul": 1.2,
+    "start": "aim"
+   },
+   {
+    "below": 12,
+    "speed_mul": 1.45,
+    "start": "ready"
+   }
+  ]
+ },
+ "palewarden": {
+  "name": "enemy.palewarden",
+  "bestiary": "bestiary.palewarden",
+  "boss": true,
+  "sprite": "palewarden",
+  "frames": 2,
+  "frame_time": 12,
+  "size": 48,
+  "body": [
+   8,
+   14,
+   32,
+   30
+  ],
+  "hp": 42,
+  "damage": 4,
+  "speed": 0.85,
+  "drop": "boss",
+  "weak_states": [
+   "stunned",
+   "spent"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.85,
+     "time": 120,
+     "next": "ready",
+     "if_near": {
+      "dist": 52,
+      "go": "ready"
+     },
+     "if_far": {
+      "dist": 96,
+      "go": "aim"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 3.0,
+     "time": 30,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 70,
+     "next": "roam"
+    },
+    "aim": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.6,
+     "time": 18,
+     "next": "circle"
+    },
+    "circle": {
+     "move": "circle",
+     "speed": 0.85,
+     "radius": 44,
+     "time": 90,
+     "next": "roam"
+    },
+    "spent": {
+     "move": "none",
+     "time": 80,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 28,
+    "speed_mul": 1.2,
+    "start": "aim"
+   },
+   {
+    "below": 14,
+    "speed_mul": 1.45,
+    "start": "ready"
+   }
+  ],
+  "ghost": true
+ },
+ "mistjaw": {
+  "name": "enemy.mistjaw",
+  "bestiary": "bestiary.mistjaw",
+  "boss": true,
+  "mini": true,
+  "sprite": "mistjaw",
+  "frames": 2,
+  "frame_time": 13,
+  "size": 32,
+  "body": [
+   4,
+   10,
+   24,
+   20
+  ],
+  "hp": 24,
+  "damage": 3,
+  "speed": 0.8,
+  "drop": "enemy_tough",
+  "ghost": true,
+  "cloak_blind": true,
+  "weak_states": [
+   "stunned"
+  ],
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.8,
+     "time": 100,
+     "next": "ready",
+     "if_near": {
+      "dist": 48,
+      "go": "ready"
+     },
+     "if_far": {
+      "dist": 100,
+      "go": "aim"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "slam"
+    },
+    "slam": {
+     "move": "dash",
+     "speed": 2.7,
+     "time": 30,
+     "next": "stunned"
+    },
+    "stunned": {
+     "move": "none",
+     "time": 80,
+     "next": "roam"
+    },
+    "aim": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.5,
+     "time": 16,
+     "next": "roam"
+    }
+   }
+  },
+  "phases": [
+   {
+    "below": 10,
+    "speed_mul": 1.4,
+    "start": "ready"
+   }
+  ]
  }
 }

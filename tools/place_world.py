@@ -72,6 +72,13 @@ HIDDEN = {
               "cinder": 2, "tarn": 2, "fen": 2, "mistlands": 1},
 }
 
+#: the Standing Ring's host, who only turns up once the kingdom is saved
+RUSH_HOST = ("ow_1107", "npc_guard", "cleared")
+
+#: the post-game temple: its door is cut by the same code as a cave mouth,
+#: but it only exists once the kingdom has been saved once (``if_flag``)
+POSTGAME = {"mists": ("ow_0004", "tm_f1_0402", "cleared")}
+
 #: the six optional caves: id -> (overworld screen, first room inside)
 CAVES = {
     "grotto": ("ow_0306", "cv1_f1_0201"),
@@ -179,7 +186,8 @@ class Placer:
         taken.add(cells[0])
         objects.append(spec)
 
-    def place_wide(self, room_id: str, cave_id: str, target: str) -> None:
+    def place_wide(self, room_id: str, cave_id: str, target: str,
+                   if_flag: str = "") -> None:
         """A two-tile cave mouth: one pair of stairs per tile, side by side."""
         from eldermoor.tilemap import BLOCKING
         objects = self.entries(room_id)
@@ -193,8 +201,11 @@ class Placer:
         col, row = pairs[0]
         for i in (0, 1):
             taken.add((col + i, row))
-            objects.append({"kind": "stairs", "id": f"cave_{cave_id}", "at": [col + i, row],
-                            "to": target, "spawn": [152, 160], "sound": "door_open"})
+            spec = {"kind": "stairs", "id": f"cave_{cave_id}", "at": [col + i, row],
+                    "to": target, "spawn": [152, 160], "sound": "door_open"}
+            if if_flag:
+                spec["if_flag"] = if_flag
+            objects.append(spec)
 
     def hide_prizes(self) -> int:
         """Scatter the overworld's heart pieces and shells, one per screen.
@@ -246,8 +257,8 @@ def main() -> int:
     placer = Placer()
     ALL_SCREENS.update(placer.all_screens())
     placer.forget(set(GIVERS) | {f"chest_{i}" for i in QUEST_ITEMS}
-                  | {f"cave_{c}" for c in CAVES}
-                  | {f"host_{g}" for g in HOSTS}
+                  | {f"cave_{c}" for c in CAVES} | {f"cave_{c}" for c in POSTGAME}
+                  | {f"host_{g}" for g in HOSTS} | {"host_rush"}
                   | {f"trade{i}" for i in range(len(_trade_stops()))}
                   | {f"{what}:{room}" for what in HIDDEN
                      for room in placer_prize_ids(what)}
@@ -276,11 +287,16 @@ def main() -> int:
     for step, room_id, sprite in _trade_stops():
         placer.place(room_id, {"kind": "npc", "id": f"trade{step}", "sprite": sprite,
                                "trade": step})
+    room_id, sprite, flag = RUSH_HOST
+    placer.place(room_id, {"kind": "npc", "id": "host_rush", "sprite": sprite,
+                           "rush": True, "if_flag": flag, "text": "npc.rush.1"})
     for game_id, (room_id, sprite) in HOSTS.items():
         placer.place(room_id, {"kind": "npc", "id": f"host_{game_id}", "sprite": sprite,
                                "minigame": game_id})
     for cave_id, (room_id, target) in CAVES.items():
         placer.place_wide(room_id, cave_id, target)
+    for cave_id, (room_id, target, flag) in POSTGAME.items():
+        placer.place_wide(room_id, cave_id, target, if_flag=flag)
     hidden = placer.hide_prizes()
     placer.write()
     tokens = len(TOKENS) + sum(len(spec[3]) for spec in SETS.values())

@@ -1,0 +1,7 @@
+# mists, 5 x 5 rooms, planned by tools/plan_dungeon.py
+# from connections.txt and motifs.txt. Every room is reachable.
+r_se+m_statues r_sew+m_statues r_sew+m_statues r_sew+m_webs r_sw+m_statues
+r_nse+m_water r_nsw+m_lava r_nse+m_plates r_nsew+m_rubble r_nsw+m_pots
+r_nse+m_pillars r_nsew+m_statues r_nsew+m_statues r_nsew+m_webs r_nsw+m_tiles
+r_nse+m_water r_nsew+m_lava r_nsew+m_plates r_nsew+m_rubble r_nw+m_pots
+r_ne+m_pillars r_new+m_statues r_new+m_statues r_new+m_webs r_w+m_tiles

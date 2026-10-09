@@ -124,6 +124,8 @@ class Npc(RoomObject):
         game = str(self.spec.get("minigame", ""))
         if game:
             return world.offer_minigame(game, self.spec)
+        if self.spec.get("rush"):
+            return world.offer_rush(self.spec)
         stock = self.spec.get("shop")
         after = (lambda _r: world.request_shop(self.spec)) if stock else None
         world.say(world.npc_line(self.spec), after=after)

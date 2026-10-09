@@ -65,7 +65,7 @@
    ]
   },
   "t9_f1_0100": {
-   "name": "The Last Stair",
+   "name": "The Guarded Stair",
    "objects": [
     {
      "kind": "door",
@@ -102,6 +102,14 @@
       5
      ],
      "type": "sentinel"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      4
+     ],
+     "type": "mistjaw"
     }
    ],
    "triggers": [
@@ -117,8 +125,33 @@
        "jingle": "secret"
       }
      ]
+    },
+    {
+     "on": "boss_dead",
+     "flag": "t9_miniboss",
+     "do": [
+      {
+       "shake": 28
+      },
+      {
+       "open": "*"
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         6
+        ],
+        "item": "embers",
+        "amount": 120,
+        "flag": "t9_purse"
+       }
+      }
+     ]
     }
-   ]
+   ],
+   "music": "miniboss"
   },
   "t9_f1_0000": {
    "name": "The Quiet",

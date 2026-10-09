@@ -1,0 +1,14 @@
+# The Temple of Mists, 5 x 5 rooms. The post-game temple.
+[east]
+eeee
+e.ee
+eeee
+eeee
+eeee
+[south]
+sssss
+sssss
+sssss
+ssss.
+[entrance]
+4,2

@@ -54,6 +54,8 @@ class Settings:
     hints: bool = True
     language: str = "en"
     show_button_glyphs: bool = True
+    #: set the first time an ending rolls: the Master Quest is on offer after that
+    master_unlocked: bool = False
 
     @classmethod
     def load(cls, path: Path | None = None) -> Settings:

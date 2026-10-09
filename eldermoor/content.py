@@ -10,6 +10,7 @@ from eldermoor.dungeon import Dungeons
 from eldermoor.enemies import EnemyRegistry
 from eldermoor.items import ItemRegistry
 from eldermoor.minigames import MiniGames
+from eldermoor.postgame import Rush
 from eldermoor.quests import Quests
 from eldermoor.rings import Rings
 from eldermoor.text import Text
@@ -35,6 +36,7 @@ class Content:
         self.furniture = Collection.load("furniture", root)
         self.trade = Trade.load(root)
         self.minigames = MiniGames.load(root)
+        self.rush = Rush.load(root)
 
     def reload_text(self, language: str) -> None:
         """Swap the string table (settings menu language switch)."""

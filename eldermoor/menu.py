@@ -280,12 +280,15 @@ class FileSelect:
     """The three save slots at boot."""
 
     def __init__(self, assets: Assets, content: Content, summaries: list[dict[str, Any] | None],
-                 audio: Any) -> None:
+                 audio: Any, master_unlocked: bool = False) -> None:
         self.assets = assets
         self.content = content
         self.summaries = summaries
         self.audio = audio
         self.cursor = 0
+        #: True when the empty slot under the cursor should start a Master Quest
+        self.master = False
+        self.master_unlocked = master_unlocked
 
     def update(self, inp: Input) -> int | None:
         """Returns the chosen slot number, or None while still choosing."""
@@ -295,10 +298,23 @@ class FileSelect:
         if inp.pressed("up"):
             self.cursor = (self.cursor - 1) % SAVE_SLOTS
             self.audio.play("select_cursor")
+        if self.master_unlocked and self.empty(self.cursor) and (
+                inp.pressed("left") or inp.pressed("right")):
+            self.master = not self.master
+            self.audio.play("menu_move")
         if inp.pressed("a") or inp.pressed("start"):
             self.audio.play("menu_select")
             return self.cursor + 1
         return None
+
+    def empty(self, index: int) -> bool:
+        """True when a slot has no save in it."""
+        return index >= len(self.summaries) or self.summaries[index] is None
+
+    @property
+    def wants_master(self) -> bool:
+        """True when the chosen slot should start as a Master Quest."""
+        return self.master and self.master_unlocked and self.empty(self.cursor)
 
     def draw(self, target: pygame.Surface) -> None:
         """Title and the three slots."""
@@ -314,7 +330,9 @@ class FileSelect:
             pygame.draw.rect(target, self.assets.colour("gold") if i == self.cursor
                              else self.assets.colour("stone"), box, 1)
             if summary is None:
-                font.draw(target, self.content.text.get("title.empty", n=i + 1), 52, y,
+                key = "title.master" if (self.master and self.master_unlocked
+                                         and i == self.cursor) else "title.empty"
+                font.draw(target, self.content.text.get(key, n=i + 1), 52, y,
                           self.assets.colour("mist"))
             else:
                 hours = int(summary["playtime"]) // 3600

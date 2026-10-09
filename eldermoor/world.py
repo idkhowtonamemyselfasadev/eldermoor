@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 import pygame
 
-from eldermoor import actions, render, rewards, talk, trade, transition
+from eldermoor import actions, postgame, render, rewards, talk, trade, transition
 from eldermoor.bosses import Boss
 from eldermoor.config import PLAY_H, PLAY_W, PLAY_Y, TEXT_SPEED_DEFAULT, TILE
 from eldermoor.content import Content
@@ -183,6 +183,8 @@ class World:
         col, row = spec.get("at", (0, 0))
         cls = Boss if definition.raw.get("boss") else Enemy
         enemy = cls(definition, col * TILE, row * TILE, self.rng)
+        enemy.hp = postgame.scale_hp(self.state, enemy.hp)
+        enemy.contact_damage = postgame.scale_damage(self.state, enemy.contact_damage)
         if isinstance(enemy, Boss):
             self.boss = enemy
         self.spawn(enemy)
@@ -338,8 +340,8 @@ class World:
         return False
 
     def drop_from(self, x: float, y: float, table: str) -> Pickup | None:
-        """Roll a drop table at a position."""
-        return spawn_drop(self, x, y, table)
+        """Roll a drop table at a position (a leaner one on a Master Quest)."""
+        return spawn_drop(self, x, y, postgame.drop_table(self.state, table))
 
     def spawn_projectile(self, source: Entity, dx: float, dy: float,
                          params: dict[str, Any]) -> Projectile:
@@ -398,6 +400,16 @@ class World:
         """Ask the game to open a minigame once this conversation is over."""
         return talk.minigame(self, game_id, spec)
 
+    def offer_rush(self, spec: dict[str, Any]) -> bool:
+        """The Standing Ring: yes starts the Boss Rush, no says come back."""
+        def answer(result: int | None) -> None:
+            if result == 0:
+                postgame.start(self)
+
+        labels = (self.textdb.get("choice.yes"), self.textdb.get("choice.no"))
+        self.say(str(spec.get("text", "npc.rush.1")), choice=labels, after=answer)
+        return True
+
     def request_shop(self, spec: dict[str, Any]) -> None:
         """Ask the game to open a shop screen after this conversation."""
         self.pending_shop = spec
@@ -449,6 +461,8 @@ class World:
                                   "flag": f"reward:{boss.definition.id}"})
         self.boss = None
         self.trigger("boss_dead", boss.definition.id)
+        if postgame.running(self):
+            postgame.round_done(self)
 
     # ----- hero actions ---------------------------------------------------
     def try_interact(self, hero: Hero) -> bool:

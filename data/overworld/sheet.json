@@ -911,6 +911,18 @@
       3,
       2
      ]
+    },
+    {
+     "kind": "npc",
+     "id": "host_rush",
+     "sprite": "npc_guard",
+     "rush": true,
+     "if_flag": "cleared",
+     "text": "npc.rush.1",
+     "at": [
+      16,
+      2
+     ]
     }
    ]
   },
@@ -2668,6 +2680,40 @@
       2,
       2
      ]
+    }
+   ]
+  },
+  "ow_0004": {
+   "objects": [
+    {
+     "kind": "stairs",
+     "id": "cave_mists",
+     "at": [
+      2,
+      2
+     ],
+     "to": "tm_f1_0402",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open",
+     "if_flag": "cleared"
+    },
+    {
+     "kind": "stairs",
+     "id": "cave_mists",
+     "at": [
+      3,
+      2
+     ],
+     "to": "tm_f1_0402",
+     "spawn": [
+      152,
+      160
+     ],
+     "sound": "door_open",
+     "if_flag": "cleared"
     }
    ]
   }

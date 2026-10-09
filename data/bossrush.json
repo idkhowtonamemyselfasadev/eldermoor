@@ -1,0 +1,52 @@
+{
+ "_comment": "Boss Rush: the bosses in order, three hearts of healing between rounds. Opened by the post-game host once the kingdom has been saved.",
+ "rounds": [
+  "cinderjaw",
+  "ashmaw",
+  "thornjaw",
+  "hollowking",
+  "brinejaw",
+  "tideclaw",
+  "sandjaw",
+  "glassmaw",
+  "weedjaw",
+  "drownking",
+  "slagjaw",
+  "kilnmaw",
+  "frostjaw",
+  "glassking",
+  "stonejaw",
+  "titanmaw",
+  "mistjaw",
+  "thequiet",
+  "veilmaw",
+  "duskmaw",
+  "merewarden",
+  "palewarden"
+ ],
+ "room": "rush_arena",
+ "heal_every": 2,
+ "prizes": [
+  [
+   6,
+   "embers",
+   "200"
+  ],
+  [
+   12,
+   "figurine",
+   "fig_hollowking"
+  ],
+  [
+   18,
+   "ring",
+   "ring_power"
+  ],
+  [
+   22,
+   "heart_container",
+   "hc:rush"
+  ]
+ ],
+ "return_room": "ow_1105"
+}
