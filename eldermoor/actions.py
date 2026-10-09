@@ -8,7 +8,9 @@ import pygame
 from eldermoor.config import TILE
 from eldermoor.enemies import Thrown
 from eldermoor.entities import DIRS
+from eldermoor.gadgets import fire_hookshot, place_bomb
 from eldermoor.objects import PushBlock, Torch
+from eldermoor.ranged import shoot_arrow
 from eldermoor.tilemap import Collision
 
 if TYPE_CHECKING:
@@ -63,7 +65,7 @@ def try_interact(world: World, hero: Hero) -> bool:
                 return ent.push(world, dx, dy)
             if ent.interact(world):
                 return True
-    return False
+    return lift_tile(world, hero)
 
 
 def use_item(world: World, hero: Hero, item: str | None) -> None:
@@ -72,6 +74,12 @@ def use_item(world: World, hero: Hero, item: str | None) -> None:
         return
     if item == "lantern":
         _use_lantern(world, hero)
+    elif item == "bombs":
+        place_bomb(world, hero)
+    elif item == "hookshot":
+        fire_hookshot(world, hero)
+    elif item == "bow":
+        shoot_arrow(world, hero)
     elif item == "feather":
         hero.hop()
         world.audio.play("jump")

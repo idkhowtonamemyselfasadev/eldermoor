@@ -1,0 +1,16 @@
+# Tidewrack, 6 x 6 rooms. Bombs open the first half, the Hookshot the second.
+[east]
+ee.ee
+.e.e.
+eeeee
+.ee.e
+eeeee
+ee.ee
+[south]
+s.s.s.
+sss.ss
+.ss.ss
+ss.sss
+.sssss
+[entrance]
+5,2

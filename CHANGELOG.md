@@ -89,3 +89,47 @@ screens and the whole 35-room Ember Temple, from its door to the Flame.
 
 ### Tests
 113 pytest cases, headless, `ruff` clean.
+
+## 0.3.0 — Milestone 3: the kingdom, and Temples 2 to 4
+
+### The overworld
+- All 256 screens, painted as one continuous canvas
+  (`data/overworld/eldermoor.map`, 16 x 16 screens of 20 x 13 tiles) and
+  sliced into rooms by `eldermoor/mapsheet.py`. Exits are derived from both
+  sides of an edge being walkable, so a one-way exit or a doorway that does
+  not line up cannot be written by accident.
+- `tools/build_maps.py` stamps the hand-drawn blocks of
+  `data/overworld/blocks.txt` onto the canvas following `layout.txt`; a
+  layout entry may be `frame+motif` and the motifs lay over the frame.
+- Nine region palettes: Lamplight meadows and village, Thornwood, Saltmarsh,
+  Mount Cinder, the Frozen Tarn, the Sunken Fen, the Hollow Desert and the
+  Mistlands, each with its own creatures and its own look.
+- An eight-minute day/night clock. Night repaints the world, changes the
+  music and brings different things out; it stops indoors and underground.
+- Eight warp lanterns, one per region: touch one to light it, then travel
+  between the lit ones from the Select-screen map.
+- The village, the four temple doors, the signs and the NPCs are placed by
+  hand; the wildlife of a screen comes from its region, seeded by the room
+  id so the kingdom looks the same every time you walk back into it.
+
+### Temples
+- `tools/sketch_rooms.py` emits the sixteen room frames;
+  `tools/plan_dungeon.py` turns a hand-drawn connection map into a layout
+  and refuses to write one that leaves a room unreachable.
+- **Bramble Hollow** (Thornwood, 36 rooms) — the **Power Bracelet**: lift
+  rocks and pots, throw them. A thrown rock is what opens the Hollow King.
+- **Tidewrack** (Saltmarsh, 36 rooms) — **Bombs** in the first half, the
+  **Hookshot** from Brinejaw. Bombs open cracked walls; the chain crosses
+  the washed-out floor.
+- **The Long Glass** (Hollow Desert, 36 rooms) — the **Bow** from Sandjaw:
+  arrows reach crystals, eyes and whatever will not come down.
+- Each has a mini-boss, a boss with phases, a map, a compass, four small
+  keys, a Great Key, a heart container and a Flame, and each is proved
+  completable by `tools/validate_data.py`.
+
+### Engine
+- Lift, carry and throw; bombs with a fuse that does not care whose boots
+  are nearby; a six-tile hookshot that anchors on pillars and drags Wren
+  over pits; arrows that spend from a quiver.
+- HUD counters for bombs and arrows; tiles can be hookshot anchors.
+- 402 rooms, 14 enemy kinds, 125 tests.

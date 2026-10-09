@@ -1,0 +1,493 @@
+{
+ "prefix": "t4",
+ "tileset": "temple",
+ "region": "longglass",
+ "dungeon": "temple4",
+ "music": "temple_ember",
+ "id_layer": true,
+ "layers": [
+  {
+   "name": "f1",
+   "rows": 6,
+   "cols": 6,
+   "floor": 1
+  }
+ ],
+ "region_spawns": {
+  "longglass": {
+   "types": [
+    "burrow",
+    "crag",
+    "spitter"
+   ],
+   "count": 2
+  }
+ },
+ "screens": {
+  "t4_f1_0502": {
+   "name": "The Glass Door",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      18,
+      6
+     ],
+     "lock": "small",
+     "flag": "t4_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      18,
+      7
+     ],
+     "lock": "small",
+     "flag": "t4_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      9,
+      11
+     ],
+     "to": "ow_0613",
+     "spawn": [
+      152,
+      96
+     ]
+    },
+    {
+     "kind": "stairs",
+     "at": [
+      10,
+      11
+     ],
+     "to": "ow_0613",
+     "spawn": [
+      152,
+      96
+     ]
+    }
+   ],
+   "triggers": [
+    {
+     "on": "enter",
+     "do": [
+      {
+       "say": "story.temple4.enter"
+      }
+     ],
+     "flag": "t4_seen"
+    }
+   ]
+  },
+  "t4_f1_0402": {
+   "name": "The Sand Hall"
+  },
+  "t4_f1_0404": {
+   "name": "The Chart Room",
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "map",
+     "flag": "t4_chest_map"
+    }
+   ]
+  },
+  "t4_f1_0204": {
+   "name": "The Long Gallery",
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "compass",
+     "flag": "t4_chest_compass"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      6,
+      6
+     ],
+     "type": "crag"
+    }
+   ]
+  },
+  "t4_f1_0503": {
+   "name": "Sandjaw",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      1,
+      6
+     ],
+     "lock": "small",
+     "flag": "t4_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "door",
+     "at": [
+      1,
+      7
+     ],
+     "lock": "small",
+     "flag": "t4_door_a",
+     "id": "a"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      5
+     ],
+     "type": "sandjaw"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t4_miniboss",
+     "do": [
+      {
+       "shake": 24
+      },
+      {
+       "spawn": {
+        "kind": "chest",
+        "at": [
+         9,
+         4
+        ],
+        "item": "bow",
+        "flag": "t4_chest_bow"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "t4_f1_0000": {
+   "name": "The Glass Maw",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "big",
+     "flag": "t4_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "big",
+     "flag": "t4_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      8,
+      4
+     ],
+     "type": "glassmaw"
+    }
+   ],
+   "triggers": [
+    {
+     "on": "boss_dead",
+     "flag": "t4_boss",
+     "do": [
+      {
+       "shake": 40
+      },
+      {
+       "open": "*"
+      },
+      {
+       "spawn": {
+        "kind": "reward",
+        "at": [
+         9,
+         7
+        ],
+        "what": "flame",
+        "dungeon": "temple4",
+        "item": "flame_glass",
+        "flag": "flame:temple4"
+       }
+      }
+     ]
+    }
+   ],
+   "music": "boss"
+  },
+  "t4_f1_0005": {
+   "name": "The Great Lock",
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "bigkey",
+     "flag": "t4_chest_bigkey"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      5,
+      4
+     ],
+     "type": "crag"
+    }
+   ]
+  },
+  "t4_f1_0202": {
+   "name": "The Watching Wall",
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t4_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t4_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      9,
+      3
+     ],
+     "type": "spitter"
+    }
+   ]
+  },
+  "t4_f1_0302": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t4_door_b",
+     "id": "b"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t4_door_b",
+     "id": "b"
+    }
+   ]
+  },
+  "t4_f1_0103": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "small",
+     "flag": "t4_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "small",
+     "flag": "t4_door_c",
+     "id": "c"
+    }
+   ]
+  },
+  "t4_f1_0003": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      11
+     ],
+     "lock": "small",
+     "flag": "t4_door_c",
+     "id": "c"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      11
+     ],
+     "lock": "small",
+     "flag": "t4_door_c",
+     "id": "c"
+    }
+   ]
+  },
+  "t4_f1_0100": {
+   "objects": [
+    {
+     "kind": "door",
+     "at": [
+      9,
+      1
+     ],
+     "lock": "big",
+     "flag": "t4_door_boss",
+     "id": "bk"
+    },
+    {
+     "kind": "door",
+     "at": [
+      10,
+      1
+     ],
+     "lock": "big",
+     "flag": "t4_door_boss",
+     "id": "bk"
+    }
+   ]
+  },
+  "t4_f1_0400": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t4_key1"
+    }
+   ]
+  },
+  "t4_f1_0304": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t4_key2"
+    }
+   ]
+  },
+  "t4_f1_0101": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t4_key3"
+    },
+    {
+     "kind": "enemy",
+     "at": [
+      12,
+      7
+     ],
+     "type": "burrow"
+    }
+   ]
+  },
+  "t4_f1_0505": {
+   "objects": [
+    {
+     "kind": "chest",
+     "at": [
+      9,
+      5
+     ],
+     "item": "key",
+     "flag": "t4_key4"
+    }
+   ]
+  },
+  "t4_f1_0200": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:t4_20"
+    }
+   ]
+  },
+  "t4_f1_0500": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "shell",
+     "flag": "shell:t4_50"
+    }
+   ]
+  },
+  "t4_f1_0305": {
+   "objects": [
+    {
+     "kind": "reward",
+     "at": [
+      9,
+      6
+     ],
+     "what": "heart_piece",
+     "flag": "hp:t4_35"
+    }
+   ]
+  }
+ }
+}

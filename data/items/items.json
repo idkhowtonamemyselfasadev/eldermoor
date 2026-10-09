@@ -79,6 +79,30 @@
       "icon": "icon_flame",
       "kind": "quest",
       "order": 41
+    },
+    "hookshot": {
+      "name": "item.hookshot",
+      "icon": "icon_hookshot",
+      "kind": "active",
+      "order": 14
+    },
+    "bow": {
+      "name": "item.bow",
+      "icon": "icon_bow",
+      "kind": "active",
+      "order": 15
+    },
+    "flame_tide": {
+      "name": "item.flame_tide",
+      "icon": "icon_flame",
+      "kind": "quest",
+      "order": 42
+    },
+    "flame_glass": {
+      "name": "item.flame_glass",
+      "icon": "icon_flame",
+      "kind": "quest",
+      "order": 43
     }
   }
 }

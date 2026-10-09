@@ -162,7 +162,8 @@
     "29": {
       "char": "P",
       "sprite": "t_pillar",
-      "collision": "solid"
+      "collision": "solid",
+      "hook": true
     },
     "30": {
       "char": "%",
@@ -182,7 +183,8 @@
     "33": {
       "char": "!",
       "sprite": "t_statue",
-      "collision": "solid"
+      "collision": "solid",
+      "hook": true
     }
   }
 }

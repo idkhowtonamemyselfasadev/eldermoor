@@ -44,6 +44,12 @@ def give_item(world: World, item: str) -> None:
         state.sword_level = max(1, state.sword_level)
     elif item == "shield":
         state.shield_level = max(1, state.shield_level)
+    elif item == "bombs":
+        state.max_bombs = max(10, state.max_bombs)
+        state.bombs = state.max_bombs
+    elif item == "bow":
+        state.max_arrows = max(30, state.max_arrows)
+        state.arrows = state.max_arrows
     if definition is not None and definition.assignable and item not in state.slots:
         for index in range(3):
             if state.slots[index] is None:

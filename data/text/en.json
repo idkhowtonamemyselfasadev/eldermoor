@@ -54,7 +54,7 @@
     "Set it to B, X or Y, then press that button to light torches and burn webs."
   ],
   "get.feather": "The Updraft Feather. Press its button to hop a gap.",
-  "get.bombs": "Fen Bombs. They crack more than rock.",
+  "get.bombs": "Fen Bombs. Ten of them, and they crack more than rock.",
   "get.bottle": "An empty bottle. Something will want to live in it.",
   "get.map": "A map of the temple. Press Select to read it.",
   "get.compass": "The compass. Now you can feel where the chests are.",
@@ -153,5 +153,37 @@
   "bestiary.thornjaw": "It rolls, it stops, and for a moment it is only a rock.",
   "bestiary.hollowking": "Throw the temple back at it.",
   "story.temple2.enter": "Roots have got in through the roof. Something has been using them.",
-  "item.flame_bramble": "The Bramble Flame"
+  "item.flame_bramble": "The Bramble Flame",
+  "item.hookshot": "Fen Hookshot",
+  "item.bow": "Reedwood Bow",
+  "item.flame_tide": "The Tide Flame",
+  "item.flame_glass": "The Glass Flame",
+  "get.hookshot": [
+    "The Fen Hookshot. Six tiles of chain and a very rude claw.",
+    "Fire it at a pillar to be pulled across whatever is in between."
+  ],
+  "get.bow": [
+    "The Reedwood Bow, and thirty arrows.",
+    "Arrows reach switches, eyes and anything that will not come down."
+  ],
+  "dungeon.temple3": "Tidewrack",
+  "dungeon.temple4": "The Long Glass",
+  "get.flame.temple3": [
+    "The third Flame comes up out of the water dry.",
+    "Three of eight. The tide is going back out."
+  ],
+  "get.flame.temple4": [
+    "The fourth Flame. The glass hums as it leaves.",
+    "Four of eight. Half the Great Lantern is lit again."
+  ],
+  "boss.brinejaw": "BRINEJAW",
+  "boss.tideclaw": "THE TIDECLAW",
+  "boss.sandjaw": "SANDJAW",
+  "boss.glassmaw": "THE GLASS MAW",
+  "bestiary.brinejaw": "It comes in with the water and goes out with it.",
+  "bestiary.tideclaw": "Its shell opens only when the chain is in it.",
+  "bestiary.sandjaw": "It swims in the sand, which is worse than it sounds.",
+  "bestiary.glassmaw": "Put an arrow in the eye that is open.",
+  "story.temple3.enter": "The floor is wet and the walls are wetter.",
+  "story.temple4.enter": "Sand runs between the stones here, a grain at a time."
 }

@@ -1,0 +1,16 @@
+# The Long Glass, 6 x 6 rooms. The Bow reaches what the sword cannot.
+[east]
+.ee.e
+ee.ee
+.eeee
+eee.e
+e.eee
+.ee.e
+[south]
+ss.ss.
+.sss.s
+ss.sss
+s.ss.s
+sss.ss
+[entrance]
+5,2

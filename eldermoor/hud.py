@@ -84,6 +84,14 @@ class Hud:
         progress = state.dungeons.get(state.dungeon) if state.dungeon else None
         if progress is not None and progress.big_key:
             target.blit(icons.get("icon_bigkey"), (COUNTER_X + 34, 16))
+        x = COUNTER_X + 52
+        for owned, icon, count in ((state.max_bombs, "icon_bomb", state.bombs),
+                                   (state.max_arrows, "icon_bow", state.arrows)):
+            if not owned:
+                continue
+            target.blit(icons.get(icon), (x, 4))
+            font.draw(target, f"{count:02d}", x + 9, 4, self.text)
+            x += 26
 
     def _draw_slots(self, target: pygame.Surface, state: GameState) -> None:
         font = self.assets.font6

@@ -112,3 +112,42 @@ Decisions made without asking, with the reason. Newest at the bottom.
     because every blocked frame re-armed the knockback timer.
 30. **Milestone-2 saves are version 2**, with a migration from the (never
     shipped) version 1 shape so the migration path itself is exercised.
+
+## Milestone 3
+
+31. **The overworld is one canvas, not 256 files.** Every tile is still
+    placed by hand, but as one 208 x 320 character map. A road that leaves a
+    screen is literally the same row of characters entering the next, the
+    whole kingdom can be read at once, and exits are derived rather than
+    declared twice. 256 separate JSON rooms would have drifted apart by the
+    tenth screen.
+32. **Blocks and a layout, then a canvas.** The canvas is stamped from
+    hand-drawn 20 x 13 blocks by `tools/build_maps.py`. The committed canvas
+    is the source of truth and can be edited by hand afterwards; re-running
+    the tool overwrites those edits, which is why it is only run when the
+    layout changes.
+33. **A screen's wildlife comes from its region**, placed from a hash of the
+    room id, not from 256 hand-written enemy lists. A screen that names its
+    own objects is left alone, so every landmark stays hand-placed. The hash
+    is `zlib.crc32`, because Python's own `hash` is salted per process and
+    would move every creature in the kingdom on each launch.
+34. **Sixteen room frames are emitted, the motifs are drawn.** The walls-and-
+    gaps boxes are boilerplate; what goes inside them is the design. A
+    layout entry of `r_nsew+m_pits+m_pots` composes them.
+35. **A dungeon starts as a connection map.** `connections.txt` says which
+    rooms join which; `tools/plan_dungeon.py` derives the frames and refuses
+    a layout with an unreachable room. The locks, chests and creatures are
+    hand-placed on top.
+36. **Motifs never seal a room.** The water, lava and tile rings have a gap
+    in them, because a ring drawn across a room is a locked door nobody can
+    open.
+37. **The old `village_*` and `meadow_*` rooms were retired** into the
+    overworld rather than kept beside it; two geographies of the same place
+    is a bug waiting to happen. The Hollow Glade stays a hand-written room,
+    and the engine tests use it because it is walled, quiet and unchanging.
+38. **The Hookshot stops a tile short of its anchor**, because the anchor is
+    a pillar and standing inside one is not an option.
+39. **Fins, Fire Boots, the Mirror Cloak and the Titan Gauntlet are not in
+    the game yet, but their gates are.** Water, lava, ice and the heavy
+    blocks are already painted where they belong, which is what PROMPT.md
+    asks for: every region is seen before it can be entered.

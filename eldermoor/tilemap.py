@@ -53,6 +53,7 @@ class TileDef:
     interact: str = ""        # "" | cut | lift | burn | bomb | smash
     becomes: str = ""         # legend char of the tile left behind
     drop: str = ""            # drop-table name rolled when cleared
+    hook: bool = False        # the Hookshot can bite into it
 
 
 @dataclass
@@ -75,7 +76,8 @@ class Tileset:
             if interact and interact not in INTERACTIONS:
                 raise ValueError(f"tileset {name}: unknown interaction {interact!r}")
             td = TileDef(tid, t["char"], t["sprite"], Collision(t.get("collision", "floor")),
-                         interact, t.get("becomes", ""), t.get("drop", ""))
+                         interact, t.get("becomes", ""), t.get("drop", ""),
+                         bool(t.get("hook", False)))
             ts.tiles[tid] = td
             if td.char in ts.legend:
                 raise ValueError(f"tileset {name}: legend char {td.char!r} used twice")

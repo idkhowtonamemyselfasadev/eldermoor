@@ -78,12 +78,13 @@ class Hero(Entity):
         self.block_cooldown = 0
         self.carrying: str | None = None
         self.carry_drop = ""
+        self.hooking = False
 
     # ----- queries used by the rest of the game --------------------------
     @property
     def busy(self) -> bool:
         """True while an action owns the hero's movement."""
-        return self.swinging or self.spinning or self.roll_timer > 0
+        return self.swinging or self.spinning or self.roll_timer > 0 or self.hooking
 
     @property
     def invulnerable(self) -> bool:

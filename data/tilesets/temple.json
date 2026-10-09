@@ -25,12 +25,14 @@
     "4": {
       "char": "P",
       "sprite": "t_pillar",
-      "collision": "solid"
+      "collision": "solid",
+      "hook": true
     },
     "5": {
       "char": "Y",
       "sprite": "t_statue",
-      "collision": "solid"
+      "collision": "solid",
+      "hook": true
     },
     "6": {
       "char": "0",
@@ -63,7 +65,10 @@
     "11": {
       "char": "X",
       "sprite": "t_crack",
-      "collision": "bombable"
+      "collision": "bombable",
+      "interact": "bomb",
+      "becomes": ".",
+      "drop": "rock"
     },
     "12": {
       "char": "R",
