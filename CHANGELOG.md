@@ -350,3 +350,28 @@ screens and the whole 35-room Ember Temple, from its door to the Flame.
   which comes to **51 hours for the main line and 102 hours to 100 %**,
   against PROMPT.md's 90-hour target.
 - 221 tests.
+
+
+## 0.9.0 — Milestone 9: packaging
+
+- **README.md** with exact steps for Fedora, Ubuntu, Windows 11 and macOS,
+  the button table, where saves live, how to build a release and what each
+  tool proves. The by-hand install was run from a clean virtual environment
+  to check it: pip install, build the assets, synthesise the audio, 227
+  tests green, the game runs headless.
+- **run.bat** for Windows, matching `run.sh`: make the venv, install,
+  build the sprite sheets and the sounds, start the game. `run.sh` now
+  builds the audio too, so a first run on a fresh clone is silent-free.
+- **tools/build_release.py**: a single-folder (or one-file) PyInstaller
+  build with `assets/`, `data/` and `input_map.json` bundled, the generated
+  assets rebuilt first so a release cannot ship a stale sheet, a `run`
+  script beside the executable and the `.desktop` file and icon on Linux.
+  `--check` prints what it would do without building. The build was run:
+  `dist/LanternOfEldermoor/` plays headless.
+- **tools/make_icon.py** composes the application icon - Wren's lantern -
+  from a pixel-map in `assets_src/icons/app.txt`, scaled to every size the
+  three platforms want, plus `.ico` and `.icns` where Pillow is available.
+- **eldermoor.desktop** so it turns up in a Linux app menu.
+- A frozen build finds its data: `eldermoor.config` reads `sys._MEIPASS`
+  when PyInstaller set it and the repository root otherwise.
+- 227 tests.

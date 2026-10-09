@@ -7,4 +7,5 @@ if [ ! -x .venv/bin/python ]; then
 fi
 .venv/bin/python -m pip install -q -r requirements.txt
 .venv/bin/python tools/build_assets.py
+.venv/bin/python tools/build_audio.py
 exec .venv/bin/python main.py "$@"

@@ -259,3 +259,15 @@ Decisions made without asking, with the reason. Newest at the bottom.
 63. **The companion waits to be wanted.** A hint that fires on entering a
     room is a pop-up with extra steps. Fourteen seconds of standing still is
     a player who has stopped to think, and she says one thing, once.
+
+64. **The release rebuilds the generated assets first.** A sprite sheet in
+    the repository is a convenience for people running from source; a stale
+    one inside a release is a bug nobody can see. Building them is four
+    seconds and removes the whole class.
+65. **One `_root()` in config, not a path fix in every module.** PyInstaller
+    moves everything; the only thing that needs to know is where `assets/`
+    and `data/` are, and that is answered in one place.
+66. **The install steps were run, not written.** Fresh virtual environment,
+    pip install, build, test, play - and then the PyInstaller build, and
+    then the frozen binary headless. A README nobody has followed is a
+    guess.

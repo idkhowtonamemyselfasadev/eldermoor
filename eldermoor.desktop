@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Lantern of Eldermoor
+Comment=A top-down adventure in a kingdom whose lights have gone out
+Exec=sh -c '"$HOME/.local/share/eldermoor/run.sh"'
+Icon=eldermoor
+Terminal=false
+Categories=Game;AdventureGame;
+Keywords=adventure;top-down;pixel;
+StartupNotify=false

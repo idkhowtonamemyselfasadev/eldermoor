@@ -90,3 +90,65 @@ def test_main_headless_subprocess():
 def test_module_size_limits():
     for p in (ROOT / "eldermoor").glob("*.py"):
         assert len(p.read_text().splitlines()) <= 600, p.name
+
+
+# ----- milestone 9: packaging --------------------------------------------
+def test_the_run_scripts_are_there_and_do_the_same_things():
+    from eldermoor.config import ROOT
+    sh = (ROOT / "run.sh").read_text()
+    bat = (ROOT / "run.bat").read_text()
+    for script in (sh, bat):
+        assert "requirements.txt" in script
+        assert "build_assets" in script
+        assert "build_audio" in script
+        assert "main.py" in script
+    assert (ROOT / "run.sh").stat().st_mode & 0o111, "run.sh must be executable"
+
+
+def test_the_desktop_entry_is_well_formed():
+    from eldermoor.config import ROOT
+    entry = (ROOT / "eldermoor.desktop").read_text()
+    assert entry.startswith("[Desktop Entry]")
+    for key in ("Type=Application", "Name=", "Exec=", "Icon=", "Categories=Game;"):
+        assert key in entry, key
+
+
+def test_the_release_build_knows_what_to_bundle():
+    import build_release
+    line = build_release.command(onefile=False)
+    assert "--onedir" in line and "PyInstaller" in line
+    joined = " ".join(line)
+    for folder in build_release.DATA_DIRS:
+        assert folder in joined, folder
+    assert "main.py" in joined
+
+
+def test_a_frozen_build_finds_its_data(monkeypatch, tmp_path):
+    import importlib
+    import sys
+    (tmp_path / "data").mkdir()
+    monkeypatch.setattr(sys, "_MEIPASS", str(tmp_path), raising=False)
+    import eldermoor.config as config
+    reloaded = importlib.reload(config)
+    assert reloaded.DATA == tmp_path / "data"
+    monkeypatch.delattr(sys, "_MEIPASS")
+    importlib.reload(config)
+
+
+def test_the_icon_is_built_and_square(assets):
+    import pygame
+
+    from eldermoor.config import ROOT
+    icon = ROOT / "assets" / "icon_256.png"
+    assert icon.exists(), "run tools/make_icon.py"
+    surface = pygame.image.load(str(icon))
+    assert surface.get_size() == (256, 256)
+
+
+def test_the_readme_covers_the_four_platforms():
+    from eldermoor.config import ROOT
+    readme = (ROOT / "README.md").read_text().lower()
+    for platform in ("fedora", "ubuntu", "windows 11", "macos"):
+        assert platform in readme, platform
+    for command in ("run.sh", "run.bat", "pytest", "pyinstaller", "main.py"):
+        assert command in readme, command

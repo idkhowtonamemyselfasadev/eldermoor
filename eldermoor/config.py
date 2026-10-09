@@ -1,9 +1,21 @@
 """Engine-wide constants. Everything that is a number in PROMPT.md lives here."""
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+
+def _root() -> Path:
+    """Where assets/ and data/ live, whether run from source or frozen.
+
+    PyInstaller unpacks the bundled folders beside the executable and points
+    ``sys._MEIPASS`` at them; from a source checkout it is the repository.
+    """
+    bundle = getattr(sys, "_MEIPASS", "")
+    return Path(bundle) if bundle else Path(__file__).resolve().parent.parent
+
+
+ROOT = _root()
 ASSETS = ROOT / "assets"
 DATA = ROOT / "data"
 INPUT_MAP_FILE = ROOT / "input_map.json"
