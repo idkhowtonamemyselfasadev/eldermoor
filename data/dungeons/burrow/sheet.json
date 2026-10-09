@@ -17,7 +17,9 @@
   "desert": {
    "types": [
     "glasscrab",
-    "dustmite"
+    "dustmite",
+    "duneskip",
+    "chalkcrab"
    ],
    "count": 2
   }

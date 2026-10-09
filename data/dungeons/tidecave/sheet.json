@@ -17,7 +17,8 @@
   "saltmarsh": {
    "types": [
     "brinelet",
-    "reedsnap"
+    "reedsnap",
+    "tidecoil"
    ],
    "count": 2
   }

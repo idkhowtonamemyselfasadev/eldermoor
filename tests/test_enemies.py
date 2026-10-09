@@ -199,3 +199,54 @@ def test_sword_sweep_hits_every_enemy_once(game, content):
     game.world.sword_hit(hero, rect)
     game.world.sword_hit(hero, rect)
     assert all(e.hp == 8 for e in enemies), "one swing, one hit each"
+
+
+# ----- the whole bestiary ------------------------------------------------
+def test_there_are_enough_kinds_of_creature(content):
+    from eldermoor.state import BESTIARY_TOTAL
+    kinds = content.enemies.ordered()
+    assert len(kinds) >= 60, "PROMPT.md asks for sixty creatures"
+    assert len(kinds) == BESTIARY_TOTAL, "the bestiary counter must match the table"
+    bosses = [d for d in kinds if d.raw.get("boss")]
+    assert len(bosses) >= 24, "and twenty-four bosses"
+
+
+def test_every_creature_has_a_sprite_and_a_name(assets, content):
+    for definition in content.enemies.ordered():
+        first = (f"{definition.sprite}_down_0" if definition.directional
+                 else f"{definition.sprite}_0")
+        assert assets.sprites.has(first), definition.id
+        assert content.text.get(definition.name) != definition.name, definition.id
+        assert content.text.get(definition.bestiary) != definition.bestiary, definition.id
+
+
+def test_every_creature_can_actually_be_met(content):
+    """Something has to place each kind, or the bestiary cannot be filled."""
+    import json
+    from pathlib import Path
+
+    from eldermoor.config import DATA
+    placed: set[str] = set()
+    for sheet in Path(DATA).rglob("sheet.json"):
+        raw = json.loads(sheet.read_text())
+        for spec in raw.get("region_spawns", {}).values():
+            placed.update(spec.get("types", []))
+            placed.update(spec.get("night", []))
+        for screen in raw.get("screens", {}).values():
+            for obj in screen.get("objects", []):
+                if obj.get("kind") == "enemy":
+                    placed.add(str(obj.get("type", "")))
+            for trigger in screen.get("triggers", []):
+                for action in trigger.get("do", []):
+                    spawn = action.get("spawn", {})
+                    if spawn.get("kind") == "enemy":
+                        placed.add(str(spawn.get("type", "")))
+    for room in (Path(DATA) / "rooms").glob("*.json"):
+        raw = json.loads(room.read_text())
+        for obj in raw.get("objects", []):
+            if obj.get("kind") == "enemy":
+                placed.add(str(obj.get("type", "")))
+    rush = json.loads((Path(DATA) / "bossrush.json").read_text())
+    placed.update(rush.get("rounds", []))
+    missing = sorted({d.id for d in content.enemies.ordered()} - placed)
+    assert not missing, f"nothing places these creatures: {missing}"

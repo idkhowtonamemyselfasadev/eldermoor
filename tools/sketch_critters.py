@@ -80,6 +80,49 @@ def orb(frame: int, body: str, eye: str) -> Grid:
     return g
 
 
+def crown(frame: int, body: str, eye: str) -> Grid:
+    """A spiked crown of a thing that opens and shuts."""
+    g = Grid(16, 16)
+    g.ellipse(7.5, 9.5, 5.6, 4.6, body)
+    spread = 0.0 if frame == 0 else 0.5
+    for i in range(5):
+        a = -math.pi / 2 + (i - 2) * (0.5 + spread * 0.2)
+        g.spike(7.5 + math.cos(a) * 4.0, 9.5 + math.sin(a) * 3.6, a, 3.4, 1.2, body)
+    g.put(5, 9, eye)
+    g.put(10, 9, eye)
+    return g
+
+
+def kite(frame: int, body: str, eye: str) -> Grid:
+    """A diamond that tilts as it flies."""
+    g = Grid(16, 16)
+    tilt = 0 if frame == 0 else 1
+    for y in range(16):
+        for x in range(16):
+            if abs(x - 7.5) + abs(y - (7.5 + tilt)) <= 5.5:
+                g.put(x, y, body)
+    for y in range(16):
+        for x in range(16):
+            if 5.0 <= abs(x - 7.5) + abs(y - (7.5 + tilt)) <= 5.5:
+                g.put(x, y, "0")
+    g.put(6, 7 + tilt, eye)
+    g.put(9, 7 + tilt, eye)
+    return g
+
+
+def coil(frame: int, body: str, eye: str) -> Grid:
+    """A spring that compresses on the second frame."""
+    g = Grid(16, 16)
+    rows = (3, 6, 9, 12) if frame == 0 else (5, 7, 9, 11)
+    for y in rows:
+        g.block(3, y, 12, y + 1, body)
+        g.put(2, y, "0")
+        g.put(13, y + 1, "0")
+    g.put(6, rows[0], eye)
+    g.put(9, rows[0], eye)
+    return g
+
+
 def worm(frame: int, body: str, eye: str) -> Grid:
     """A segmented thing that waves."""
     g = Grid(16, 16)
@@ -90,7 +133,8 @@ def worm(frame: int, body: str, eye: str) -> Grid:
     return g
 
 
-SHAPES = {"blob": blob, "spiky": spiky, "tall": tall, "flat": flat, "orb": orb, "worm": worm}
+SHAPES = {"blob": blob, "spiky": spiky, "tall": tall, "flat": flat, "orb": orb,
+          "worm": worm, "crown": crown, "kite": kite, "coil": coil}
 
 #: name, shape, body colour, eye colour
 CAST = [
@@ -106,6 +150,20 @@ CAST = [
     ("mistling", "tall", "5", "v"),
     ("cinderworm", "worm", "q", "e"),
     ("glasscrab", "flat", "p", "6"),
+    ("bogwisp", "orb", "g", "i"),
+    ("saltling", "blob", "7", "k"),
+    ("flintback", "spiky", "4", "e"),
+    ("gloamfly", "kite", "n", "v"),
+    ("chalkcrab", "flat", "6", "3"),
+    ("barbthorn", "crown", "h", "d"),
+    ("ashgrub", "worm", "1", "e"),
+    ("tidecoil", "coil", "k", "u"),
+    ("duneskip", "kite", "8", "f"),
+    ("slagling", "blob", "c", "e"),
+    ("frostnip", "spiky", "m", "6"),
+    ("hollowpup", "tall", "2", "d"),
+    ("lanternmoth", "kite", "f", "6"),
+    ("stillshade", "tall", "1", "5"),
 ]
 
 HEADER = """# Small creatures, composed by tools/sketch_critters.py and editable by hand.

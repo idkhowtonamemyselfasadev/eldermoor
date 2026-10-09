@@ -17,7 +17,8 @@
   "tarn": {
    "types": [
     "glimmer",
-    "shale"
+    "shale",
+    "frostnip"
    ],
    "count": 2
   }

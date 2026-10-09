@@ -46,12 +46,15 @@
   "meadow": {
    "types": [
     "mote",
-    "thistle"
+    "thistle",
+    "saltling",
+    "lanternmoth"
    ],
    "count": 2,
    "night": [
     "wisp",
-    "thistle"
+    "thistle",
+    "lanternmoth"
    ]
   },
   "village": {
@@ -61,66 +64,132 @@
   "thornwood": {
    "types": [
     "thistle",
-    "crag"
+    "crag",
+    "thornpup",
+    "barbthorn"
    ],
    "count": 2,
    "night": [
-    "wisp"
+    "wisp",
+    "thornpup",
+    "stillshade"
    ]
   },
   "saltmarsh": {
    "types": [
     "mote",
-    "burrow"
+    "burrow",
+    "brinelet",
+    "tidecoil",
+    "reedsnap"
    ],
    "count": 2,
    "night": [
     "wisp",
-    "burrow"
+    "burrow",
+    "bogwisp"
    ]
   },
   "cinder": {
    "types": [
     "mote",
-    "spitter"
+    "spitter",
+    "cinderworm",
+    "slagling",
+    "ashgrub",
+    "flintback"
    ],
    "count": 3
   },
   "tarn": {
    "types": [
     "wisp",
-    "mote"
+    "mote",
+    "glimmer",
+    "frostnip"
    ],
-   "count": 2
+   "count": 2,
+   "night": [
+    "glimmer",
+    "stillshade"
+   ]
   },
   "fen": {
    "types": [
     "burrow",
-    "spitter"
+    "spitter",
+    "reedsnap",
+    "bogwisp"
    ],
    "count": 2,
    "night": [
-    "wisp"
+    "wisp",
+    "bogwisp",
+    "gloamfly"
    ]
   },
   "desert": {
    "types": [
     "burrow",
-    "crag"
+    "crag",
+    "dustmite",
+    "duneskip",
+    "glasscrab"
    ],
    "count": 2,
    "night": [
     "wisp",
-    "burrow"
+    "burrow",
+    "chalkcrab"
    ]
   },
   "mistlands": {
    "types": [
     "wisp",
     "crag",
-    "spitter"
+    "mistling",
+    "stonehand",
+    "hollowpup"
    ],
-   "count": 3
+   "count": 3,
+   "night": [
+    "mistling",
+    "stillshade",
+    "gloamfly"
+   ]
+  },
+  "bramble": {
+   "types": [
+    "thornpup",
+    "grub",
+    "barbthorn"
+   ],
+   "count": 2,
+   "night": [
+    "stillshade"
+   ]
+  },
+  "tidewrack": {
+   "types": [
+    "brinelet",
+    "tidecoil",
+    "reedsnap"
+   ],
+   "count": 2,
+   "night": [
+    "bogwisp"
+   ]
+  },
+  "longglass": {
+   "types": [
+    "glasscrab",
+    "chalkcrab",
+    "dustmite"
+   ],
+   "count": 2,
+   "night": [
+    "duneskip"
+   ]
   }
  },
  "screens": {

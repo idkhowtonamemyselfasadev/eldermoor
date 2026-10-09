@@ -271,3 +271,9 @@ Decisions made without asking, with the reason. Newest at the bottom.
     pip install, build, test, play - and then the PyInstaller build, and
     then the frozen binary headless. A README nobody has followed is a
     guess.
+
+67. **A creature that nothing places does not exist.** The bestiary is a
+    completion counter, so a kind with no spawn anywhere is an achievement
+    nobody can finish. The test walks every sheet, every room and the Boss
+    Rush list and fails if anything in the table is unplaceable - it caught
+    the Flintback the day it was written.

@@ -689,5 +689,513 @@
    }
   },
   "tier": 3
+ },
+ "bogwisp": {
+  "name": "enemy.bogwisp",
+  "bestiary": "bestiary.bogwisp",
+  "sprite": "bogwisp",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 2,
+  "hp": 3,
+  "damage": 1,
+  "speed": 0.6,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "float",
+     "speed": 0.6,
+     "time": 90,
+     "next": "roam",
+     "if_near": {
+      "dist": 60,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "rush"
+    },
+    "rush": {
+     "move": "chase",
+     "speed": 1.0,
+     "time": 60,
+     "next": "roam"
+    }
+   }
+  },
+  "flying": true
+ },
+ "saltling": {
+  "name": "enemy.saltling",
+  "bestiary": "bestiary.saltling",
+  "sprite": "saltling",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 1,
+  "hp": 2,
+  "damage": 1,
+  "speed": 0.5,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "wander",
+     "speed": 0.5,
+     "time": 90,
+     "next": "roam"
+    }
+   }
+  }
+ },
+ "flintback": {
+  "name": "enemy.flintback",
+  "bestiary": "bestiary.flintback",
+  "sprite": "flintback",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 3,
+  "hp": 6,
+  "damage": 2,
+  "speed": 0.45,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "patrol",
+     "speed": 0.45,
+     "time": 90,
+     "next": "roam",
+     "if_near": {
+      "dist": 60,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "rush"
+    },
+    "rush": {
+     "move": "dash",
+     "speed": 1.8,
+     "time": 60,
+     "next": "roam"
+    }
+   }
+  },
+  "armour": "front"
+ },
+ "gloamfly": {
+  "name": "enemy.gloamfly",
+  "bestiary": "bestiary.gloamfly",
+  "sprite": "gloamfly",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 4,
+  "hp": 4,
+  "damage": 2,
+  "speed": 0.85,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "float",
+     "speed": 0.85,
+     "time": 90,
+     "next": "roam",
+     "if_near": {
+      "dist": 60,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "rush"
+    },
+    "rush": {
+     "move": "chase",
+     "speed": 1.25,
+     "time": 60,
+     "next": "roam"
+    }
+   }
+  },
+  "flying": true
+ },
+ "chalkcrab": {
+  "name": "enemy.chalkcrab",
+  "bestiary": "bestiary.chalkcrab",
+  "sprite": "chalkcrab",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 3,
+  "hp": 5,
+  "damage": 2,
+  "speed": 0.5,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "patrol",
+     "speed": 0.5,
+     "time": 90,
+     "next": "roam",
+     "if_near": {
+      "dist": 60,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "rush"
+    },
+    "rush": {
+     "move": "dash",
+     "speed": 1.6,
+     "time": 60,
+     "next": "roam"
+    }
+   }
+  },
+  "armour": "front"
+ },
+ "barbthorn": {
+  "name": "enemy.barbthorn",
+  "bestiary": "bestiary.barbthorn",
+  "sprite": "barbthorn",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 2,
+  "hp": 4,
+  "damage": 1,
+  "speed": 0.0,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "none",
+     "speed": 0.0,
+     "time": 90,
+     "next": "roam",
+     "if_far": {
+      "dist": 90,
+      "go": "aim"
+     }
+    },
+    "aim": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_rock",
+     "shot_speed": 1.3,
+     "time": 14,
+     "next": "roam"
+    }
+   }
+  }
+ },
+ "ashgrub": {
+  "name": "enemy.ashgrub",
+  "bestiary": "bestiary.ashgrub",
+  "sprite": "ashgrub",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 2,
+  "hp": 3,
+  "damage": 1,
+  "speed": 0.5,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "wander",
+     "speed": 0.5,
+     "time": 90,
+     "next": "roam",
+     "if_near": {
+      "dist": 60,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "rush"
+    },
+    "rush": {
+     "move": "flee",
+     "speed": 0.9,
+     "time": 60,
+     "next": "roam"
+    }
+   }
+  }
+ },
+ "tidecoil": {
+  "name": "enemy.tidecoil",
+  "bestiary": "bestiary.tidecoil",
+  "sprite": "tidecoil",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 2,
+  "hp": 4,
+  "damage": 1,
+  "speed": 0.7,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "circle",
+     "speed": 0.8,
+     "time": 90,
+     "next": "roam"
+    }
+   }
+  }
+ },
+ "duneskip": {
+  "name": "enemy.duneskip",
+  "bestiary": "bestiary.duneskip",
+  "sprite": "duneskip",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 3,
+  "hp": 3,
+  "damage": 2,
+  "speed": 0.9,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "hop",
+     "speed": 0.9,
+     "time": 90,
+     "next": "roam",
+     "if_near": {
+      "dist": 60,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "rush"
+    },
+    "rush": {
+     "move": "chase",
+     "speed": 1.2,
+     "time": 60,
+     "next": "roam"
+    }
+   }
+  },
+  "flying": true
+ },
+ "slagling": {
+  "name": "enemy.slagling",
+  "bestiary": "bestiary.slagling",
+  "sprite": "slagling",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 3,
+  "hp": 4,
+  "damage": 2,
+  "speed": 0.65,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.65,
+     "time": 90,
+     "next": "roam",
+     "if_far": {
+      "dist": 90,
+      "go": "aim"
+     }
+    },
+    "aim": {
+     "move": "none",
+     "time": 24,
+     "telegraph": true,
+     "next": "fire"
+    },
+    "fire": {
+     "move": "shoot",
+     "shot": "shot_ember",
+     "shot_speed": 1.3,
+     "time": 14,
+     "next": "roam"
+    }
+   }
+  }
+ },
+ "frostnip": {
+  "name": "enemy.frostnip",
+  "bestiary": "bestiary.frostnip",
+  "sprite": "frostnip",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 3,
+  "hp": 4,
+  "damage": 2,
+  "speed": 0.55,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "hop",
+     "speed": 0.8,
+     "time": 90,
+     "next": "roam",
+     "if_near": {
+      "dist": 60,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "rush"
+    },
+    "rush": {
+     "move": "dash",
+     "speed": 1.7,
+     "time": 60,
+     "next": "roam"
+    }
+   }
+  }
+ },
+ "hollowpup": {
+  "name": "enemy.hollowpup",
+  "bestiary": "bestiary.hollowpup",
+  "sprite": "hollowpup",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 4,
+  "hp": 6,
+  "damage": 2,
+  "speed": 0.7,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "chase",
+     "speed": 0.7,
+     "time": 90,
+     "next": "roam",
+     "if_near": {
+      "dist": 60,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "rush"
+    },
+    "rush": {
+     "move": "dash",
+     "speed": 2.0,
+     "time": 60,
+     "next": "roam"
+    }
+   }
+  }
+ },
+ "lanternmoth": {
+  "name": "enemy.lanternmoth",
+  "bestiary": "bestiary.lanternmoth",
+  "sprite": "lanternmoth",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 1,
+  "hp": 2,
+  "damage": 1,
+  "speed": 0.7,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "float",
+     "speed": 0.7,
+     "time": 90,
+     "next": "roam"
+    }
+   }
+  },
+  "flying": true
+ },
+ "stillshade": {
+  "name": "enemy.stillshade",
+  "bestiary": "bestiary.stillshade",
+  "sprite": "stillshade",
+  "frames": 2,
+  "frame_time": 11,
+  "tier": 4,
+  "hp": 7,
+  "damage": 3,
+  "speed": 0.5,
+  "drop": "enemy",
+  "ai": {
+   "start": "roam",
+   "states": {
+    "roam": {
+     "move": "wander",
+     "speed": 0.5,
+     "time": 90,
+     "next": "roam",
+     "if_near": {
+      "dist": 60,
+      "go": "ready"
+     }
+    },
+    "ready": {
+     "move": "none",
+     "time": 22,
+     "telegraph": true,
+     "next": "rush"
+    },
+    "rush": {
+     "move": "chase",
+     "speed": 1.0,
+     "time": 60,
+     "next": "roam"
+    }
+   }
+  },
+  "ghost": true,
+  "cloak_blind": true
  }
 }

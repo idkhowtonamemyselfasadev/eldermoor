@@ -85,13 +85,13 @@
           "kind": "figurine",
           "id": "fig_drownking",
           "cost": 240,
-          "needs_bestiary": 30
+          "needs_bestiary": 38
         },
         {
           "kind": "figurine",
           "id": "fig_quiet",
           "cost": 320,
-          "needs_bestiary": 47
+          "needs_bestiary": 58
         }
       ]
     },

@@ -375,3 +375,24 @@ screens and the whole 35-room Ember Temple, from its door to the Flame.
 - A frozen build finds its data: `eldermoor.config` reads `sys._MEIPASS`
   when PyInstaller set it and the repository root otherwise.
 - 227 tests.
+
+
+## 0.9.1 — The last of the bestiary
+
+Checking the definition of done line by line found one count short: sixty
+creatures were asked for and forty-seven existed.
+
+- Fourteen more, drawn by `tools/sketch_critters.py` from three new shapes
+  (a spiked crown, a tilting kite, a compressing coil): Bog Wisp, Saltling,
+  Flintback, Gloamfly, Chalk Crab, Barbthorn, Ash Grub, Tidecoil, Duneskip,
+  Slagling, Frostnip, Hollow Pup, Lantern Moth and Stillshade. **61 kinds**
+  now, 28 of them bosses.
+- Every region's day and night wildlife was rewritten around them, and the
+  caves, the later temples and the Temple of Mists got their own lists, so
+  the new creatures are met rather than merely defined.
+- Three new tests hold the line: there are at least sixty kinds and at
+  least twenty-four bosses; every one has a sprite, a name and a bestiary
+  line; and **every one is actually placed somewhere** - which is what
+  caught the Flintback, defined and drawn and living nowhere.
+- 230 tests. The length estimate, re-measured: 53 hours for the main line,
+  **106 to 100 %**.

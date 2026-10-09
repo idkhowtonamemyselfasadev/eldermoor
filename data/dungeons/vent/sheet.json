@@ -17,7 +17,9 @@
   "cinder": {
    "types": [
     "cinderworm",
-    "emberfly"
+    "emberfly",
+    "slagling",
+    "ashgrub"
    ],
    "count": 2
   }
