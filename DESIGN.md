@@ -60,3 +60,61 @@ Asset build is reproducible; every atlas entry exists; fonts contain
 ASCII 32-126 + ÄÖÜäöüß; input map maps all 12 buttons; hero moves/collides
 and swing timings; room load; transition completes in 12 frames; HUD draws
 hearts correctly for half values; `main.py --headless --frames 10` exits 0.
+
+---
+
+## Milestone 2 — Vertical slice (plan)
+
+Goal: a slice that contains one of everything the rest of the game is made
+of. Wren leaves his house in Lamplight Village, is given the sword, buys a
+shield, crosses six meadow screens fighting six kinds of enemy, finds the
+Ember Temple, collects its map, compass, small keys and big key, wins the
+Lantern from the mini-boss, burns his way to the boss, beats it with the
+Lantern, and takes the first Flame home. Everything is saved.
+
+### 2.1 New systems and the module that owns them
+
+| module | job |
+| --- | --- |
+| `state.py` | `GameState` — every number a save holds; items, flags, per-dungeon progress, play-time, completion % |
+| `save.py` | 3 slots in the OS config dir, atomic temp+rename, `.bak` of the last good file, versioned schema with migrations, crash slot |
+| `settings.py` | config dir per OS (`$ELDERMOOR_CONFIG_DIR` overrides), volumes, text speed, shake, beep, hints |
+| `items.py` | `data/items/items.json` registry; which items may sit in B/X/Y |
+| `audio.py` + `tools/build_audio.py` | square/triangle/noise/saw + ADSR synth, `.song` tracker JSON → WAV; mixer wrapper with music fade and SFX channels |
+| `drops.py` | drop tables: hearts, embers, bombs, arrows, magic, fairies |
+| `objects.py` | chests, pots, signs, NPCs, doors, keyholes, torches, switches, stairs, warps, heart pieces, the Flame |
+| `enemies.py` + `ai.py` | `data/enemies/*.json` → state machines (`wait`, `chase`, `wander`, `charge`, `shoot`, `hop`, `patrol`, `flee`), telegraphs ≥ 20 frames |
+| `combat.py` | damage both ways, half-hearts, knockback, i-frames, hit flash, shield block, death puff |
+| `textbox.py` + `dialogue.py` | 3-line 8×8 bottom box, typewriter at the chosen speed, A advances, B skips; `data/text/en.json` keys |
+| `shop.py` | buy screen built on the text box |
+| `menu.py` | pause (items grid, assign to B/X/Y, save, settings) and the Select map screen |
+| `script.py` | room triggers → actions, global flags |
+| `dungeon.py` | `data/dungeons/*.json`: floors, room grid for the map, key graph, boss |
+| `scene.py` | scene stack so dialogue/pause/shop suspend the world |
+
+### 2.2 Refactors
+* `Entity.update(inp, room)` becomes `Entity.update(world)`. The world is the
+  context object: input, room, state, audio, entity list, spawn helpers.
+  Everything an entity needs is reachable without threading more arguments
+  through every milestone.
+* The hero moves out of `entities.py` into `hero.py`; `entities.py` keeps the
+  base class, bodies and the shared helpers.
+* `hud.PlayerState` becomes an alias of `state.GameState`.
+* Cuttable bush / smashable pot / liftable rock stay **tiles**. A room keeps a
+  transient overlay of tiles changed this visit, so they come back when you
+  leave and return, exactly like the games this copies. Chests, NPCs, doors
+  and switches are **objects** in the room JSON because they are permanent and
+  flag-backed.
+
+### 2.3 Room JSON v2
+`objects` (kind + grid position + kind-specific fields) and `triggers`
+(`on` one of `enter`, `all_enemies_dead`, `switch`, `torches_lit`,
+`block_on_plate`, `timer`, `flag` → `do` list of actions: `open`, `spawn`,
+`reveal`, `jingle`, `set_flag`, `shake`) plus `dungeon`, `floor`,
+`map_pos`. Milestone-1 rooms stay valid: every new key is optional.
+
+### 2.4 Definition of done for milestone 2
+`pytest` green, `ruff` clean, `tools/validate_data.py` proves the Ember
+Temple is completable (no key can be wasted, every door reachable), and a
+scripted bot in `tools/sim_playthrough.py` walks village → temple → boss →
+home headlessly.
