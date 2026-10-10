@@ -431,6 +431,21 @@ creatures were asked for and forty-seven existed.
   at.
 - 263 tests.
 
+### The frame budget
+- Measured where a frame goes, because Python in a browser is the one thing
+  that cannot be assumed: the **game** - all the logic, every entity, the
+  whole picture - costs **0.4 to 0.9 ms**. Everything else was scaling that
+  320x240 picture up to the screen in software, and drawing the controls.
+- So the page gets a **small canvas** - one picture tall, as wide as the
+  phone is - and scales it itself, which costs nothing. `present()` skips
+  the software scale whenever the picture is already the right size.
+- The on-screen controls were being drawn from scratch sixty times a
+  second onto a full-screen surface with an alpha channel. They only change
+  when a finger moves, so the drawn layer is kept and re-blitted.
+- Together: **1.42 ms to 0.95 ms a frame at phone size, 17x headroom**, and
+  a desktop window at 1280x960 went from about 12 ms to 4.7 ms. A test
+  holds the phone-sized frame under 8 ms so it cannot quietly rot.
+
 **Not finished:** pygbag downloads its WebAssembly runtime from
 `pygame-web.github.io` while building, and this machine's network policy
 denies that host. Everything up to that point is built and tested; the

@@ -45,10 +45,31 @@ os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
 os.environ.setdefault("ELDERMOOR_CONFIG_DIR", "/data/data/eldermoor/files")
 
 
+#: the page gets a small canvas and scales it itself, which is free; scaling
+#: it in Python costs most of a frame. Height is one picture, width is
+#: whatever the phone is shaped like, and the controls go in the bars.
+CANVAS_H = 240
+MIN_W, MAX_W = 320, 760
+
+
+def canvas_size() -> tuple[int, int]:
+    """A small canvas the shape of the screen it will be stretched over."""
+    import pygame
+    pygame.init()
+    try:
+        info = pygame.display.Info()
+        aspect = info.current_w / info.current_h if info.current_h else 16 / 9
+    except pygame.error:
+        aspect = 16 / 9
+    if aspect < 1.0:                      # held upright: room underneath instead
+        return MIN_W, min(640, max(CANVAS_H, round(MIN_W / aspect)))
+    return max(MIN_W, min(MAX_W, round(CANVAS_H * aspect))), CANVAS_H
+
+
 async def main() -> None:
     """Start the game and hand the page a turn between frames."""
     from eldermoor.app import App, Options
-    app = App(Options(scale=4, touch="auto"))
+    app = App(Options(window=canvas_size(), touch="on"))
     await app.run_async()
 
 

@@ -246,3 +246,52 @@ def test_the_game_ships_compressed_audio():
     assert len(oggs) > 60, "run tools/build_audio.py --ogg"
     total = sum(p.stat().st_size for p in oggs)
     assert total < 8_000_000, f"{total / 1e6:.1f} MB is too much to send to a phone"
+
+
+# ----- the cost of drawing them ------------------------------------------
+def test_the_drawn_controls_are_kept_between_frames():
+    app = phone()
+    app.present()
+    first = app.touch._layer
+    assert first is not None
+    app.present()
+    assert app.touch._layer is first, "nothing changed, so nothing is redrawn"
+
+
+def test_pressing_a_button_redraws_them():
+    app = phone()
+    app.present()
+    first = app.touch._layer
+    a = next(c for c in app.touch.controls if c.action == "a")
+    finger(app, a.centre)
+    app.present()
+    assert app.touch._layer is not first, "a held button looks different"
+
+
+def test_a_new_layout_throws_the_old_drawing_away():
+    app = phone()
+    app.present()
+    assert app.touch._layer is not None
+    app.window = pygame.display.set_mode((1080, 1920))
+    app._relayout()
+    assert app.touch._layer is None, "the controls moved, so the picture is stale"
+
+
+def test_a_frame_is_cheap_at_the_size_a_phone_gets():
+    """The browser scales the canvas; Python must not, or the frame is gone."""
+    import time
+    pygame.display.set_mode((520, 240))
+    app = App(Options(headless=True, no_menu=True, touch="on", window=(520, 240)))
+    assert app.picture.size == (320, 240), "one pixel per pixel, nothing to scale"
+    for _ in range(30):
+        app.game.update()
+        app.game.draw(app.canvas)
+        app.present()
+    worst = 0.0
+    for _ in range(120):
+        start = time.perf_counter()
+        app.game.update()
+        app.game.draw(app.canvas)
+        app.present()
+        worst = max(worst, (time.perf_counter() - start) * 1000)
+    assert worst < 8.0, f"{worst:.1f} ms of a 16.7 ms frame leaves nothing for a slow device"

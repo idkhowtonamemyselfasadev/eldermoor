@@ -27,6 +27,8 @@ class Options:
     stretch: bool = False
     no_menu: bool = False
     start_room: str | None = None
+    #: an exact window size, instead of one worked out from ``scale``
+    window: tuple[int, int] | None = None
     #: "auto" shows the on-screen pad on a touchscreen, "on"/"off" decide
     touch: str = "auto"
 
@@ -91,8 +93,10 @@ class App:
     # ----- window --------------------------------------------------------
     def _open_window(self) -> pygame.Surface:
         if self.opts.headless:
-            return pygame.display.set_mode((CANVAS_W, CANVAS_H))
+            return pygame.display.set_mode(self.opts.window or (CANVAS_W, CANVAS_H))
         pygame.display.set_caption(TITLE)
+        if self.opts.window is not None:
+            return pygame.display.set_mode(self.opts.window)
         if self.fullscreen:
             flags = pygame.FULLSCREEN
             size = (0, 0)
@@ -117,8 +121,15 @@ class App:
         if size != self._laid_out_for:
             self._relayout()
         self.window.fill((0, 0, 0))
-        scaled = pygame.transform.scale(self.canvas, (self.picture.width, self.picture.height))
-        self.window.blit(scaled, self.picture.topleft)
+        if self.picture.size == (CANVAS_W, CANVAS_H):
+            # Nothing to scale. Worth a branch: scaling 320x240 up to a phone
+            # screen in software costs six milliseconds of a sixteen
+            # millisecond frame, and a browser will do it for nothing.
+            self.window.blit(self.canvas, self.picture.topleft)
+        else:
+            scaled = pygame.transform.scale(self.canvas,
+                                            (self.picture.width, self.picture.height))
+            self.window.blit(scaled, self.picture.topleft)
         self.touch.draw(self.window)
         pygame.display.flip()
 

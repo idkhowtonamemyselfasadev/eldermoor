@@ -56,6 +56,9 @@ class TouchPad:
         self.visible = True
         #: the game's own font, so the buttons are lettered rather than blank
         self.font = None
+        #: the drawn controls, kept until something about them changes
+        self._layer: pygame.Surface | None = None
+        self._layer_key: tuple | None = None
 
     # ----- layout --------------------------------------------------------
     def layout(self, window: tuple[int, int], picture: pygame.Rect) -> None:
@@ -75,6 +78,7 @@ class TouchPad:
         else:
             self._over(width, height)
         self._keep_on_screen(width, height)
+        self._layer = None
 
     def _keep_on_screen(self, width: int, height: int) -> None:
         """Last resort: nudge anything hanging off an edge back inside."""
@@ -252,21 +256,35 @@ class TouchPad:
 
     # ----- drawing -------------------------------------------------------
     def draw(self, window: pygame.Surface) -> None:
-        """Paint the pad and the buttons over whatever is there."""
+        """Paint the pad and the buttons over whatever is there.
+
+        The controls only change when a finger moves, so the drawn layer is
+        kept and re-blitted. Building it is a full-screen surface with an
+        alpha channel, which is far too much work to do sixty times a second
+        for a picture that is usually identical to the last one.
+        """
         if not self.visible or self.stick is None:
             return
         size = window.get_size()
+        key = (size, frozenset(self.held))
+        if self._layer is None or self._layer_key != key:
+            self._layer = self._render(size)
+            self._layer_key = key
+        window.blit(self._layer, (0, 0))
+
+    def _render(self, size: tuple[int, int]) -> pygame.Surface:
+        """Draw the controls in their current state onto a fresh layer."""
         layer = pygame.Surface(size, pygame.SRCALPHA)
         pad = self.stick
+        assert pad is not None
         self._ring(layer, pad.centre, pad.radius, bool(self.stick_dirs))
-        knob = self._knob(pad)
-        pygame.draw.circle(layer, (230, 226, 240, HELD_ALPHA), knob, max(4, pad.radius // 3))
+        pygame.draw.circle(layer, (230, 226, 240, HELD_ALPHA), self._knob(pad),
+                           max(4, pad.radius // 3))
         for control in self.controls:
-            held = control.action in self.held
-            self._ring(layer, control.centre, control.radius, held)
+            self._ring(layer, control.centre, control.radius, control.action in self.held)
             if control.label:
                 self._label(layer, control)
-        window.blit(layer, (0, 0))
+        return layer
 
     def _knob(self, pad: Control) -> tuple[int, int]:
         """Where to draw the thumb mark on the pad."""

@@ -301,3 +301,20 @@ Decisions made without asking, with the reason. Newest at the bottom.
     answer that is to run the staged copy from outside the repository with
     nothing else on the path. It plays; so the bundle is right, whatever
     pygbag does afterwards.
+
+73. **The browser scales the picture, not Python.** Blowing 320x240 up to a
+    phone screen in software costs most of a frame; handing the page a small
+    canvas and letting it stretch that costs nothing and is just as sharp.
+    The web build picks a canvas one picture tall and as wide as the phone,
+    so the game sits in the middle at one pixel per pixel and the controls
+    get the bars - all of it in the same pixel grid, scaled once, for free.
+74. **The controls are a picture, not a redraw.** They change when a finger
+    moves, which is rarely, so they are drawn once and kept. Doing it every
+    frame meant a full-screen surface with an alpha channel sixty times a
+    second - which measured as most of the frame, and was the single
+    biggest thing standing between the game and a phone.
+75. **Measure before optimising, and measure the right thing.** The first
+    benchmark said the game cost seven milliseconds a frame and blamed the
+    scaling. Taking it apart showed the scale call was one millisecond and
+    the real cost was the control layer. The first number was true and the
+    conclusion drawn from it was wrong.
