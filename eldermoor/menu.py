@@ -28,6 +28,7 @@ SETTINGS_ROWS = (
     ("low_health_beep", "menu.beep", "bool"),
     ("hints", "menu.hints", "bool"),
     ("two_player", "menu.two_player", "bool"),
+    ("touch_controls", "menu.touch", "choice:auto,on,off"),
     ("stretch", "menu.stretch", "bool"),
 )
 
@@ -126,7 +127,11 @@ class PauseMenu:
             return
         field, _label, kind = SETTINGS_ROWS[self.cursor]
         value = getattr(self.settings, field)
-        if kind == "bool":
+        if kind.startswith("choice:"):
+            options = kind.split(":", 1)[1].split(",")
+            index = options.index(value) if value in options else 0
+            value = options[(index + delta) % len(options)]
+        elif kind == "bool":
             value = not value
         elif kind == "percent":
             value = min(1.0, max(0.0, round(value + delta * 0.1, 2)))

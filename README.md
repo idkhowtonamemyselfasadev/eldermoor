@@ -113,6 +113,40 @@ autosaves to a crash slot and appends to `crash.log`; no crash loses
 progress.
 
 --------------------------------------------------------------------------
+## Playing it on a phone
+
+The game is built for a phone browser: one build, and it works on both
+iPhone and Android from a link. Add it to the home screen and it behaves
+like an app.
+
+```sh
+pip install pygbag
+python tools/build_audio.py --ogg     # 39 MB of WAV becomes 2.5 MB
+python tools/build_web.py             # build/web/ - static files
+python tools/build_web.py --serve     # build, then serve it on :8000
+python tools/build_web.py --check     # prove the bundle runs, build nothing
+```
+
+`build/web/` is static, so any host will do. The download is about 4 MB of
+game on top of pygbag's runtime.
+
+**It needs the network.** pygbag fetches its WebAssembly runtime from
+`pygame-web.github.io` while building, and it retries that forever rather
+than failing, so `build_web.py` checks the host first and stops with a
+message if it cannot be reached.
+
+**The controls.** On a touchscreen the game draws its own pad: a thumb
+stick that reads eight directions and the eight buttons, laid out in the
+black bars either side of the picture (or underneath it, in portrait) so
+they never cover the game. *On-screen pad* on the settings page forces it
+on or off; `--touch on` does the same from the command line, which is how
+to see it on a desktop.
+
+An Android APK is a second, separate path (Buildozer and
+python-for-android) and would reuse all of the above; it has not been
+built.
+
+--------------------------------------------------------------------------
 ## Building a release
 
 ```sh
@@ -173,7 +207,10 @@ line and 106 to 100 %, and prints its workings.
 It has been built and played on Linux. The Windows and macOS instructions
 above are written from the same shape and have not been run on those
 machines; nothing in the game is platform-specific, but that is a claim
-about the code rather than a test result.
+about the code rather than a test result. The same goes for the phone
+build: the controls, the staged bundle and the compressed audio are all
+tested here, but the final page is assembled by pygbag against a host this
+machine cannot reach, so it has not been opened on a real phone.
 
 --------------------------------------------------------------------------
 ## About the kingdom

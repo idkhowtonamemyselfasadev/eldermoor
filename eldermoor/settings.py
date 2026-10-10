@@ -58,6 +58,8 @@ class Settings:
     master_unlocked: bool = False
     #: two lamplighters: player one on the keyboard, player two on the gamepad
     two_player: bool = False
+    #: the on-screen pad: "auto" (only on a touchscreen), "on" or "off"
+    touch_controls: str = "auto"
 
     @classmethod
     def load(cls, path: Path | None = None) -> Settings:
@@ -86,4 +88,6 @@ class Settings:
         self.sfx_volume = min(1.0, max(0.0, float(self.sfx_volume)))
         self.text_speed = min(4, max(1, int(self.text_speed)))
         self.scale = min(6, max(2, int(self.scale)))
+        if self.touch_controls not in ("auto", "on", "off"):
+            self.touch_controls = "auto"
         return self

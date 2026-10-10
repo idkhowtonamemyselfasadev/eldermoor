@@ -40,10 +40,21 @@ class Audio:
         return True
 
     # ----- sound effects -------------------------------------------------
+    @staticmethod
+    def _pick(folder: Path, name: str) -> Path:
+        """The compressed track if one was built, the WAV otherwise.
+
+        ``tools/build_audio.py --ogg`` writes the small versions beside the
+        big ones; a web build ships only those, a desktop build has both and
+        prefers the small one anyway because it loads faster.
+        """
+        ogg = folder / f"{name}.ogg"
+        return ogg if ogg.exists() else folder / f"{name}.wav"
+
     def _sound(self, name: str) -> pygame.mixer.Sound | None:
         if name in self._cache:
             return self._cache[name]
-        path = self.sfx_dir / f"{name}.wav"
+        path = self._pick(self.sfx_dir, name)
         sound: pygame.mixer.Sound | None = None
         if self.enabled and path.exists():
             try:
@@ -75,7 +86,7 @@ class Audio:
         self.current_music = name
         if not self.enabled:
             return
-        path = self.music_dir / f"{name}.wav"
+        path = self._pick(self.music_dir, name)
         if not path.exists():
             return
         try:
@@ -110,5 +121,6 @@ class Audio:
 
 
 def audio_built(root: Path = ASSETS) -> bool:
-    """True if tools/build_audio.py has been run."""
-    return (root / "audio" / "sfx" / "sword.wav").exists()
+    """True if tools/build_audio.py has been run, in either format."""
+    sfx = root / "audio" / "sfx"
+    return (sfx / "sword.wav").exists() or (sfx / "sword.ogg").exists()

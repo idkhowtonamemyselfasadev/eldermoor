@@ -230,17 +230,59 @@ def build_music(force: bool) -> int:
     return count
 
 
+def compress(quality: int = 3, music_quality: int = 2) -> int:
+    """Write an OGG beside every WAV, with ffmpeg. Returns how many it made.
+
+    Thirty-eight megabytes of WAV is nothing on a laptop and far too much
+    down a phone line, so a build for the web ships these instead. The game
+    prefers an OGG wherever it finds one.
+    """
+    import shutil
+    import subprocess
+    ffmpeg = shutil.which("ffmpeg")
+    if ffmpeg is None:
+        print("  no ffmpeg: install it to build the small audio", file=sys.stderr)
+        return 0
+    made = 0
+    before = after = 0
+    for folder in (OUT / "sfx", OUT / "music"):
+        if not folder.is_dir():
+            continue
+        q = music_quality if folder.name == "music" else quality
+        for wav in sorted(folder.glob("*.wav")):
+            ogg = wav.with_suffix(".ogg")
+            before += wav.stat().st_size
+            if ogg.exists() and ogg.stat().st_mtime >= wav.stat().st_mtime:
+                after += ogg.stat().st_size
+                continue
+            result = subprocess.run(
+                [ffmpeg, "-y", "-loglevel", "error", "-i", str(wav),
+                 "-c:a", "libvorbis", "-q:a", str(q), str(ogg)], check=False)
+            if result.returncode:
+                print(f"  ffmpeg failed on {wav.name}", file=sys.stderr)
+                continue
+            after += ogg.stat().st_size
+            made += 1
+    if before:
+        print(f"  compressed: {before / 1e6:.1f} MB of WAV → {after / 1e6:.1f} MB of OGG")
+    return made
+
+
 def main(argv: list[str] | None = None) -> int:
     """Build the audio assets."""
     p = argparse.ArgumentParser(description="synthesise Eldermoor's audio")
     p.add_argument("--only", choices=("sfx", "music"), default=None)
     p.add_argument("--force", action="store_true", help="re-render even if the WAV exists")
+    p.add_argument("--ogg", action="store_true",
+                   help="also write a small OGG beside every WAV (needs ffmpeg)")
     args = p.parse_args(argv if argv is not None else sys.argv[1:])
     print("building audio →", OUT)
     if args.only != "music":
         build_sfx(args.force)
     if args.only != "sfx":
         build_music(args.force)
+    if args.ogg:
+        compress()
     return 0
 
 

@@ -396,3 +396,43 @@ creatures were asked for and forty-seven existed.
   caught the Flintback, defined and drawn and living nowhere.
 - 230 tests. The length estimate, re-measured: 53 hours for the main line,
   **106 to 100 %**.
+
+
+## 0.10.0 — On a phone
+
+### The controls
+- `eldermoor/touch.py`: a thumb pad that reads eight directions and the
+  eight buttons, sized to the space they are given and laid out in the
+  black bars either side of the picture - or underneath it in portrait -
+  so they never cover the game. Multi-touch, so a thumb on the pad and a
+  finger on A work at once, and a thumb sliding around the pad follows it.
+- They feed `Input` through a channel of their own, beside the keyboard and
+  the gamepad, so every button in the game already worked through them and
+  nothing else had to learn what a touchscreen is.
+- *On-screen pad* on the settings page (auto / on / off), and `--touch` on
+  the command line. On a desktop, `--touch on` is how to see it.
+- Checked at six screen shapes, from an old 1334x750 phone to a tablet:
+  nothing off the edge, nothing overlapping, nothing smaller than a
+  thumb, nothing on top of the picture.
+
+### The weight
+- `tools/build_audio.py --ogg` writes a small version beside every WAV:
+  **38.8 MB becomes 2.5 MB**. The game prefers an OGG wherever it finds
+  one, on the desktop too, because it loads faster.
+
+### The build
+- `App.run_async` is the same loop with one `await` in it, because a page
+  cannot run a blocking loop.
+- `tools/build_web.py` stages a clean copy - the engine, the data, the
+  compressed audio, the sheets, and nothing else - writes it an async
+  entry point, and hands it to pygbag. **4.3 MB** staged.
+  `--check` plays the staged copy headlessly from outside the repository,
+  which proves the bundle is complete; `--stage` leaves the files to look
+  at.
+- 263 tests.
+
+**Not finished:** pygbag downloads its WebAssembly runtime from
+`pygame-web.github.io` while building, and this machine's network policy
+denies that host. Everything up to that point is built and tested; the
+final page has to be assembled on a machine that can reach it, and has not
+been opened on a real phone.

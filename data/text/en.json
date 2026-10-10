@@ -753,5 +753,6 @@
  "enemy.lanternmoth": "Lantern Moth",
  "bestiary.lanternmoth": "Harmless until there are nine of them.",
  "enemy.stillshade": "Stillshade",
- "bestiary.stillshade": "Only the lantern finds it, and it knows that."
+ "bestiary.stillshade": "Only the lantern finds it, and it knows that.",
+ "menu.touch": "On-screen pad"
 }

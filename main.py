@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Lantern of Eldermoor — entry point.
 
-    python main.py [--scale N] [--fullscreen] [--stretch] [--headless [--frames N]] [--save SLOT]
+    python main.py [--scale N] [--fullscreen] [--stretch] [--touch auto|on|off]
+                   [--headless [--frames N]] [--save SLOT]
 """
 from __future__ import annotations
 
@@ -26,6 +27,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     p.add_argument("--save", type=int, default=1, metavar="SLOT", help="save slot 1-3")
     p.add_argument("--no-menu", action="store_true", help="skip the file-select screen")
     p.add_argument("--room", default=None, help="start in this room (debug)")
+    p.add_argument("--touch", choices=("auto", "on", "off"), default="auto",
+                   help="on-screen controls: auto follows the settings and the hardware")
     return p.parse_args(argv)
 
 
@@ -58,7 +61,7 @@ def main(argv: list[str] | None = None) -> int:
     from eldermoor.app import App, Options
     opts = Options(scale=args.scale, fullscreen=args.fullscreen, headless=args.headless,
                    frames=args.frames, save_slot=args.save, stretch=args.stretch,
-                   no_menu=args.no_menu, start_room=args.room)
+                   no_menu=args.no_menu, start_room=args.room, touch=args.touch)
     return App(opts).run()
 
 

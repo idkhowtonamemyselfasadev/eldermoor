@@ -1,4 +1,9 @@
-"""Input: 12 logical buttons fed by keyboard and SDL GameController, mapped by input_map.json."""
+"""Input: 12 logical buttons fed by keyboard, gamepad and the on-screen pad.
+
+The bindings come from input_map.json; the touchscreen has no bindings to
+read, because its controls are drawn where the fingers are rather than
+mapped to anything.
+"""
 from __future__ import annotations
 
 import json
@@ -71,9 +76,11 @@ class Input:
         self._key_held: dict[str, bool] = {a: False for a in ALL_ACTIONS}
         self._pad_held: dict[str, bool] = {a: False for a in ALL_ACTIONS}
         self._stick: dict[str, bool] = {a: False for a in ("up", "down", "left", "right")}
+        self._touch_held: dict[str, bool] = {a: False for a in ALL_ACTIONS}
         self._prev_key: dict[str, bool] = dict(self._key_held)
         self._prev_pad: dict[str, bool] = dict(self._pad_held)
         self._prev_stick: dict[str, bool] = dict(self._stick)
+        self._prev_touch: dict[str, bool] = dict(self._touch_held)
         self.last_device = "keyboard"
         self.controllers: dict[int, Any] = {}
         self.quit_requested = False
@@ -121,6 +128,7 @@ class Input:
         self._prev_key = dict(self._key_held)
         self._prev_pad = dict(self._pad_held)
         self._prev_stick = dict(self._stick)
+        self._prev_touch = dict(self._touch_held)
 
     def handle_event(self, event: pygame.event.Event) -> None:
         """Feed one pygame event."""
@@ -175,10 +183,19 @@ class Input:
         if abs(value) > self.deadzone:
             self.last_device = "gamepad"
 
+    def touch(self, action: str, down: bool) -> None:
+        """An on-screen control went down or came up."""
+        if action not in self._touch_held:
+            return
+        self.last_device = "touch"
+        self._touch_held[action] = down
+        self._recompute(action)
+
     def _recompute(self, action: str) -> None:
         self.held[action] = (self._key_held.get(action, False)
                              or self._pad_held.get(action, False)
-                             or self._stick.get(action, False))
+                             or self._stick.get(action, False)
+                             or self._touch_held.get(action, False))
 
     def _open_controller(self, index: int) -> None:
         try:
@@ -232,6 +249,8 @@ class Input:
             return self._key_held.get(action, False)
         if source == "gamepad":
             return self._pad_held.get(action, False) or self._stick.get(action, False)
+        if source == "touch":
+            return self._touch_held.get(action, False)
         return self.held.get(action, False)
 
     def was_held_on(self, source: str, action: str) -> bool:
@@ -240,6 +259,8 @@ class Input:
             return self._prev_key.get(action, False)
         if source == "gamepad":
             return self._prev_pad.get(action, False) or self._prev_stick.get(action, False)
+        if source == "touch":
+            return self._prev_touch.get(action, False)
         return self._prev.get(action, False)
 
     # ----- test / script helpers -----------------------------------------
@@ -262,6 +283,7 @@ class Input:
         """Simulate releasing a logical button."""
         self._key_held[action] = False
         self._pad_held[action] = False
+        self._touch_held[action] = False
         self._stick[action] = False if action in self._stick else self._stick.get(action, False)
         self._recompute(action)
 

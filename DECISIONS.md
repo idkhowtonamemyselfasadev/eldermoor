@@ -277,3 +277,27 @@ Decisions made without asking, with the reason. Newest at the bottom.
     nobody can finish. The test walks every sheet, every room and the Boss
     Rush list and fails if anything in the table is unplaceable - it caught
     the Flintback the day it was written.
+
+68. **The phone gets a browser, not an app store.** One build that works on
+    both iPhone and Android, no developer account, no review, and a link
+    you can send. An Android APK stays possible - it would reuse the
+    controls, the compressed audio and the staged bundle - but it is the
+    second path, not the first.
+69. **The controls go in the letterbox, not on the game.** A 4:3 picture on
+    a 19.5:9 phone leaves a third of the screen black down either side.
+    That is where the pad and the buttons live, so a thumb never covers
+    what it is aiming at. Only a screen with no room to spare gets controls
+    drawn over the picture.
+70. **The pad is a stick, not a cross.** Four rectangles cannot do
+    diagonals without a player straddling two of them. A circle with a dead
+    zone in the middle gives eight directions from where the thumb actually
+    is, and a thumb that slides keeps control.
+71. **Touch is a third input channel, not a translation layer.** It sits
+    beside the keyboard and the gamepad in `Input` and sets the same
+    logical buttons. Nothing downstream - not the hero, not the menus, not
+    co-op - knows a touchscreen exists.
+72. **The staged bundle is tested by playing it.** A web build is mostly
+    "did everything the game reads come along?", and the honest way to
+    answer that is to run the staged copy from outside the repository with
+    nothing else on the path. It plays; so the bundle is right, whatever
+    pygbag does afterwards.

@@ -9,6 +9,7 @@ import pygame
 from eldermoor.config import CANVAS_H, CANVAS_W, DEFAULT_SCALE, DT, MAX_SCALE, MIN_SCALE
 from eldermoor.game import Game
 from eldermoor.input import Input
+from eldermoor.touch import TouchPad
 
 MAX_STEPS_PER_FRAME = 5
 TITLE = "Lantern of Eldermoor"
@@ -26,6 +27,8 @@ class Options:
     stretch: bool = False
     no_menu: bool = False
     start_room: str | None = None
+    #: "auto" shows the on-screen pad on a touchscreen, "on"/"off" decide
+    touch: str = "auto"
 
 
 class App:
@@ -48,6 +51,42 @@ class App:
         self.clock = pygame.time.Clock()
         self.accumulator = 0.0
         self.running = True
+        self.picture = pygame.Rect(0, 0, CANVAS_W, CANVAS_H)
+        self._laid_out_for = (0, 0)
+        self.touch = TouchPad()
+        self.touch.visible = self._wants_touch()
+        self.touch.font = self.game.assets.font8
+        self._relayout()
+
+    # ----- touchscreen ---------------------------------------------------
+    def _wants_touch(self) -> bool:
+        """Whether to draw the on-screen pad."""
+        choice = self.opts.touch
+        if choice == "auto":
+            choice = self.game.settings.touch_controls
+        if choice in ("on", "off"):
+            return choice == "on"
+        if self.opts.headless:
+            return False
+        try:
+            return bool(pygame.touch.get_num_devices())
+        except (AttributeError, pygame.error):
+            return False
+
+    def _relayout(self) -> None:
+        """Work out where the picture goes, and put the controls beside it."""
+        ww, wh = self.window.get_size()
+        if self.stretch:
+            self.picture = pygame.Rect(0, 0, ww, wh)
+        else:
+            factor = max(1, min(ww // CANVAS_W, wh // CANVAS_H))
+            width, height = CANVAS_W * factor, CANVAS_H * factor
+            top = (wh - height) // 2
+            if self.touch.visible and wh - height > ww - width:
+                top = min(top, round(wh * 0.04))   # portrait: the controls want the room
+            self.picture = pygame.Rect((ww - width) // 2, top, width, height)
+        self.touch.layout((ww, wh), self.picture)
+        self._laid_out_for = (ww, wh)
 
     # ----- window --------------------------------------------------------
     def _open_window(self) -> pygame.Surface:
@@ -69,18 +108,18 @@ class App:
         """Switch between windowed and fullscreen (F11 / Alt+Enter)."""
         self.fullscreen = not self.fullscreen
         self.window = self._open_window()
+        self.touch.release_all(self.input)
+        self._relayout()
 
     def present(self) -> None:
-        """Scale the canvas to the window with nearest-neighbour and black bars."""
-        ww, wh = self.window.get_size()
-        if self.stretch:
-            scaled = pygame.transform.scale(self.canvas, (ww, wh))
-            self.window.blit(scaled, (0, 0))
-        else:
-            factor = max(1, min(ww // CANVAS_W, wh // CANVAS_H))
-            self.window.fill((0, 0, 0))
-            scaled = pygame.transform.scale_by(self.canvas, factor)
-            self.window.blit(scaled, ((ww - scaled.get_width()) // 2, (wh - scaled.get_height()) // 2))
+        """Scale the canvas into the picture area, then draw the controls."""
+        size = self.window.get_size()
+        if size != self._laid_out_for:
+            self._relayout()
+        self.window.fill((0, 0, 0))
+        scaled = pygame.transform.scale(self.canvas, (self.picture.width, self.picture.height))
+        self.window.blit(scaled, self.picture.topleft)
+        self.touch.draw(self.window)
         pygame.display.flip()
 
     # ----- loop ----------------------------------------------------------
@@ -90,6 +129,11 @@ class App:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and self.game.debug.handle_key(self.game, event.key):
                 continue
+            if event.type == pygame.VIDEORESIZE or event.type == pygame.WINDOWRESIZED:
+                self._relayout()
+            if self.touch.visible and self.touch.handle(event, self.input,
+                                                        self.window.get_size()):
+                continue
             self.input.handle_event(event)
         if self.input.quit_requested:
             self.running = False
@@ -98,6 +142,34 @@ class App:
             self.game.want_fullscreen_toggle = False
             if not self.opts.headless:
                 self.toggle_fullscreen()
+
+    async def run_async(self) -> int:
+        """The same loop, yielding to the browser between frames.
+
+        A web build runs inside the page's own event loop: if the game never
+        gives it a turn, the tab freezes. This is the desktop loop with one
+        ``await`` in it, which is all pygbag asks for.
+        """
+        import asyncio
+        try:
+            while self.running:
+                elapsed = self.clock.tick(60) / 1000.0
+                self.accumulator += min(elapsed, 0.25)
+                steps = 0
+                while self.accumulator >= DT and steps < MAX_STEPS_PER_FRAME:
+                    self.step()
+                    self.accumulator -= DT
+                    steps += 1
+                if steps == MAX_STEPS_PER_FRAME:
+                    self.accumulator = 0.0
+                self.game.debug.fps = self.clock.get_fps()
+                self.game.draw(self.canvas)
+                self.present()
+                await asyncio.sleep(0)
+        except Exception:
+            self._on_crash()
+            raise
+        return 0
 
     def run(self) -> int:
         """Main loop with the crash guard. No crash may lose progress."""
